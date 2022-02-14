@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.20...3.23)
 
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
+VERSION 1.0.0
 )
 
 set(arith "d")
