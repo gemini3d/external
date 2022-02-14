@@ -5,13 +5,13 @@ Scripts to build/install external libraries used by Gemini3D.
 The most common task is to install a recent version of CMake:
 
 ```sh
-cmake -P install_cmake.cmake
+cmake -P scripts/install_cmake.cmake
 ```
 
 If that script doesn't work, try to build CMake:
 
 ```sh
-cmake -P build_cmake.cmake
+cmake -P scripts/build_cmake.cmake
 ```
 
 ## Build all Gemini3D external libraries
