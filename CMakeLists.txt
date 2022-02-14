@@ -30,6 +30,9 @@ if(NOT HDF5_VERSION)
   set(HDF5_VERSION 1.12.1 CACHE STRING "HDF5 version built")
 endif()
 
+
+set(CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+
 if(CMAKE_GENERATOR STREQUAL "Ninja Multi-Config")
   set(EXTPROJ_GEN "Ninja")
 else()
