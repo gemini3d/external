@@ -54,13 +54,13 @@ DOC "GNU Make"
 )
 
 # --- Fortran filesystem
-extproj(ffilesystem ${ffilesystem_git} ${ffilesystem_tag} git "" "C;CXX;Fortran" "")
+extproj(ffilesystem ${ffilesystem_git} ${ffilesystem_tag} git "" "")
 
 # --- GLOW
-extproj(glow ${glow_git} ${glow_tag} git "" "Fortran" "")
+extproj(glow ${glow_git} ${glow_tag} git "" "")
 
 # --- HWM14
-extproj(hwm14 ${hwm14_git} ${hwm14_tag} git "" "Fortran" "")
+extproj(hwm14 ${hwm14_git} ${hwm14_tag} git "" "")
 
 # --- HWLOC
 
@@ -180,7 +180,7 @@ DEPENDS HWLOC
 endif()
 
 # --- LAPACK
-extproj(lapack ${lapack_git} ${lapack_tag} git "-Darith=${arith}" "Fortran" "")
+extproj(lapack ${lapack_git} ${lapack_tag} git "-Darith=${arith}" "")
 
 # --- Scalapack
 set(scalapack_deps lapack)
@@ -190,7 +190,7 @@ elseif(mpich)
   list(APPEND scalapack_deps MPICH)
 endif()
 
-extproj(scalapack ${scalapack_git} ${scalapack_tag} git "-Dautobuild:BOOL=false;-Darith=${arith}" "Fortran" ${scalapack_deps})
+extproj(scalapack ${scalapack_git} ${scalapack_tag} git "-Dautobuild:BOOL=false;-Darith=${arith}" ${scalapack_deps})
 
 # --- MUMPS
 set(mumps_cmake_args
@@ -201,7 +201,7 @@ set(mumps_cmake_args
 -Darith=${arith}
 )
 
-extproj(mumps ${mumps_git} ${mumps_tag} git "${mumps_cmake_args}" "C;Fortran" "scalapack")
+extproj(mumps ${mumps_git} ${mumps_tag} git "${mumps_cmake_args}" "scalapack")
 
 # --- Zlib
 set(zlib_cmake_args
@@ -212,7 +212,7 @@ set(zlib_cmake_args
 -DZLIB_ENABLE_TESTS:BOOL=off
 )
 
-extproj(zlib ${zlib_url} ${zlib_sha256} archive "${zlib_cmake_args}" "C" "")
+extproj(zlib ${zlib_url} ${zlib_sha256} archive "${zlib_cmake_args}" "")
 
 # --- HDF5
 
@@ -234,7 +234,7 @@ if(hdf5_parallel AND MPI_ROOT)
   list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${MPI_ROOT})
 endif()
 
-extproj(hdf5 ${hdf5_url} ${hdf5_sha256} archive "${hdf5_cmake_args}" "C;Fortran" "zlib")
+extproj(hdf5 ${hdf5_url} ${hdf5_sha256} archive "${hdf5_cmake_args}" "zlib")
 
 # --- h5fortran
 set(h5fortran_deps hdf5)
@@ -246,9 +246,9 @@ if(hdf5_parallel)
   endif()
 endif()
 
-extproj(h5fortran ${h5fortran_git} ${h5fortran_tag} git "-Dautobuild:BOOL=off" "C;Fortran" ${h5fortran_deps})
+extproj(h5fortran ${h5fortran_git} ${h5fortran_tag} git "-Dautobuild:BOOL=off" ${h5fortran_deps})
 
 # --- nc4fortran
 if(netcdf)
-  extproj(nc4fortran ${nc4fortran_git} ${nc4fortran_tag} git "-Dautobuild:BOOL=on" "C;Fortran" "hdf5")
+  extproj(nc4fortran ${nc4fortran_git} ${nc4fortran_tag} git "-Dautobuild:BOOL=on" "hdf5")
 endif()

@@ -1,23 +1,16 @@
 include(ExternalProject)
 
-function(extproj name url hash url_type cmake_args langs depends)
+function(extproj name url hash url_type cmake_args depends)
 
 list(APPEND cmake_args
 --install-prefix=${CMAKE_INSTALL_PREFIX}
 -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
 -DCMAKE_BUILD_TYPE=Release
 -DBUILD_TESTING:BOOL=false
+-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
 )
-
-if(CXX IN_LIST langs)
-  list(APPEND cmake_args -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER})
-endif()
-if(C IN_LIST langs)
-  list(APPEND cmake_args -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER})
-endif()
-if(Fortran IN_LIST langs)
-  list(APPEND cmake_args -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER})
-endif()
 
 if(url_type STREQUAL git)
   ExternalProject_Add(${name}
