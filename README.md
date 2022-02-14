@@ -14,9 +14,24 @@ If that script doesn't work, try to build CMake:
 cmake -P build_cmake.cmake
 ```
 
+## Build all Gemini3D external libraries
 
-Other builds scripts are for:
+Pick a directory to install under, say $HOME/gemini_libs:
 
-* MPI:  OpenMPI, MPICH
-* Zstd
-* Ninja
+```sh
+cmake -B build --install-prefix=$HOME/gemini_libs
+
+cmake --build build
+```
+
+That installs files under $HOME/gemini_libs/[lib,include,bin] and similar.
+
+From Gemini3D, use those libraries like:
+
+```sh
+cd ~/code/gemini3d
+
+cmake -B build -DCMAKE_PREFIX_PATH=$HOME/gemini_libs
+
+cmake --build build
+```
