@@ -83,7 +83,7 @@ extproj(lapack git "-Darith=${arith}" "")
 
 # --- Scalapack
 set(scalapack_deps lapack)
-if(mpi)
+if(NOT MPI_FOUND)
   list(APPEND scalapack_deps mpi)
 endif()
 
@@ -112,7 +112,7 @@ endif()
 set(h5fortran_deps)
 if(NOT HDF5_FOUND)
   list(APPEND h5fortran_deps hdf5)
-  if(hdf5_parallel)
+  if(NOT MPI_FOUND AND hdf5_parallel)
     list(APPEND h5fortran_deps mpi)
   endif()
 endif()
