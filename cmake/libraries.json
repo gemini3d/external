@@ -13,6 +13,10 @@
   "url": "https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.bz2",
   "sha256": "9b78c7cf7fc32131c5cf43dd2ab9740149d9d87cadb2e2189f02685749a6b527"
 },
+"mpich": {
+  "url": "https://www.mpich.org/static/downloads/4.0/mpich-4.0.tar.gz",
+  "sha256": "df7419c96e2a943959f7ff4dc87e606844e736e30135716971aba58524fbff64"
+},
 
 "glow": {
   "git": "https://github.com/gemini3d/glow.git",

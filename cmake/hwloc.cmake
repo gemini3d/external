@@ -1,5 +1,8 @@
 find_package(LibXml2)
 
+string(JSON hwloc_url GET ${json_meta} hwloc url)
+string(JSON hwloc_sha256 GET ${json_meta} hwloc sha256)
+
 if(WIN32)
 
 set(hwloc_cmake_args

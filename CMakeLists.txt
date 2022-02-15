@@ -7,10 +7,13 @@ LANGUAGES C CXX Fortran
 VERSION 1.0.0
 )
 
+option(BUILD_SHARED_LIBS "Build shared libraries")
+option(build_all "Don't search for any libs, build them all")
+
 set(arith "d")
 option(scotch "MUMPS scotch")
 
-option(BUILD_SHARED_LIBS "Build shared libraries")
+option(msis2 "MSIS2 and MSISE00" true)
 
 option(hdf5_parallel "HDF5 parallel")
 option(netcdf "NetCDF4 / nc4fortran build")
@@ -52,9 +55,9 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/cmake/libraries.json json_meta)
 
 # --- GNU Make
 find_program(MAKE_EXECUTABLE
-NAMES gmake make
+NAMES gmake make mingw32-make
 NAMES_PER_DIR
-DOC "GNU Make"
+DOC "GNU Make (or compatible)"
 )
 
 # --- Fortran filesystem
@@ -69,14 +72,17 @@ extproj(hwm14 git "" "")
 # --- HWLOC
 # HWLOC is optional.
 # If you have new enough HWLOC, we don't build it.
-
-find_package(HWLOC 2.4)
+if(NOT build_all)
+  find_package(HWLOC 2.4)
+endif()
 if(NOT HWLOC_FOUND)
   include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/hwloc.cmake)
 endif()
 
 # --- MPI
-find_package(MPI COMPONENTS C Fortran)
+if(NOT build_all)
+  find_package(MPI COMPONENTS C Fortran)
+endif()
 if(NOT MPI_FOUND)
   include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mpi.cmake)
 endif()
@@ -86,10 +92,8 @@ extproj(lapack git "-Darith=${arith}" "")
 
 # --- Scalapack
 set(scalapack_deps lapack)
-if(openmpi)
-  list(APPEND scalapack_deps OPENMPI)
-elseif(mpich)
-  list(APPEND scalapack_deps MPICH)
+if(mpi)
+  list(APPEND scalapack_deps mpi)
 endif()
 
 extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" ${scalapack_deps})
@@ -136,16 +140,17 @@ if(hdf5_parallel AND MPI_ROOT)
   list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${MPI_ROOT})
 endif()
 
-extproj(hdf5 archive "${hdf5_cmake_args}" "zlib")
+set(hdf5_deps zlib)
+if(hdf5_parallel)
+  list(APPEND hdf5_deps mpi)
+endif()
+
+extproj(hdf5 archive "${hdf5_cmake_args}" "${hdf5_deps}")
 
 # --- h5fortran
 set(h5fortran_deps hdf5)
 if(hdf5_parallel)
-  if(openmpi)
-    list(APPEND h5fortran_deps OPENMPI)
-  elseif(mpich)
-    list(APPEND h5fortran_deps MPICH)
-  endif()
+  list(APPEND h5fortran_deps mpi)
 endif()
 
 extproj(h5fortran git "-Dautobuild:BOOL=off" "${h5fortran_deps}")
@@ -154,3 +159,6 @@ extproj(h5fortran git "-Dautobuild:BOOL=off" "${h5fortran_deps}")
 if(netcdf)
   extproj(nc4fortran git "-Dautobuild:BOOL=on" "hdf5")
 endif()
+
+# --- MSIS
+extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
