@@ -28,6 +28,18 @@ if(hdf5_parallel AND NOT usempi)
   message(FATAL_ERROR "HDF5 parallel requires MPI")
 endif()
 
+if(DEFINED{MKLROOT})
+  set(HAS_MKL true)
+else()
+  set(HAS_MKL false)
+endif()
+
+if(HAS_MKL AND DEFINED ENV{I_MPI_ROOT})
+  set(HAS_INTEL_MPI true)
+else()
+  set(HAS_INTEL_MPI false)
+endif()
+
 # --- main program
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
@@ -84,17 +96,19 @@ if(usempi)
 endif(usempi)
 
 # --- LAPACK
-extproj(lapack git "-Darith=${arith}" "")
+if(NOT HAS_MKL)
+  extproj(lapack git "-Darith=${arith}" "")
+endif()
 
 # --- Scalapack
-if(usempi)
+if(usempi AND NOT HAS_INTEL_MPI)
   set(scalapack_deps lapack)
   if(NOT MPI_FOUND)
     list(APPEND scalapack_deps mpi)
   endif()
 
   extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" "${scalapack_deps}")
-endif(usempi)
+endif()
 
 # --- MUMPS
 set(mumps_cmake_args
@@ -105,8 +119,11 @@ set(mumps_cmake_args
 -Darith=${arith}
 )
 
-set(mumps_deps lapack)
-if(usempi)
+set(mumps_deps)
+if(NOT HAS_MKL)
+  set(mumps_deps lapack)
+endif()
+if(usempi AND NOT HAS_INTEL_MPI)
   list(APPEND mumps_deps scalapack)
 endif()
 
