@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.20...3.23)
 
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
-VERSION 1.0.2
+VERSION 1.0.3
 )
 
 # --- user options
@@ -16,12 +16,17 @@ set(arith "d")
 option(scotch "MUMPS scotch")
 
 option(msis2 "MSIS2 and MSISE00" true)
+option(usempi "Use MPI" true)
 
 option(hdf5_parallel "HDF5 parallel")
 option(netcdf "NetCDF4 / nc4fortran build")
 
 option(openmpi "build OpenMPI")
 option(mpich "build MPICH")
+
+if(hdf5_parallel AND NOT usempi)
+  message(FATAL_ERROR "HDF5 parallel requires MPI")
+endif()
 
 # --- main program
 
@@ -61,8 +66,6 @@ extproj(glow git "" "")
 extproj(hwm14 git "" "")
 
 # --- HWLOC
-# HWLOC is optional.
-# If you have new enough HWLOC, we don't build it.
 if(NOT build_all)
   find_package(HWLOC 2.4)
 endif()
@@ -71,34 +74,43 @@ if(NOT HWLOC_FOUND)
 endif()
 
 # --- MPI
-if(NOT build_all)
-  find_package(MPI COMPONENTS C Fortran)
-endif()
-if(NOT MPI_FOUND)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mpi.cmake)
-endif()
+if(usempi)
+  if(NOT build_all)
+    find_package(MPI COMPONENTS C Fortran)
+  endif()
+  if(NOT MPI_FOUND)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mpi.cmake)
+  endif()
+endif(usempi)
 
 # --- LAPACK
 extproj(lapack git "-Darith=${arith}" "")
 
 # --- Scalapack
-set(scalapack_deps lapack)
-if(NOT MPI_FOUND)
-  list(APPEND scalapack_deps mpi)
-endif()
+if(usempi)
+  set(scalapack_deps lapack)
+  if(NOT MPI_FOUND)
+    list(APPEND scalapack_deps mpi)
+  endif()
 
-extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" ${scalapack_deps})
+  extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" "${scalapack_deps}")
+endif(usempi)
 
 # --- MUMPS
 set(mumps_cmake_args
 -Dscotch:BOOL=${scotch}
 -Dopenmp:BOOL=false
--Dparallel:BOOL=true
+-Dparallel:BOOL=${usempi}
 -Dautobuild:BOOL=false
 -Darith=${arith}
 )
 
-extproj(mumps git "${mumps_cmake_args}" "scalapack")
+set(mumps_deps)
+if(usempi)
+  list(APPEND mumps_deps scalapack)
+endif()
+
+extproj(mumps git "${mumps_cmake_args}" "${mumps_deps}")
 
 # --- optional HDF5
 if(NOT build_all)
