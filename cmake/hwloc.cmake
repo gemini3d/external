@@ -16,7 +16,7 @@ if(NOT LibXml2_FOUND)
   list(APPEND hwloc_cmake_args --disable-libxml2)
 endif()
 
-ExternalProject_Add(HWLOC
+ExternalProject_Add(hwloc
 URL ${hwloc_url}
 URL_HASH SHA256=${hwloc_sha256}
 CMAKE_ARGS ${hwloc_cmake_args}
@@ -43,10 +43,10 @@ if(NOT LibXml2_FOUND)
   list(APPEND hwloc_args --disable-libxml2)
 endif()
 
-ExternalProject_Add(HWLOC
+ExternalProject_Add(hwloc
 URL ${hwloc_url}
 URL_HASH SHA256=${hwloc_sha256}
-CONFIGURE_COMMAND ${PROJECT_BINARY_DIR}/HWLOC-prefix/src/HWLOC/configure --prefix=${CMAKE_INSTALL_PREFIX} ${hwloc_args}
+CONFIGURE_COMMAND ${PROJECT_BINARY_DIR}/hwloc-prefix/src/hwloc/configure --prefix=${CMAKE_INSTALL_PREFIX} ${hwloc_args}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j install
 TEST_COMMAND ""
