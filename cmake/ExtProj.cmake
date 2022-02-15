@@ -1,9 +1,9 @@
 include(ExternalProject)
 
-function(extproj name url hash url_type cmake_args depends)
+function(extproj name url_type cmake_args depends)
 
 list(APPEND cmake_args
---install-prefix=${CMAKE_INSTALL_PREFIX}
+-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
 -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
 -DCMAKE_BUILD_TYPE=Release
 -DBUILD_TESTING:BOOL=false
@@ -12,10 +12,15 @@ list(APPEND cmake_args
 -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
 )
 
+
 if(url_type STREQUAL git)
+
+  string(JSON url GET ${json_meta} ${name} git)
+  string(JSON tag GET ${json_meta} ${name} tag)
+
   ExternalProject_Add(${name}
   GIT_REPOSITORY ${url}
-  GIT_TAG ${hash}
+  GIT_TAG ${tag}
   CMAKE_ARGS ${cmake_args}
   CMAKE_GENERATOR ${EXTPROJ_GEN}
   INACTIVITY_TIMEOUT 15
@@ -24,9 +29,13 @@ if(url_type STREQUAL git)
   DEPENDS ${depends}
   )
 elseif(url_type STREQUAL archive)
+
+  string(JSON url GET ${json_meta} ${name} url)
+  string(JSON sha256 GET ${json_meta} ${name} sha256)
+
   ExternalProject_Add(${name}
   URL ${url}
-  URL_HASH SHA256=${hash}
+  URL_HASH SHA256=${sha256}
   CMAKE_ARGS ${cmake_args}
   CMAKE_GENERATOR ${EXTPROJ_GEN}
   INACTIVITY_TIMEOUT 15
