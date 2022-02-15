@@ -105,7 +105,7 @@ set(mumps_cmake_args
 -Darith=${arith}
 )
 
-set(mumps_deps)
+set(mumps_deps lapack)
 if(usempi)
   list(APPEND mumps_deps scalapack)
 endif()
