@@ -13,8 +13,8 @@ set(hwloc_cmake_args
 -DHWLOC_ENABLE_TESTING:BOOL=off
 )
 
-if(NOT LibXml2_FOUND)
-  list(APPEND hwloc_cmake_args --disable-libxml2)
+if(LibXml2_FOUND)
+  list(APPEND hwloc_cmake_args -DHWLOC_WITH_LIBXML2:BOOL=true)
 endif()
 
 ExternalProject_Add(hwloc
