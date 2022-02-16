@@ -2,7 +2,8 @@ include(ExternalProject)
 
 function(extproj name url_type cmake_args depends)
 
-list(APPEND cmake_args
+# PREPEND so that user arguments can override these defaults
+list(PREPEND cmake_args
 -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
 -DCMAKE_PREFIX_PATH:PATH=${CMAKE_INSTALL_PREFIX}
 -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}

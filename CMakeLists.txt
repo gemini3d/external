@@ -118,6 +118,10 @@ set(mumps_cmake_args
 -Dautobuild:BOOL=false
 -Darith=${arith}
 )
+if(MSVC AND BUILD_SHARED_LIBS)
+  # long-standing bug in MUMPS that can't handle shared libraries with MSVC (Windows Intel oneAPI)
+  list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
+endif()
 
 set(mumps_deps)
 if(NOT HAS_MKL)
