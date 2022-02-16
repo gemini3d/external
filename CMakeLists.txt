@@ -28,7 +28,7 @@ if(hdf5_parallel AND NOT usempi)
   message(FATAL_ERROR "HDF5 parallel requires MPI")
 endif()
 
-if(DEFINED{MKLROOT})
+if(DEFINED ENV{MKLROOT})
   set(HAS_MKL true)
 else()
   set(HAS_MKL false)
