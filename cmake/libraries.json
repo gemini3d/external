@@ -20,12 +20,12 @@
 
 "glow": {
   "git": "https://github.com/gemini3d/glow.git",
-  "tag": "v0.981.0.11"
+  "tag": "v0.981.0.12"
 },
 
 "ffilesystem": {
   "git": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v3.2.3"
+  "tag": "v3.2.5"
 },
 
 "h5fortran": {
