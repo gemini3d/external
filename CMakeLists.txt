@@ -42,7 +42,7 @@ endif()
 
 # --- main program
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+cmake_path(SET CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 set(CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 
