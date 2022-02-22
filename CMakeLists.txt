@@ -71,6 +71,9 @@ DOC "GNU Make (or compatible)"
 # --- Fortran filesystem
 extproj(ffilesystem git "" "")
 
+# --- iniparser (for Gemini3D C++ frontend)
+extproj(iniparser git "" "")
+
 # --- GLOW
 extproj(glow git "" "")
 
