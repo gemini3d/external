@@ -48,7 +48,7 @@
 
 "hwm14": {
   "git": "https://github.com/gemini3d/hwm14.git",
-  "tag": "v1.2.0"
+  "tag": "v1.2.1"
 },
 "msis": {
   "git": "https://github.com/gemini3d/msis.git",

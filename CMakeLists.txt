@@ -54,7 +54,11 @@ endif()
 
 # NOTE: lists must be passed via CMAKE_CACHE_ARGS using -Dvar:STRING=${var}
 # the variable type must be included e.g. STRING
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY EP_UPDATE_DISCONNECTED true)
+
+# checks for updated external projects when "false"
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY
+EP_UPDATE_DISCONNECTED false
+)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/ExtProj.cmake)
 
