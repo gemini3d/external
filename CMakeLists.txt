@@ -12,6 +12,8 @@ VERSION 1.0.3
 option(BUILD_SHARED_LIBS "Build shared libraries")
 option(build_all "Don't search for any libs, build them all")
 
+option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
+
 set(arith "d")
 option(scotch "MUMPS scotch")
 
@@ -28,23 +30,33 @@ if(hdf5_parallel AND NOT usempi)
   message(FATAL_ERROR "HDF5 parallel requires MPI")
 endif()
 
-if(DEFINED ENV{MKLROOT})
-  set(HAS_MKL true)
-else()
-  set(HAS_MKL false)
-endif()
-
-if(HAS_MKL AND DEFINED ENV{I_MPI_ROOT})
-  set(HAS_INTEL_MPI true)
-else()
-  set(HAS_INTEL_MPI false)
-endif()
 
 # --- main program
 
-cmake_path(SET CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+# exclude Conda from search
+if(DEFINED ENV{CONDA_PREFIX})
+  set(ignore_path
+    $ENV{CONDA_PREFIX} $ENV{CONDA_PREFIX}/Library $ENV{CONDA_PREFIX}/Scripts $ENV{CONDA_PREFIX}/condabin
+    $ENV{CONDA_PREFIX}/bin $ENV{CONDA_PREFIX}/lib $ENV{CONDA_PREFIX}/include
+    $ENV{CONDA_PREFIX}/Library/bin $ENV{CONDA_PREFIX}/Library/lib $ENV{CONDA_PREFIX}/Library/include
+  )
+  list(APPEND CMAKE_IGNORE_PATH ${ignore_path})
+endif()
 
-set(CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+cmake_path(SET CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})
+  set(CMAKE_PREFIX_PATH $ENV{CMAKE_MODULE_PATH})
+endif()
+if(CMAKE_PREFIX_PATH)
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.21)
+    file(REAL_PATH ${CMAKE_PREFIX_PATH} CMAKE_PREFIX_PATH EXPAND_TILDE)
+  else()
+    get_filename_component(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ABSOLUTE)
+  endif()
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_PREFIX_PATH}/cmake)
+endif()
+
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 
 if(CMAKE_GENERATOR STREQUAL "Ninja Multi-Config")
   set(EXTPROJ_GEN "Ninja")
@@ -103,19 +115,29 @@ if(usempi)
 endif(usempi)
 
 # --- LAPACK
-if(NOT HAS_MKL)
+if(NOT build_all AND find)
+  find_package(LAPACK)
+endif()
+if(NOT LAPACK_FOUND)
   extproj(lapack git "-Darith=${arith}" "")
 endif()
 
 # --- Scalapack
-if(usempi AND NOT HAS_INTEL_MPI)
+if(NOT LAPACK_FOUND)
   set(scalapack_deps lapack)
-  if(NOT MPI_FOUND)
-    list(APPEND scalapack_deps mpi)
-  endif()
-
-  extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" "${scalapack_deps}")
 endif()
+if(NOT MPI_FOUND)
+  list(APPEND scalapack_deps mpi)
+endif()
+
+if(usempi)
+  if(NOT build_all AND find)
+    find_package(SCALAPACK)
+  endif()
+  if(NOT SCALAPACK_FOUND)
+    extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" "${scalapack_deps}")
+  endif()
+endif(usempi)
 
 # --- MUMPS
 set(mumps_cmake_args
@@ -134,11 +156,26 @@ set(mumps_deps)
 if(NOT HAS_MKL)
   set(mumps_deps lapack)
 endif()
-if(usempi AND NOT HAS_INTEL_MPI)
-  list(APPEND mumps_deps scalapack)
+if(usempi)
+  if(NOT SCALAPACK_FOUND)
+    list(APPEND mumps_deps scalapack)
+  endif()
+else()
+  if(NOT LAPACK_FOUND)
+    list(APPEND mumps_deps lapack)
+  endif()
 endif()
 
-extproj(mumps git "${mumps_cmake_args}" "${mumps_deps}")
+if(NOT build_all AND find)
+  if(usempi)
+    find_package(MUMPS COMPONENTS ${arith})
+  else()
+    find_package(MUMPS COMPONENTS ${arith} mpiseq)
+  endif()
+endif()
+if(NOT MUMPS_FOUND)
+  extproj(mumps git "${mumps_cmake_args}" "${mumps_deps}")
+endif()
 
 # --- optional HDF5
 if(NOT build_all)
