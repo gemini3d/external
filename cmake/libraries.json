@@ -18,6 +18,11 @@
   "sha256": "df7419c96e2a943959f7ff4dc87e606844e736e30135716971aba58524fbff64"
 },
 
+"mpi_scalapack_stub": {
+  "git": "https://github.com/scivision/mpi_scalapack_stub.git",
+  "tag": "main"
+},
+
 "glow": {
   "git": "https://github.com/gemini3d/glow.git",
   "tag": "v0.981.0.12"

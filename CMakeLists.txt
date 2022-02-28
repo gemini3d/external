@@ -18,6 +18,7 @@ set(arith "d")
 option(scotch "MUMPS scotch")
 
 option(msis2 "MSIS2 and MSISE00" true)
+
 option(usempi "Use MPI" true)
 
 option(hdf5_parallel "HDF5 parallel")
@@ -105,6 +106,10 @@ if(NOT HWLOC_FOUND)
 endif()
 
 # --- MPI
+if(NOT usempi)
+  extproj(mpi_scalapack_stub git "" "")
+endif()
+
 if(usempi)
   if(NOT build_all)
     find_package(MPI COMPONENTS C Fortran)
@@ -159,7 +164,7 @@ if(usempi)
   endif()
 else()
   if(NOT LAPACK_FOUND)
-    list(APPEND mumps_deps lapack)
+    list(APPEND mumps_deps lapack mpi_scalapack_stub)
   endif()
 endif()
 
