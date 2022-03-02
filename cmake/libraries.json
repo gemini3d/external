@@ -1,5 +1,10 @@
 {
 
+"python": {
+  "url": "https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tar.xz",
+  "sha256": "0a8fbfb5287ebc3a13e9baf3d54e08fa06778ffeccf6311aef821bb3a6586cc8"
+},
+
 "iniparser": {
   "git": "https://github.com/gemini3d/iniparser.git",
   "tag": "v4.1.0.0"

@@ -27,6 +27,10 @@ option(netcdf "NetCDF4 / nc4fortran build")
 option(openmpi "build OpenMPI")
 option(mpich "build MPICH")
 
+option(python "build Python")
+# Some systems can't use Anaconda for license reasons, and have too old system Python
+# This is a universal way to make a recent Python available.
+
 if(hdf5_parallel AND NOT usempi)
   message(FATAL_ERROR "HDF5 parallel requires MPI")
 endif()
@@ -84,6 +88,11 @@ NAMES gmake make mingw32-make
 NAMES_PER_DIR
 DOC "GNU Make (or compatible)"
 )
+
+# --- Python
+if(python)
+  include(cmake/python.cmake)
+endif()
 
 # --- Fortran filesystem
 extproj(ffilesystem git "" "")
