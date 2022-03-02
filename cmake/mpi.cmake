@@ -66,7 +66,7 @@ endif()
 ExternalProject_Add(mpi
 URL ${mpi_url}
 URL_HASH SHA256=${mpi_sha256}
-CONFIGURE_COMMAND ${PROJECT_BINARY_DIR}/mpi-prefix/src/mpi/configure ${mpi_flags} ${mpi_ldflags}
+CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j ${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j ${Ncpu} install
 TEST_COMMAND ""
@@ -92,7 +92,7 @@ endif()
 ExternalProject_Add(mpi
 URL ${mpi_url}
 URL_HASH SHA256=${mpi_sha256}
-CONFIGURE_COMMAND ${PROJECT_BINARY_DIR}/mpi-prefix/src/mpi/configure ${mpi_flags} ${mpi_ldflags}
+CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j ${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j ${Ncpu} install
 TEST_COMMAND ""

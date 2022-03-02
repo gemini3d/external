@@ -47,7 +47,7 @@ endif()
 ExternalProject_Add(hwloc
 URL ${hwloc_url}
 URL_HASH SHA256=${hwloc_sha256}
-CONFIGURE_COMMAND ${PROJECT_BINARY_DIR}/hwloc-prefix/src/hwloc/configure --prefix=${CMAKE_INSTALL_PREFIX} ${hwloc_args}
+CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${CMAKE_INSTALL_PREFIX} ${hwloc_args}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j install
 TEST_COMMAND ""
