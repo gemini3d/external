@@ -56,7 +56,9 @@ else()
   COMMAND <SOURCE_DIR>/autogen.sh
   DEPENDEES download
   DEPENDERS configure
+  WORKING_DIRECTORY <SOURCE_DIR>
   )
+  # autogen.sh needs to be executed in SOURCE_DIR, not in build directory
 
 
   ExternalProject_Add(python
