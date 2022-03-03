@@ -27,9 +27,14 @@ option(netcdf "NetCDF4 / nc4fortran build")
 option(openmpi "build OpenMPI")
 option(mpich "build MPICH")
 
+find_package(Python 3.7 COMPONENTS Interpreter)
+if(NOT Python_FOUND AND NOT DEFINED python)
+  set(python true)
+endif()
+
 option(python "build Python")
 # Some systems can't use Anaconda for license reasons, and have too old system Python
-# This is a universal way to make a recent Python available.
+# This is a universal way to make a recent Python available
 
 if(hdf5_parallel AND NOT usempi)
   message(FATAL_ERROR "HDF5 parallel requires MPI")
