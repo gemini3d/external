@@ -27,6 +27,20 @@ else()
     message(FATAL_ERROR "Python requires GNU Make.")
   endif()
 
+  string(JSON ffi_url GET ${json_meta} ffi url)
+  string(JSON ffi_sha256 GET ${json_meta} ffi sha256)
+
+  ExternalProject_Add(ffi
+  URL ${ffi_url}
+  URL_HASH SHA256=${ffi_sha256}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${CMAKE_INSTALL_PREFIX}
+  BUILD_COMMAND ${MAKE_EXECUTABLE} -j
+  INSTALL_COMMAND ${MAKE_EXECUTABLE} -j install
+  TEST_COMMAND ""
+  CONFIGURE_HANDLED_BY_BUILD ON
+  INACTIVITY_TIMEOUT 15
+  )
+
   ExternalProject_Add(python
   URL ${python_url}
   URL_HASH SHA256=${python_sha256}
@@ -36,6 +50,7 @@ else()
   TEST_COMMAND ""
   CONFIGURE_HANDLED_BY_BUILD ON
   INACTIVITY_TIMEOUT 15
+  DEPENDS ffi
   )
 
 endif()
