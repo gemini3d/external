@@ -111,7 +111,9 @@ string(APPEND CMAKE_MODULE_LINKER_FLAGS_INIT " ${LDFLAGS}")
 set(zlib_cmake_args
 -DZLIB_COMPAT:BOOL=on
 -DZLIB_ENABLE_TESTS:BOOL=off
+-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=on
 )
+# CMAKE_POSITION_INDEPENDENT_CODE=on is needed for zlib to work with Python, even when using static libs.
 
 extproj(zlib archive "${zlib_cmake_args}" "")
 
