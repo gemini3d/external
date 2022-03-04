@@ -8,6 +8,10 @@
   "url": "https://github.com/libffi/libffi/archive/refs/tags/v3.4.2.tar.gz",
   "sha256": "0acbca9fd9c0eeed7e5d9460ae2ea945d3f1f3d48e13a4c54da12c7e0d23c313"
 },
+"ssl": {
+  "git": "https://github.com/openssl/openssl.git",
+  "tag": "OpenSSL_1_1_1m"
+},
 
 "iniparser": {
   "git": "https://github.com/gemini3d/iniparser.git",
