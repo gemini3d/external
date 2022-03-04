@@ -1,5 +1,14 @@
 {
 
+"libsc": {
+  "git": "https://github.com/cburstedde/libsc.git",
+  "tag": "prev3-develop"
+},
+"p4est": {
+  "git": "https://github.com/cburstedde/p4est.git",
+  "tag": "prev3-develop"
+},
+
 "python": {
   "git": "https://github.com/gemini3d/cmake-python-build",
   "tag": "main"

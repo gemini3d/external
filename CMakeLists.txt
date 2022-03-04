@@ -254,3 +254,7 @@ endif()
 
 # --- MSIS
 extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
+
+# --- p4est
+extproj(libsc git "-Dmpi:BOOL=${usempi}" "")
+extproj(p4est git "-Dmpi:BOOL=${usempi}" libsc)
