@@ -1,11 +1,3 @@
-# --- Zlib
-set(zlib_cmake_args
--DZLIB_COMPAT:BOOL=on
--DZLIB_ENABLE_TESTS:BOOL=off
-)
-
-extproj(zlib archive "${zlib_cmake_args}" "")
-
 # --- HDF5
 
 set(hdf5_cmake_args

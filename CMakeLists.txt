@@ -96,6 +96,14 @@ NAMES_PER_DIR
 DOC "GNU Make (or compatible)"
 )
 
+# --- Zlib
+set(zlib_cmake_args
+-DZLIB_COMPAT:BOOL=on
+-DZLIB_ENABLE_TESTS:BOOL=off
+)
+
+extproj(zlib archive "${zlib_cmake_args}" "")
+
 # --- Python
 if(python)
   include(cmake/python.cmake)
@@ -207,7 +215,7 @@ else()
   extproj(mumps git "${mumps_cmake_args}" "${mumps_deps}")
 endif()
 
-# --- optional HDF5
+# --- HDF5
 if(NOT build_all)
   find_package(HDF5 COMPONENTS C Fortran HL)
 endif()
