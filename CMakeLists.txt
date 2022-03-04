@@ -45,6 +45,11 @@ endif()
 
 # --- main program
 
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  message(FATAL_ERROR "Please define an install location like
+  cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemlibs")
+endif()
+
 # exclude Conda from search
 if(DEFINED ENV{CONDA_PREFIX})
   set(ignore_path
@@ -92,20 +97,8 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/cmake/libraries.json json_meta)
 # --- GNU Make
 find_program(MAKE_EXECUTABLE
 NAMES gmake make mingw32-make
-NAMES_PER_DIR
 DOC "GNU Make (or compatible)"
 )
-
-# --- LDFLAGS to install dir
-set(LDFLAGS $ENV{LDFLAGS})
-foreach(l lib lib64)
-  string(APPEND LDFLAGS " ${CMAKE_LIBRARY_PATH_FLAG}${CMAKE_INSTALL_PREFIX}/${l}")
-  string(APPEND LDFLAGS " -Wl,-rpath,${CMAKE_INSTALL_PREFIX}/${l}")
-endforeach()
-
-string(APPEND CMAKE_EXE_LINKER_FLAGS_INIT " ${LDFLAGS}")
-string(APPEND CMAKE_SHARED_LINKER_FLAGS_INIT " ${LDFLAGS}")
-string(APPEND CMAKE_MODULE_LINKER_FLAGS_INIT " ${LDFLAGS}")
 
 # --- Zlib
 set(zlib_cmake_args
@@ -119,7 +112,7 @@ extproj(zlib archive "${zlib_cmake_args}" "")
 
 # --- Python
 if(python)
-  include(cmake/python.cmake)
+  extproj(python git "-Dfind:BOOL=${find}" "")
 endif()
 
 # --- Fortran filesystem
