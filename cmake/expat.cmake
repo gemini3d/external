@@ -1,5 +1,14 @@
 # installs Expat
 
+if(find)
+  find_package(EXPAT)
+endif()
+
+if(EXPAT_FOUND)
+  add_custom_target(expat)
+  return()
+endif()
+
 string(JSON expat_url GET ${json_meta} expat git)
 string(JSON expat_tag GET ${json_meta} expat tag)
 
