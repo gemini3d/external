@@ -1,6 +1,11 @@
 # builds all Gemini3D external libraries
 
-cmake_minimum_required(VERSION 3.20...3.23)
+cmake_minimum_required(VERSION 3.7...3.23)
+
+if(CMAKE_VERSION VERSION_LESS 3.20)
+  message(FATAL_ERROR "Gemini3D requires CMake >= 3.20. Install latest CMake by:
+  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_cmake.cmake")
+endif()
 
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
