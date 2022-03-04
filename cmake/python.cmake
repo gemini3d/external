@@ -25,7 +25,6 @@ else()
   --prefix=${CMAKE_INSTALL_PREFIX}
   CC=${CMAKE_C_COMPILER}
   CXX=${CMAKE_CXX_COMPILER}
-  LDFLAGS=${CMAKE_LIBRARY_PATH_FLAG} ${CMAKE_INSTALL_PREFIX}/lib64 -Wl,-rpath ${CMAKE_INSTALL_PREFIX}/lib64
   )
 
   if(NOT MAKE_EXECUTABLE)
@@ -39,7 +38,7 @@ else()
   ExternalProject_Add(python
   URL ${python_url}
   URL_HASH SHA256=${python_sha256}
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure ${python_args}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure ${python_args} LDFLAGS=${LDFLAGS}
   BUILD_COMMAND ${MAKE_EXECUTABLE} -j
   INSTALL_COMMAND ${MAKE_EXECUTABLE} -j install
   TEST_COMMAND ""

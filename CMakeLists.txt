@@ -96,6 +96,17 @@ NAMES_PER_DIR
 DOC "GNU Make (or compatible)"
 )
 
+# --- LDFLAGS to install dir
+set(LDFLAGS $ENV{LDFLAGS})
+foreach(l lib lib64)
+  string(APPEND LDFLAGS " ${CMAKE_LIBRARY_PATH_FLAG}${CMAKE_INSTALL_PREFIX}/${l}")
+  string(APPEND LDFLAGS " -Wl,-rpath,${CMAKE_INSTALL_PREFIX}/${l}")
+endforeach()
+
+string(APPEND CMAKE_EXE_LINKER_FLAGS_INIT " ${LDFLAGS}")
+string(APPEND CMAKE_SHARED_LINKER_FLAGS_INIT " ${LDFLAGS}")
+string(APPEND CMAKE_MODULE_LINKER_FLAGS_INIT " ${LDFLAGS}")
+
 # --- Zlib
 set(zlib_cmake_args
 -DZLIB_COMPAT:BOOL=on
