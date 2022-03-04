@@ -25,12 +25,14 @@ else()
   --prefix=${CMAKE_INSTALL_PREFIX}
   CC=${CMAKE_C_COMPILER}
   CXX=${CMAKE_CXX_COMPILER}
+  LDFLAGS="${CMAKE_LIBRARY_PATH_FLAG} ${CMAKE_INSTALL_PREFIX}/lib64 -Wl,-rpath ${CMAKE_INSTALL_PREFIX}/lib64"
   )
 
   if(NOT MAKE_EXECUTABLE)
     message(FATAL_ERROR "Python requires GNU Make.")
   endif()
 
+  include(cmake/expat.cmake)
   include(cmake/ffi.cmake)
   include(cmake/ssl.cmake)
 
@@ -43,7 +45,7 @@ else()
   TEST_COMMAND ""
   CONFIGURE_HANDLED_BY_BUILD ON
   INACTIVITY_TIMEOUT 15
-  DEPENDS "ffi;ssl"
+  DEPENDS "expat;ffi;ssl;zlib"
   )
 
 endif()
