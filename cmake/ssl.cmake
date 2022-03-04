@@ -9,6 +9,10 @@ if(OpenSSL_FOUND)
   return()
 endif()
 
+if(NOT MAKE_EXECUTABLE)
+  message(FATAL_ERROR "SSL requires GNU Make.")
+endif()
+
 string(JSON ssl_url GET ${json_meta} ssl git)
 string(JSON ssl_tag GET ${json_meta} ssl tag)
 

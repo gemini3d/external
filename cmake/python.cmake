@@ -31,6 +31,7 @@ else()
     message(FATAL_ERROR "Python requires GNU Make.")
   endif()
 
+  include(cmake/bzip2.cmake)
   include(cmake/expat.cmake)
   include(cmake/ffi.cmake)
   include(cmake/ssl.cmake)
@@ -44,7 +45,7 @@ else()
   TEST_COMMAND ""
   CONFIGURE_HANDLED_BY_BUILD ON
   INACTIVITY_TIMEOUT 15
-  DEPENDS "expat;ffi;ssl;zlib"
+  DEPENDS "bzip2;expat;ffi;ssl;zlib"
   )
 
 endif()
