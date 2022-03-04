@@ -35,6 +35,7 @@ else()
   include(cmake/expat.cmake)
   include(cmake/ffi.cmake)
   include(cmake/ssl.cmake)
+  include(cmake/xz.cmake)
 
   ExternalProject_Add(python
   URL ${python_url}
@@ -45,7 +46,7 @@ else()
   TEST_COMMAND ""
   CONFIGURE_HANDLED_BY_BUILD ON
   INACTIVITY_TIMEOUT 15
-  DEPENDS "bzip2;expat;ffi;ssl;zlib"
+  DEPENDS "bzip2;expat;ffi;ssl;xz;zlib"
   )
 
 endif()
