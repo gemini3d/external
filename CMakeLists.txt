@@ -19,6 +19,8 @@ option(build_all "Don't search for any libs, build them all")
 
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
+option(amr "build packages used for AMR")
+
 set(arith "d")
 option(scotch "MUMPS scotch")
 
@@ -261,5 +263,7 @@ endif()
 extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
 # --- p4est
-extproj(libsc git "-Dmpi:BOOL=${usempi}" "")
-extproj(p4est git "-Dmpi:BOOL=${usempi}" libsc)
+if(amr)
+  extproj(libsc git "-Dmpi:BOOL=${usempi}" "")
+  extproj(p4est git "-Dmpi:BOOL=${usempi}" libsc)
+endif()
