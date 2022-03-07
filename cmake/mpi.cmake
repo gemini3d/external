@@ -10,6 +10,10 @@ if(WIN32)
   message(WARNING "Windows users normally use MS-MPI or Intel MPI")
 endif()
 
+if(NOT Autotools_FOUND)
+  message(FATAL_ERROR "MPI on Unix-like systems requires Autotools")
+endif()
+
 # MPI builds spawn too many threads with bare "make -j" giving build crashes like
 # libtool: fork: Resource temporarily unavailable
 # clang: error: unable to execute command: posix_spawn failed: Resource temporarily unavailable

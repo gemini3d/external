@@ -14,6 +14,15 @@ If that script doesn't work, try to build CMake:
 cmake -P scripts/build_cmake.cmake
 ```
 
+## Autotools
+
+Several packages use Autotools, and need Autotools installed beforehand.
+Example command to install Autotools:
+
+```sh
+[apt,brew,zypper] install autoconf automake libtool
+```
+
 ## Build all Gemini3D external libraries
 
 To save time, MPI isn't built unless requested with `cmake -Dbuild_all=yes` option added to below.

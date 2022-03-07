@@ -105,6 +105,8 @@ NAMES gmake make mingw32-make
 DOC "GNU Make (or compatible)"
 )
 
+find_package(Autotools)
+
 # --- Zlib
 set(zlib_cmake_args
 -DZLIB_COMPAT:BOOL=on
@@ -117,6 +119,9 @@ extproj(zlib archive "${zlib_cmake_args}" "")
 
 # --- Python
 if(python)
+  if(NOT WIN32 AND NOT Autotools_FOUND)
+    message(FATAL_ERROR "Python on Unix-like systems requires Autotools")
+  endif()
   extproj(python git "-Dfind:BOOL=${find}" "")
 endif()
 
