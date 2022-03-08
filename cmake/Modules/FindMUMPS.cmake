@@ -65,18 +65,10 @@ endfunction(mumps_openmp_check)
 function(mumps_scotch_check)
 
 # check if Scotch linked
-if(mpiseq IN_LIST MUMPS_FIND_COMPONENTS)
-  find_package(Scotch COMPONENTS ESMUMPS)
-  # METIS is required when using Scotch
-  if(Scotch_FOUND)
-    find_package(METIS)
-  endif()
-else()
-  find_package(Scotch COMPONENTS parallel ESMUMPS)
-  # METIS is required when using Scotch
-  if(Scotch_FOUND)
-    find_package(METIS COMPONENTS parallel)
-  endif()
+find_package(Scotch COMPONENTS ESMUMPS)
+# METIS is required when using Scotch
+if(Scotch_FOUND)
+  find_package(METIS)
 endif()
 
 if(NOT METIS_FOUND)
@@ -89,8 +81,8 @@ list(APPEND CMAKE_REQUIRED_LIBRARIES ${Scotch_LIBRARIES} ${METIS_LIBRARIES})
 check_source_compiles(Fortran
 "program test_scotch
 implicit none (type, external)
-external :: mumps_dgraphinit
-call mumps_dgraphinit()
+external :: mumps_scotch
+call mumps_scotch()
 end program"
 MUMPS_HAVE_Scotch
 )
@@ -137,7 +129,7 @@ foreach(c IN LISTS MUMPS_FIND_COMPONENTS)
   )
 
   if(NOT MUMPS_${c}_links)
-    return()
+    continue()
   endif()
 
   set(MUMPS_${c}_FOUND true PARENT_SCOPE)
@@ -312,7 +304,7 @@ foreach(c IN LISTS MUMPS_FIND_COMPONENTS)
   endif()
 
   if(NOT MUMPS_${c}_lib)
-    return()
+    continue()
   endif()
 
   list(APPEND MUMPS_LIBRARY ${MUMPS_${c}_lib})
