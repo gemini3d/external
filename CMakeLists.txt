@@ -7,6 +7,14 @@ if(CMAKE_VERSION VERSION_LESS 3.20)
   cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_cmake.cmake")
 endif()
 
+if(CMAKE_GENERATOR MATCHES "Visual Studio")
+  # needs to be before project()
+  message(FATAL_ERROR "Visual Studio doesn't work with many libraries here. Please first install Ninja:
+
+  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_ninja.cmake
+  ")
+endif()
+
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
 VERSION 1.0.3
