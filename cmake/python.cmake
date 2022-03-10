@@ -1,6 +1,5 @@
 include(ExternalProject)
 
-# PREPEND so that user arguments can override these defaults
 set(python_cmake_args
 -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
 -DCMAKE_PREFIX_PATH:PATH=${CMAKE_INSTALL_PREFIX}

@@ -24,20 +24,14 @@ string(JSON host GET ${_j} ninja binary)
 set(host ${host}v${version}/)
 
 if(APPLE)
-  execute_process(COMMAND uname -m
-    OUTPUT_VARIABLE arch
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    TIMEOUT 5
-    COMMAND_ERROR_IS_FATAL ANY)
-  if(arch STREQUAL x86_64)
-    set(stem ninja-mac)
-  endif()
+  set(stem ninja-mac)
 elseif(UNIX)
   execute_process(COMMAND uname -m
-    OUTPUT_VARIABLE arch
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    TIMEOUT 5
-    COMMAND_ERROR_IS_FATAL ANY)
+  OUTPUT_VARIABLE arch
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  TIMEOUT 5
+  COMMAND_ERROR_IS_FATAL ANY
+  )
   if(arch STREQUAL x86_64)
     set(stem ninja-linux)
   endif()

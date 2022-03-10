@@ -12,6 +12,9 @@
 #   cmake -Dversion="3.13.5" -P install_cmake.cmake
 #
 # old CMake versions have broken file(DOWNLOAD)--they just "download" 0-byte files.
+#
+# NOTE: CMake 3.24 introduced need for CMake >= 3.13 to build CMake itself.
+# The execute_process commands below also use Cmake >= 3.13 syntax.
 
 cmake_minimum_required(VERSION 3.13...3.23)
 
