@@ -132,7 +132,7 @@ if(python)
   if(NOT WIN32 AND NOT Autotools_FOUND)
     message(FATAL_ERROR "Python on Unix-like systems requires Autotools")
   endif()
-  extproj(python git "-Dfind:BOOL=${find}" "")
+  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/python.cmake)
 endif()
 
 # --- Fortran filesystem
