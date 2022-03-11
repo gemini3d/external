@@ -5,7 +5,7 @@ These will install nearly everything needed except the compilers themselves.
 If something doesn't work, please let us know.
 These scripts are intended to work on nearly any Linux, MacOS or Windows computer.
 
-## CMake and essential build tools
+## CMake build system
 
 Since CMake controls all aspects of our programs and external libraries, we first install a recent version of CMake.
 
@@ -19,13 +19,17 @@ If that script doesn't work, try to build CMake:
 cmake -P scripts/build_cmake.cmake
 ```
 
-There are a minimal set of compilers and tools useful to build scientific programs in general, which are installed by:
+## Essential build tools
+
+There are a minimal set of compilers and tools useful to build scientific programs in general.
+If you have "sudo" / admin access, you can install them with:
 
 ```sh
 cmake -P scripts/requirements.cmake
 ```
 
-If you have problems installing CMake or the requirements.cmake programs, please let us know.
+If you don't have permission to install these programs, try the external library build below anyway.
+If something is missing that stops the build, try asking your system administrator and/or us.
 
 ## Build all Gemini3D external libraries
 
