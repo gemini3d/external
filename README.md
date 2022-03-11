@@ -66,6 +66,20 @@ cmake --build build -t <library>
 
 The prerequisites of the library will also be built.
 
+### Python
+
+If a new enough Python isn't available on your system, this program installs Python.
+You can force build just Python and its prerequisites by:
+
+```sh
+cmake -B build -Dpython=yes -DCMAKE_PREFIX_PATH=~/python
+# arbitrary path, can be ~/gemini_libs or whatever you prefer
+
+cmake --build build -t python
+```
+
+The Python build invoked above is handled seamlessly by the project [cmake-python-build](https://github.com/gemini3d/cmake-python-build), which you can use directly for any project.
+
 ### Build OpenMPI
 
 ```sh
