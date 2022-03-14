@@ -27,7 +27,7 @@ option(build_all "Don't search for any libs, build them all")
 
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
-option(amr "build packages used for AMR")
+option(amr "build packages used for AMR" true)
 
 set(arith "d")
 option(scotch "MUMPS scotch")
