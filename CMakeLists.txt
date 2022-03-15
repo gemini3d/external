@@ -27,7 +27,8 @@ option(build_all "Don't search for any libs, build them all")
 
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
-option(amr "build packages used for AMR" true)
+option(amr "build packages used for AMR")
+# p4est is still moving target, leave off by default
 
 set(arith "d")
 option(scotch "MUMPS scotch")
