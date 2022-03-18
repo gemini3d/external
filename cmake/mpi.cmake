@@ -49,8 +49,12 @@ string(JSON mpi_url GET ${json_meta} openmpi url)
 string(JSON mpi_sha256 GET ${json_meta} openmpi sha256)
 
 list(APPEND mpi_flags
---with-hwloc-libdir=${CMAKE_INSTALL_PREFIX}/lib
+--with-hwloc=internal
 )
+# Trying internal HWLOC to avoid error in MPI:
+# ibopen-pal.a(topology-linux.o): multiple definition of `hwloc_linux_component'
+#--with-hwloc-libdir=${CMAKE_INSTALL_PREFIX}/lib
+
 
 find_package(ZLIB)
 if(ZLIB_FOUND)
