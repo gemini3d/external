@@ -71,12 +71,12 @@
 },
 "msis": {
   "git": "https://github.com/gemini3d/msis.git",
-  "tag": "v1.0.4"
+  "tag": "v1.0.5"
 },
 
 "mumps": {
   "git": "https://github.com/scivision/mumps.git",
-  "tag": "v5.4.1.10"
+  "tag": "v5.4.1.11"
 },
 "scalapack": {
   "git": "https://github.com/scivision/scalapack.git",
