@@ -33,7 +33,10 @@ option(amr "build packages used for AMR")
 set(arith "d")
 option(scotch "MUMPS scotch")
 
-option(msis2 "MSIS2 and MSISE00" true)
+option(msis2 "MSIS2 and MSISE00")
+# MSIS 2.x has been an ongoing problem with downloading, patching
+# to avoid problems for new users and automated systems, MSIS2 is off
+# by default but users can select MSIS2 if they wish.
 
 option(usempi "Use MPI" true)
 
