@@ -141,7 +141,12 @@ set(archive ${prefix}/${name})
 
 set(url ${host}${name})
 message(STATUS "download ${url}")
-file(DOWNLOAD ${url} ${archive} INACTIVITY_TIMEOUT 15)
+file(DOWNLOAD ${url} ${archive} INACTIVITY_TIMEOUT 15 STATUS ret)
+list(GET ret 0 stat)
+if(NOT stat EQUAL 0)
+  list(GET ret 1 err)
+  message(FATAL_ERROR "download failed: ${err}")
+endif()
 
 message(STATUS "extracting to ${path}")
 if(CMAKE_VERSION VERSION_LESS 3.18)
