@@ -268,11 +268,11 @@ if(NOT HDF5_FOUND)
   endif()
 endif()
 
-extproj(h5fortran git "-Dautobuild:BOOL=off" "${h5fortran_deps}")
+extproj(h5fortran git "" "${h5fortran_deps}")
 
 # --- nc4fortran
 if(netcdf)
-  extproj(nc4fortran git "-Dautobuild:BOOL=on" "hdf5")
+  extproj(nc4fortran git "" "hdf5")
 endif()
 
 # --- MSIS
