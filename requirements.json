@@ -20,7 +20,7 @@
     "cmd": "zypper install"
   },
   "brew": {
-    "pkgs": ["gcc", "ninja", "hwloc", "openmpi", "hdf5",
+    "pkgs": ["gcc", "ninja", "hwloc", "open-mpi", "hdf5", "libaec",
              "autoconf", "automake", "libtool"],
     "cmd": "brew install"
   },
