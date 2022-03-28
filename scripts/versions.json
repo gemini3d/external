@@ -3,6 +3,7 @@
     "binary": "https://github.com/Kitware/CMake/releases/download/",
     "source": "https://github.com/Kitware/CMake/archive/refs/tags/",
     "latest": "3.22",
+    "3.23": "3.23.0-rc5",
     "3.22": "3.22.3",
     "3.21": "3.21.6",
     "3.20": "3.20.6",
