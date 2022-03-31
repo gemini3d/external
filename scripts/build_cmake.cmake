@@ -16,11 +16,11 @@
 # NOTE: CMake 3.24 introduced need for CMake >= 3.13 to build CMake itself.
 # The execute_process commands below also use Cmake >= 3.13 syntax.
 
-cmake_minimum_required(VERSION 3.13...3.23)
+cmake_minimum_required(VERSION 3.13...3.24)
 
 # --- version
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  set(version 3.22.3)
+  set(version 3.23.0)
   set(host https://github.com/Kitware/CMake/archive/refs/tags/)
 else()
   file(READ ${CMAKE_CURRENT_LIST_DIR}/versions.json _j)
