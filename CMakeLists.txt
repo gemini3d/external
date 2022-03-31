@@ -191,6 +191,12 @@ else()
 endif()
 
 # --- Scalapack
+set(scalapack_args
+-Dautobuild:BOOL=false
+-Darith=${arith}
+-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
+)
+
 if(NOT LAPACK_FOUND)
   set(scalapack_deps lapack)
 endif()
@@ -205,7 +211,7 @@ if(usempi)
   if(SCALAPACK_FOUND)
     add_custom_target(scalapack)
   else()
-    extproj(scalapack git "-Dautobuild:BOOL=false;-Darith=${arith}" "${scalapack_deps}")
+    extproj(scalapack git "${scalapack_args}" "${scalapack_deps}")
   endif()
 endif(usempi)
 
@@ -217,6 +223,7 @@ set(mumps_cmake_args
 -Dautobuild:BOOL=false
 -Darith=${arith}
 -DMUMPS_UPSTREAM_VERSION=5.3.5
+-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
 )
 # On some Windows systems, Git Patch fails for MUMPS 5.4.1, unknown why as it works on most.
 # For uniformness, we chose to use MUMPS 5.3.5 until MUMPS itself patches this long-known issue.
@@ -268,7 +275,7 @@ if(NOT HDF5_FOUND)
   endif()
 endif()
 
-extproj(h5fortran git "" "${h5fortran_deps}")
+extproj(h5fortran git "-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "${h5fortran_deps}")
 
 # --- nc4fortran
 if(netcdf)
@@ -280,6 +287,6 @@ extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
 # --- p4est
 if(amr)
-  extproj(libsc git "-Dmpi:BOOL=${usempi}" "")
-  extproj(p4est git "-Dmpi:BOOL=${usempi}" libsc)
+  extproj(libsc git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "")
+  extproj(p4est git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" libsc)
 endif()
