@@ -33,7 +33,13 @@ If something is missing that stops the build, try asking your system administrat
 
 ## Build all Gemini3D external libraries
 
-Pick a directory to install under, say $HOME/gemini_libs:
+Cray systems should use the one-step build script alone:
+
+```sh
+cmake -DCMAKE_INSTALL_PREFIX=~/gemini_libs -P cray.cmake
+```
+
+Other systems: pick a directory to install under, say $HOME/gemini_libs:
 
 ```sh
 cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemini_libs
