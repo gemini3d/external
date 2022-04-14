@@ -9,45 +9,39 @@ if(NOT CMAKE_INSTALL_PREFIX)
   cmake -DCMAKE_INSTALL_PREFIX=<install_dir> -P ${CMAKE_CURRENT_LIST_FILE}")
 endif()
 
+option(intel "use intel compiler instead of default GCC")
+
 # the module commands only affect the current process, not the parent shell
 cmake_path(SET BINARY_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
 
 find_package(EnvModules REQUIRED)
 
-env_module(load cpe/22.03
-OUTPUT_VARIABLE out
-RESULT_VARIABLE ret
-)
+env_module(load cpe/22.03 OUTPUT_VARIABLE out RESULT_VARIABLE ret)
 if(ret)
   message(STATUS "load cpe/22.03 error ${ret}: ${out}")
 endif()
 
-env_module_swap(PrgEnv-cray PrgEnv-gnu
-OUTPUT_VARIABLE out
-RESULT_VARIABLE ret
-)
+if(intel)
+  env_module_swap(PrgEnv-cray PrgEnv-intel OUTPUT_VARIABLE out RESULT_VARIABLE ret)
+else()
+  env_module_swap(PrgEnv-cray PrgEnv-gnu OUTPUT_VARIABLE out RESULT_VARIABLE ret)
+endif()
 if(ret)
-  message(STATUS "swap PrgEnv-gnu error ${ret}: ${out}")
+  message(STATUS "swap PrgEnv error ${ret}: ${out}")
 endif()
 
 # too compiler specific
-# env_module(load cray-hdf5
-# OUTPUT_VARIABLE out
-# RESULT_VARIABLE ret
-# )
+# env_module(load cray-hdf5 OUTPUT_VARIABLE out RESULT_VARIABLE ret)
 # if(ret)
 #   message(STATUS "load cray-hdf5 error ${ret}: ${out}")
 # endif()
 
-
-env_module(load cray-mpich
-OUTPUT_VARIABLE out
-RESULT_VARIABLE ret
-)
-if(ret)
-  message(STATUS "load cray-mpich error ${ret}: ${out}")
+if(NOT intel)
+  env_module(load cray-mpich OUTPUT_VARIABLE out RESULT_VARIABLE ret)
+  if(ret)
+    message(STATUS "load cray-mpich error ${ret}: ${out}")
+  endif()
 endif()
-
 
 execute_process(
 COMMAND ${CMAKE_COMMAND} -B${BINARY_DIR} -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
