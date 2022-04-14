@@ -272,10 +272,11 @@ if(NOT build_all)
 endif()
 if(HDF5_FOUND)
   add_custom_target(hdf5)
-elseif(CRAY)
-  message(FATAL_ERROR "Cray systems should use cray-hdf5. Setup Cray PE by:
-  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
-  )
+# elseif(CRAY)
+# too compiler specific
+#   message(FATAL_ERROR "Cray systems should use cray-hdf5. Setup Cray PE by:
+#   cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
+#   )
 else()
   include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/hdf5.cmake)
 endif()

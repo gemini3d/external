@@ -30,13 +30,14 @@ if(ret)
   message(STATUS "swap PrgEnv-gnu error ${ret}: ${out}")
 endif()
 
-env_module(load cray-hdf5
-OUTPUT_VARIABLE out
-RESULT_VARIABLE ret
-)
-if(ret)
-  message(STATUS "load cray-hdf5 error ${ret}: ${out}")
-endif()
+# too compiler specific
+# env_module(load cray-hdf5
+# OUTPUT_VARIABLE out
+# RESULT_VARIABLE ret
+# )
+# if(ret)
+#   message(STATUS "load cray-hdf5 error ${ret}: ${out}")
+# endif()
 
 
 env_module(load cray-mpich
