@@ -61,6 +61,10 @@ if(hdf5_parallel AND NOT usempi)
   message(FATAL_ERROR "HDF5 parallel requires MPI")
 endif()
 
+if(DEFINED ENV{CRAYPE_VERSION})
+  set(CRAY true)
+endif()
+
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/compilers.cmake)
 
 # --- main program
@@ -174,26 +178,24 @@ if(usempi)
   endif()
   if(MPI_FOUND)
     add_custom_target(mpi)
+  elseif(CRAY)
+    message(FATAL_ERROR "Cray systems should use cray-mpich. Setup Cray PE by:
+    ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
+    )
   else()
-    if(DEFINED ENV{CRAYPE_VERSION})
-      message(WARNING "Cray systems should use cray-mpich.
-      ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake")
-    endif()
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mpi.cmake)
   endif()
 endif(usempi)
 
 # --- LAPACK
-if(NOT build_all AND find)
+if(NOT build_all AND find AND NOT CRAY)
   find_package(LAPACK)
 endif()
-if(LAPACK_FOUND)
+if(LAPACK_FOUND OR CRAY)
   add_custom_target(lapack)
   # dummy target to avoid error if user `cmake --build --target lapack`
+  # Cray systems use built-in LibSci
 else()
-  if(DEFINED ENV{CRAYPE_VERSION})
-    message(WARNING "Cray systems should use automatically linked LibSci instead of building Lapack")
-  endif()
   extproj(lapack git "-Darith=${arith}" "")
 endif()
 
@@ -212,15 +214,13 @@ if(NOT MPI_FOUND)
 endif()
 
 if(usempi)
-  if(NOT build_all AND find)
+  if(NOT build_all AND find AND NOT CRAY)
     find_package(SCALAPACK)
   endif()
-  if(SCALAPACK_FOUND)
+  if(SCALAPACK_FOUND OR CRAY)
+    # Cray systems use built-in LibSci
     add_custom_target(scalapack)
   else()
-  if(DEFINED ENV{CRAYPE_VERSION})
-    message(WARNING "Cray systems should use automatically linked LibSci instead of building ScaLapack")
-  endif()
     extproj(scalapack git "${scalapack_args}" "${scalapack_deps}")
   endif()
 endif(usempi)
@@ -272,11 +272,11 @@ if(NOT build_all)
 endif()
 if(HDF5_FOUND)
   add_custom_target(hdf5)
+elseif(CRAY)
+  message(FATAL_ERROR "Cray systems should use cray-hdf5. Setup Cray PE by:
+  ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
+  )
 else()
-  if(DEFINED ENV{CRAYPE_VERSION})
-    message(WARNING "Cray systems should use cray-hdf5.
-    ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake")
-  endif()
   include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/hdf5.cmake)
 endif()
 
