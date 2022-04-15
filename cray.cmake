@@ -27,6 +27,7 @@ endif()
 
 if(intel)
   env_module_swap(PrgEnv-cray PrgEnv-intel OUTPUT_VARIABLE out RESULT_VARIABLE ret)
+  env_module(load intel-oneapi/2022.0.2 OUTPUT_VARIABLE out RESULT_VARIABLE ret)
 else()
   env_module_swap(PrgEnv-cray PrgEnv-gnu OUTPUT_VARIABLE out RESULT_VARIABLE ret)
 endif()
