@@ -230,11 +230,8 @@ set(mumps_cmake_args
 -Dparallel:BOOL=${usempi}
 -Dautobuild:BOOL=false
 -Darith=${arith}
--DMUMPS_UPSTREAM_VERSION=5.3.5
 -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
 )
-# On some Windows systems, Git Patch fails for MUMPS 5.4.1, unknown why as it works on most.
-# For uniformness, we chose to use MUMPS 5.3.5 until MUMPS itself patches this long-known issue.
 if(MSVC AND BUILD_SHARED_LIBS)
   # long-standing bug in MUMPS that can't handle shared libraries with MSVC (Windows Intel oneAPI)
   list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
