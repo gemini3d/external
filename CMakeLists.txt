@@ -188,7 +188,7 @@ if(usempi)
 endif(usempi)
 
 # --- LAPACK
-if(NOT build_all AND find AND NOT CRAY)
+if(NOT build_all AND find)
   find_package(LAPACK)
 endif()
 if(LAPACK_FOUND OR CRAY)
