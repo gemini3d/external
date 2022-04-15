@@ -12,7 +12,11 @@ endif()
 option(intel "use intel compiler instead of default GCC")
 
 # the module commands only affect the current process, not the parent shell
-cmake_path(SET BINARY_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
+if(intel)
+  cmake_path(SET BINARY_DIR ${CMAKE_CURRENT_LIST_DIR}/build-intel)
+else()
+  cmake_path(SET BINARY_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
+endif()
 
 find_package(EnvModules REQUIRED)
 
@@ -29,6 +33,8 @@ endif()
 if(ret)
   message(STATUS "swap PrgEnv error ${ret}: ${out}")
 endif()
+
+env_module(load python OUTPUT_VARIABLE out RESULT_VARIABLE ret)
 
 # too compiler specific
 # env_module(load cray-hdf5 OUTPUT_VARIABLE out RESULT_VARIABLE ret)
