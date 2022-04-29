@@ -61,8 +61,8 @@
   "sha256": "8258b75a72303b661a238047cb348203d88d9dddf85d480ed885f375916fcab6"
 },
 "hdf5": {
-  "url": "https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_12_1.tar.gz",
-  "sha256": "e6dde173c2d243551922d23a0387a79961205b018502e6a742acb30b61bc2d5f"
+  "url": "https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_12_2.tar.gz",
+  "sha256": "1ca14cadff7bc4b61826eee591da1a330f44c107db66c9510ee95df3b2bc5f78"
 },
 
 "hwm14": {
