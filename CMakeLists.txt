@@ -188,7 +188,7 @@ if(usempi)
 endif(usempi)
 
 # --- LAPACK
-if(CRAY OR (NOT build_all AND find))
+if(CRAY OR DEFINED ENV{MKLROOT} OR (NOT build_all AND find))
   find_package(LAPACK)
 endif()
 if(LAPACK_FOUND)
@@ -213,7 +213,7 @@ if(NOT MPI_FOUND)
 endif()
 
 if(usempi)
-  if(CRAY OR (NOT build_all AND find))
+  if(CRAY OR DEFINED ENV{MKLROOT} OR (NOT build_all AND find))
     find_package(SCALAPACK)
   endif()
   if(SCALAPACK_FOUND)
