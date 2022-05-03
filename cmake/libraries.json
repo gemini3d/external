@@ -16,7 +16,7 @@
 
 "iniparser": {
   "git": "https://github.com/gemini3d/iniparser.git",
-  "tag": "v4.1.0.0"
+  "tag": "v4.1.0.1"
 },
 
 "hwloc": {
