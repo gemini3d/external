@@ -200,7 +200,6 @@ endif()
 
 # --- Scalapack
 set(scalapack_args
--Dautobuild:BOOL=false
 -Darith=${arith}
 -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
 )
@@ -228,7 +227,6 @@ set(mumps_cmake_args
 -Dscotch:BOOL=${scotch}
 -Dopenmp:BOOL=false
 -Dparallel:BOOL=${usempi}
--Dautobuild:BOOL=false
 -Darith=${arith}
 -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
 )
