@@ -44,12 +44,12 @@
 
 "ffilesystem": {
   "git": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v3.4.2"
+  "tag": "v3.4.3"
 },
 
 "h5fortran": {
   "git": "https://github.com/geospace-code/h5fortran.git",
-  "tag": "v4.6.0"
+  "tag": "v4.6.1"
 },
 "nc4fortran": {
   "git": "https://github.com/geospace-code/nc4fortran.git",
