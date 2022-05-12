@@ -1,18 +1,31 @@
 # builds all Gemini3D external libraries
 
-cmake_minimum_required(VERSION 3.7...3.23)
-
-if(CMAKE_VERSION VERSION_LESS 3.20)
-  message(FATAL_ERROR "Gemini3D requires CMake >= 3.20. Install latest CMake by:
-  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_cmake.cmake")
-endif()
+cmake_minimum_required(VERSION 3.20...3.24)
 
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
   # needs to be before project()
   message(FATAL_ERROR "Visual Studio doesn't work with many libraries here. Please first install Ninja:
-
   cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_ninja.cmake
   ")
+endif()
+
+get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(is_multi_config)
+  if(CMAKE_GENERATOR MATCHES "Ninja")
+    set(sug Ninja)
+  elseif(WIN32)
+    set(sug "MinGW Makefiles")
+  else()
+    set(sug "Unix Makefiles")
+  endif()
+  message(FATAL_ERROR "Please use a single configuration generator like:
+  cmake -G \"${sug}\"
+  ")
+endif()
+
+if(NOT CMAKE_BUILD_TYPE)
+  # ignore ENV{CMAKE_BUILD_TYPE} as we want to directly capture this project's user intent
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Release default")
 endif()
 
 project(GeminiExternalLibs
@@ -98,12 +111,6 @@ if(CMAKE_PREFIX_PATH)
 endif()
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
-
-if(CMAKE_GENERATOR STREQUAL "Ninja Multi-Config")
-  set(EXTPROJ_GEN "Ninja")
-else()
-  set(EXTPROJ_GEN ${CMAKE_GENERATOR})
-endif()
 
 # NOTE: lists must be passed via CMAKE_CACHE_ARGS using -Dvar:STRING=${var}
 # the variable type must be included e.g. STRING
