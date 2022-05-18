@@ -49,7 +49,7 @@
 
 "h5fortran": {
   "git": "https://github.com/geospace-code/h5fortran.git",
-  "tag": "v4.6.2"
+  "tag": "v4.6.3"
 },
 "nc4fortran": {
   "git": "https://github.com/geospace-code/nc4fortran.git",
