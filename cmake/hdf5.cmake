@@ -23,4 +23,4 @@ if(hdf5_parallel)
   list(APPEND hdf5_deps mpi)
 endif()
 
-extproj(hdf5 archive "${hdf5_cmake_args}" "${hdf5_deps}")
+extproj(hdf5 git "${hdf5_cmake_args}" "${hdf5_deps}")

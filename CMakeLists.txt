@@ -78,6 +78,8 @@ if(DEFINED ENV{CRAYPE_VERSION})
   set(CRAY true)
 endif()
 
+set(CMAKE_TLS_VERIFY true)
+
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/compilers.cmake)
 
 # --- main program
@@ -141,7 +143,7 @@ set(zlib_cmake_args
 )
 # CMAKE_POSITION_INDEPENDENT_CODE=on is needed for zlib to work with Python, even when using static libs.
 
-extproj(zlib archive "${zlib_cmake_args}" "")
+extproj(zlib git "${zlib_cmake_args}" "")
 
 # --- Python
 if(python)

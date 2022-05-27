@@ -1,5 +1,5 @@
 string(JSON mpi_url GET ${json_meta} mpich url)
-string(JSON mpi_sha256 GET ${json_meta} mpich sha256)
+string(JSON mpi_tag GET ${json_meta} mpich tag)
 
 list(APPEND mpi_flags
 --with-device=ch3
@@ -14,13 +14,14 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL GNU AND CMAKE_Fortran_COMPILER_VERSION VER
 endif()
 
 ExternalProject_Add(mpi
-URL ${mpi_url}
-URL_HASH SHA256=${mpi_sha256}
+GIT_REPOSITORY ${mpi_url}
+GIT_TAG ${mpi_tag}
+GIT_SHALLOW true
 CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j ${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j ${Ncpu} install
 TEST_COMMAND ""
-INACTIVITY_TIMEOUT 15
+INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD ON
 DEPENDS hwloc
 )

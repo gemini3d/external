@@ -69,7 +69,7 @@ cmake_path(SET archive ${path}/${name})
 
 set(url ${host}${name})
 message(STATUS "download ${url} to ${archive}")
-file(DOWNLOAD ${url} ${archive} INACTIVITY_TIMEOUT 15 STATUS ret)
+file(DOWNLOAD ${url} ${archive} INACTIVITY_TIMEOUT 60 STATUS ret)
 list(GET ret 0 stat)
 if(NOT stat EQUAL 0)
   list(GET ret 1 err)

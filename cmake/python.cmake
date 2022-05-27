@@ -8,7 +8,7 @@ set(python_cmake_args
 )
 
 
-string(JSON python_url GET ${json_meta} python git)
+string(JSON python_url GET ${json_meta} python url)
 string(JSON python_tag GET ${json_meta} python tag)
 
 ExternalProject_Add(python
@@ -16,7 +16,7 @@ GIT_REPOSITORY ${python_url}
 GIT_TAG ${python_tag}
 GIT_SHALLOW true
 CMAKE_ARGS ${python_cmake_args}
-INACTIVITY_TIMEOUT 15
+INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD true
 TEST_COMMAND ""
 INSTALL_COMMAND ""

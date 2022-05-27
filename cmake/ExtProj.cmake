@@ -14,10 +14,10 @@ list(PREPEND cmake_args
 -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
 )
 
+string(JSON url GET ${json_meta} ${name} url)
 
 if(url_type STREQUAL git)
 
-  string(JSON url GET ${json_meta} ${name} git)
   string(JSON tag GET ${json_meta} ${name} tag)
 
   ExternalProject_Add(${name}
@@ -25,21 +25,20 @@ if(url_type STREQUAL git)
   GIT_TAG ${tag}
   GIT_SHALLOW true
   CMAKE_ARGS ${cmake_args}
-  INACTIVITY_TIMEOUT 15
+  INACTIVITY_TIMEOUT 60
   CONFIGURE_HANDLED_BY_BUILD true
   TEST_COMMAND ""
   DEPENDS ${depends}
   )
 elseif(url_type STREQUAL archive)
 
-  string(JSON url GET ${json_meta} ${name} url)
   string(JSON sha256 GET ${json_meta} ${name} sha256)
 
   ExternalProject_Add(${name}
   URL ${url}
   URL_HASH SHA256=${sha256}
   CMAKE_ARGS ${cmake_args}
-  INACTIVITY_TIMEOUT 15
+  INACTIVITY_TIMEOUT 60
   CONFIGURE_HANDLED_BY_BUILD true
   TEST_COMMAND ""
   DEPENDS ${depends}

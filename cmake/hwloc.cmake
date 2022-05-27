@@ -1,7 +1,7 @@
 find_package(LibXml2)
 
 string(JSON hwloc_url GET ${json_meta} hwloc url)
-string(JSON hwloc_sha256 GET ${json_meta} hwloc sha256)
+string(JSON hwloc_tag GET ${json_meta} hwloc tag)
 
 if(WIN32)
 
@@ -18,10 +18,11 @@ if(LibXml2_FOUND)
 endif()
 
 ExternalProject_Add(hwloc
-URL ${hwloc_url}
-URL_HASH SHA256=${hwloc_sha256}
+GIT_REPOSITORY ${hwloc_url}
+GIT_TAG ${hwloc_tag}
+GIT_SHALLOW true
 CMAKE_ARGS ${hwloc_cmake_args}
-INACTIVITY_TIMEOUT 15
+INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD true
 TEST_COMMAND ""
 SOURCE_SUBDIR contrib/windows-cmake
@@ -47,14 +48,15 @@ if(NOT LibXml2_FOUND)
 endif()
 
 ExternalProject_Add(hwloc
-URL ${hwloc_url}
-URL_HASH SHA256=${hwloc_sha256}
+GIT_REPOSITORY ${hwloc_url}
+GIT_TAG ${hwloc_tag}
+GIT_SHALLOW true
 CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${CMAKE_INSTALL_PREFIX} ${hwloc_args}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j install
 TEST_COMMAND ""
 CONFIGURE_HANDLED_BY_BUILD ON
-INACTIVITY_TIMEOUT 15
+INACTIVITY_TIMEOUT 60
 )
 
 endif()
