@@ -59,4 +59,13 @@ CONFIGURE_HANDLED_BY_BUILD ON
 INACTIVITY_TIMEOUT 60
 )
 
+ExternalProject_Add_Step(hwloc
+autogen
+COMMAND <SOURCE_DIR>/autogen.sh
+DEPENDEES download
+DEPENDERS configure
+WORKING_DIRECTORY <SOURCE_DIR>
+)
+# autogen.sh needs to be executed in SOURCE_DIR, not in build directory
+
 endif()
