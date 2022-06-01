@@ -1,7 +1,3 @@
-if(NOT (openmpi OR mpich))
-  set(openmpi true)
-endif()
-
 if(NOT MAKE_EXECUTABLE)
   message(FATAL_ERROR "MPI build requires GNU Make.")
 endif()
@@ -43,8 +39,9 @@ find_library(math NAMES m REQUIRED)
 cmake_path(GET math PARENT_PATH math_LIBDIR)
 set(mpi_ldflags "LDFLAGS=${CMAKE_LIBRARY_PATH_FLAG}${math_LIBDIR}")
 
-if(openmpi)
-  include(${CMAKE_CURRENT_LIST_DIR}/openmpi.cmake)
-elseif(mpich)
+
+if(mpich)
   include(${CMAKE_CURRENT_LIST_DIR}/mpich.cmake)
+else()
+  include(${CMAKE_CURRENT_LIST_DIR}/openmpi.cmake)
 endif()

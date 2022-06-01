@@ -56,8 +56,7 @@ option(usempi "Use MPI" true)
 option(hdf5_parallel "HDF5 parallel")
 option(netcdf "NetCDF4 / nc4fortran build")
 
-option(openmpi "build OpenMPI")
-option(mpich "build MPICH")
+option(mpich "build MPICH instead of OpenMPI")
 
 if(NOT DEFINED python AND NOT python)
   find_package(Python 3.7 COMPONENTS Interpreter)

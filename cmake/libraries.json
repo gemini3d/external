@@ -31,6 +31,9 @@
   "url": "https://github.com/pmodels/mpich.git",
   "tag": "v4.0.2"
 },
+"msmpi": {
+  "url": "https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe"
+},
 
 "mpi_scalapack_stub": {
   "url": "https://github.com/scivision/mpi_scalapack_stub.git",
