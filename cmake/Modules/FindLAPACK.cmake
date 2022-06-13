@@ -421,11 +421,19 @@ if(lapack_cray OR LAPACK_LIBRARY)
   lapack_check()
 endif()
 
+
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(LAPACK
-REQUIRED_VARS LAPACK_links
-HANDLE_COMPONENTS
-)
+
+if(lapack_cray)
+  find_package_handle_standard_args(LAPACK HANDLE_COMPONENTS
+  REQUIRED_VARS LAPACK_links
+  )
+else()
+  find_package_handle_standard_args(LAPACK HANDLE_COMPONENTS
+  REQUIRED_VARS LAPACK_LIBRARY LAPACK_links
+  )
+endif()
+
 
 set(BLAS_LIBRARIES ${BLAS_LIBRARY})
 set(LAPACK_LIBRARIES ${LAPACK_LIBRARY})

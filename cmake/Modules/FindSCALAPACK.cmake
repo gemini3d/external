@@ -206,10 +206,16 @@ endif()
 # --- Finalize
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SCALAPACK
-REQUIRED_VARS SCALAPACK_links
-HANDLE_COMPONENTS
-)
+
+if(scalapack_cray)
+  find_package_handle_standard_args(SCALAPACK HANDLE_COMPONENTS
+  REQUIRED_VARS SCALAPACK_links
+  )
+else()
+  find_package_handle_standard_args(SCALAPACK HANDLE_COMPONENTS
+  REQUIRED_VARS SCALAPACK_LIBRARY SCALAPACK_links
+  )
+endif()
 
 if(SCALAPACK_FOUND)
   # need if _FOUND guard as can't overwrite imported target even if bad
