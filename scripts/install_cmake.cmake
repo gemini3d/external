@@ -56,6 +56,8 @@ endif()
 endfunction(checkup)
 
 
+set(vname cmake-${version}-)
+
 if(APPLE)
 
 if(version VERSION_LESS 3.19)
@@ -128,10 +130,11 @@ if(NOT file_arch)
     pip install cmake")
 endif()
 
-set(name cmake-${version}-${file_arch}${suffix})
+set(stem ${vname}${file_arch})
+set(name ${stem}${suffix})
 
 get_filename_component(prefix ${prefix} ABSOLUTE)
-get_filename_component(stem ${name} NAME_WLE)
+
 set(path ${prefix}/${stem})
 
 find_program(cmake NAMES cmake PATHS ${path} PATH_SUFFIXES bin NO_DEFAULT_PATH)

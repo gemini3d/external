@@ -38,6 +38,14 @@ else()
   string(JSON host GET ${_j} cmake source)
 endif()
 
+# --- CMake build arguments
+set(cmake_args
+-DBUILD_TESTING:BOOL=OFF
+-DCMAKE_BUILD_TYPE=Release
+-DCMAKE_USE_OPENSSL:BOOL=ON
+-DCMAKE_INSTALL_PREFIX:PATH=${path}
+)
+
 # --- URL
 set(host ${host}v${version}/)
 set(stem cmake-${version})
@@ -97,7 +105,7 @@ endif()
 file(MAKE_DIRECTORY ${path}/build)
 
 execute_process(
-COMMAND ${CMAKE_COMMAND} -S${path} -B${path}/build -DBUILD_TESTING:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_USE_OPENSSL:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=${path}
+COMMAND ${CMAKE_COMMAND} -S${path} -B${path}/build ${cmake_args}
 RESULT_VARIABLE err
 )
 if(NOT err EQUAL 0)
