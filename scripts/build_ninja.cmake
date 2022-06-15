@@ -36,7 +36,7 @@ file(DOWNLOAD ${url} ${archive} INACTIVITY_TIMEOUT 60 STATUS ret)
 list(GET ret 0 stat)
 if(NOT stat EQUAL 0)
   list(GET ret 1 err)
-  message(FATAL_ERROR "download failed: ${err}")
+  message(FATAL_ERROR "download failed: ${stat} ${err}")
 endif()
 
 cmake_path(SET src_dir ${path}/ninja-${version})

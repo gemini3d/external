@@ -14,7 +14,7 @@
 # old CMake versions have broken file(DOWNLOAD)--they just "download" 0-byte files.
 #
 # NOTE: CMake 3.24 introduced need for CMake >= 3.13 to build CMake itself.
-# The execute_process commands below also use Cmake >= 3.13 syntax.
+# The execute_process commands below also use CMake >= 3.13 syntax.
 
 cmake_minimum_required(VERSION 3.13...3.24)
 
@@ -82,7 +82,7 @@ file(DOWNLOAD ${url} ${archive} INACTIVITY_TIMEOUT 60 STATUS ret)
 list(GET ret 0 stat)
 if(NOT stat EQUAL 0)
   list(GET ret 1 err)
-  message(FATAL_ERROR "download failed: ${err}")
+  message(FATAL_ERROR "download failed: ${stat} ${err}")
 endif()
 
 if(NOT IS_DIRECTORY ${path})
