@@ -7,7 +7,7 @@ These scripts are intended to work on nearly any Linux, MacOS or Windows compute
 
 ## CMake build system
 
-Since CMake controls all aspects of our programs and external libraries, we first install a recent version of CMake.
+If your CMake is too old, install a recent CMake version by:
 
 ```sh
 cmake -P scripts/install_cmake.cmake
@@ -33,36 +33,27 @@ If something is missing that stops the build, try asking your system administrat
 
 ## Build all Gemini3D external libraries
 
-Cray systems should use the one-step build script alone:
+Pick a directory to install under, say $HOME/libgem:
 
 ```sh
-cmake -DCMAKE_INSTALL_PREFIX=~/gemini_libs -P cray.cmake
-```
-
-Other systems: pick a directory to install under, say $HOME/gemini_libs:
-
-```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemini_libs
+cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem
 
 cmake --build build
 ```
 
-That installs files under ~/gemini_libs/[lib,include,bin] and similar.
+That installs files under ~/libgem/[lib,include,bin] and similar.
 
 From Gemini3D, use those libraries like:
 
 ```sh
 cd ~/code/gemini3d
 
-cmake -B build -DCMAKE_PREFIX_PATH=~/gemini_libs
+cmake -B build -DCMAKE_PREFIX_PATH=~/libgem
 
 cmake --build build
 ```
 
 ## Build specific libraries
-
-This is for **advanced users**.
-Typical users let the program build everything it needs.
 
 To build a specific library after configuration, issue build command like:
 
@@ -79,7 +70,7 @@ You can force build just Python and its prerequisites by:
 
 ```sh
 cmake -B build -Dpython=yes -DCMAKE_PREFIX_PATH=~/python
-# arbitrary path, can be ~/gemini_libs or whatever you prefer
+# arbitrary path, can be ~/libgem or whatever you prefer
 
 cmake --build build -t python
 ```
@@ -89,7 +80,7 @@ The Python build invoked above is handled seamlessly by the project [cmake-pytho
 ### Build OpenMPI
 
 ```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemini_libs -Dopenmpi=yes
+cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem -Dopenmpi=yes
 
 cmake --build build -t mpi
 ```
@@ -99,7 +90,7 @@ That builds HWLOC and then OpenMPI.
 ### Build MPICH
 
 ```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemini_libs -Dmpich=yes
+cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem -Dmpich=yes
 
 cmake --build build -t mpi
 ```
@@ -109,7 +100,7 @@ That builds HWLOC and then MPICH
 ### Build Scalapack
 
 ```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemini_libs
+cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem
 
 cmake --build build -t mumps
 ```
