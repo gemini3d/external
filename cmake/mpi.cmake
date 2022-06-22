@@ -45,7 +45,7 @@ set(mpi_ldflags "LDFLAGS=${CMAKE_LIBRARY_PATH_FLAG}${math_LIBDIR}")
 
 
 if(mpich)
-  include(${CMAKE_CURRENT_LIST_DIR}/mpich.cmake)
+  include(mpich.cmake)
 else()
-  include(${CMAKE_CURRENT_LIST_DIR}/openmpi.cmake)
+  include(openmpi.cmake)
 endif()

@@ -23,12 +23,6 @@ include(cmake/compilers.cmake)
 # template function
 include(cmake/ExtProj.cmake)
 
-# --- GNU Make
-find_program(MAKE_EXECUTABLE
-NAMES gmake make mingw32-make
-DOC "GNU Make (or compatible)"
-)
-
 find_package(Autotools)
 
 # --- Zlib
@@ -46,7 +40,7 @@ if(python)
   if(NOT WIN32 AND NOT Autotools_FOUND)
     message(FATAL_ERROR "Python on Unix-like systems requires Autotools")
   endif()
-  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/python.cmake)
+  include(cmake/python.cmake)
 endif()
 
 # --- Fortran filesystem
@@ -69,7 +63,7 @@ if(HWLOC_FOUND)
   add_custom_target(hwloc)
   # dummy target to avoid error if user `cmake --build --target hwloc`
 else()
-  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/hwloc.cmake)
+  include(cmake/hwloc.cmake)
 endif()
 
 # --- MPI
@@ -88,7 +82,7 @@ if(usempi)
     cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
     )
   else()
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mpi.cmake)
+    include(cmake/mpi.cmake)
   endif()
 endif(usempi)
 
@@ -176,13 +170,13 @@ if(HDF5_FOUND)
 #   cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
 #   )
 else()
-  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/hdf5.cmake)
+  include(cmake/hdf5.cmake)
 endif()
 
 # --- h5fortran
 set(h5fortran_deps)
 if(NOT HDF5_FOUND)
-  list(APPEND h5fortran_deps hdf5)
+  list(APPEND h5fortran_deps "zlib;hdf5")
   if(NOT MPI_FOUND AND hdf5_parallel)
     list(APPEND h5fortran_deps mpi)
   endif()
@@ -192,7 +186,7 @@ extproj(h5fortran git "-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "${h5fortran_dep
 
 # --- nc4fortran
 if(netcdf)
-  extproj(nc4fortran git "" "hdf5")
+  extproj(nc4fortran git "" "zlib;hdf5")
 endif()
 
 # --- MSIS
@@ -200,6 +194,6 @@ extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
 # --- p4est
 if(amr)
-  extproj(libsc git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "")
-  extproj(p4est git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" libsc)
+  extproj(libsc git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "zlib")
+  extproj(p4est git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "zlib;libsc")
 endif()

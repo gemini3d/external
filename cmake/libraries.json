@@ -8,6 +8,10 @@
   "url": "https://github.com/cburstedde/p4est.git",
   "tag": "prev3-develop"
 },
+"forestclaw": {
+  "url": "https://github.com/forestclaw/forestclaw.git",
+  "tag": "develop"
+},
 
 "python": {
   "url": "https://github.com/gemini3d/cmake-python-build.git",
