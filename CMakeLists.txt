@@ -2,27 +2,6 @@
 
 cmake_minimum_required(VERSION 3.20...3.24)
 
-if(CMAKE_GENERATOR MATCHES "Visual Studio")
-  # needs to be before project()
-  message(FATAL_ERROR "Visual Studio doesn't work with many libraries here. Please first install Ninja:
-  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_ninja.cmake
-  ")
-endif()
-
-get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(is_multi_config)
-  if(CMAKE_GENERATOR MATCHES "Ninja")
-    set(sug Ninja)
-  elseif(WIN32)
-    set(sug "MinGW Makefiles")
-  else()
-    set(sug "Unix Makefiles")
-  endif()
-  message(FATAL_ERROR "Please use a single configuration generator like:
-  cmake -G \"${sug}\"
-  ")
-endif()
-
 if(NOT CMAKE_BUILD_TYPE)
   # ignore ENV{CMAKE_BUILD_TYPE} as we want to directly capture this project's user intent
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Release default")
@@ -33,98 +12,16 @@ LANGUAGES C CXX Fortran
 VERSION 1.0.3
 )
 
-# --- user options
-
-option(BUILD_SHARED_LIBS "Build shared libraries")
-option(build_all "Don't search for any libs, build them all")
-
-option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
-
-option(amr "build packages used for AMR")
-# p4est is still moving target, leave off by default
-
-set(arith "d")
-option(scotch "MUMPS scotch")
-
-option(msis2 "MSIS2 and MSISE00")
-# MSIS 2.x has been an ongoing problem with downloading, patching
-# to avoid problems for new users and automated systems, MSIS2 is off
-# by default but users can select MSIS2 if they wish.
-
-option(usempi "Use MPI" true)
-
-option(hdf5_parallel "HDF5 parallel")
-option(netcdf "NetCDF4 / nc4fortran build")
-
-option(mpich "build MPICH instead of OpenMPI")
-
-if(NOT DEFINED python AND NOT python)
-  find_package(Python 3.7 COMPONENTS Interpreter)
-  if(NOT Python_FOUND)
-    set(python true)
-  endif()
-endif()
-
-option(python "build Python")
-# Some systems can't use Anaconda for license reasons, and have too old system Python
-# This is a universal way to make a recent Python available
-
-if(hdf5_parallel AND NOT usempi)
-  message(FATAL_ERROR "HDF5 parallel requires MPI")
-endif()
-
-if(DEFINED ENV{CRAYPE_VERSION})
-  set(CRAY true)
-endif()
-
-set(CMAKE_TLS_VERIFY true)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/compilers.cmake)
+include(cmake/options.cmake)
+include(cmake/compilers.cmake)
 
 # --- main program
-
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  message(FATAL_ERROR "Please define an install location like
-  cmake -B build -DCMAKE_INSTALL_PREFIX=~/gemlibs")
-endif()
-
-# exclude Conda from search
-if(DEFINED ENV{CONDA_PREFIX})
-  set(ignore_path
-    $ENV{CONDA_PREFIX} $ENV{CONDA_PREFIX}/Library $ENV{CONDA_PREFIX}/Scripts $ENV{CONDA_PREFIX}/condabin
-    $ENV{CONDA_PREFIX}/bin $ENV{CONDA_PREFIX}/lib $ENV{CONDA_PREFIX}/include
-    $ENV{CONDA_PREFIX}/Library/bin $ENV{CONDA_PREFIX}/Library/lib $ENV{CONDA_PREFIX}/Library/include
-  )
-  list(APPEND CMAKE_IGNORE_PATH ${ignore_path})
-endif()
-
-cmake_path(SET CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
-if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})
-  set(CMAKE_PREFIX_PATH $ENV{CMAKE_MODULE_PATH})
-endif()
-if(CMAKE_PREFIX_PATH)
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.21)
-    file(REAL_PATH ${CMAKE_PREFIX_PATH} CMAKE_PREFIX_PATH EXPAND_TILDE)
-  else()
-    get_filename_component(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ABSOLUTE)
-  endif()
-  list(APPEND CMAKE_MODULE_PATH ${CMAKE_PREFIX_PATH}/cmake)
-endif()
-
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 
 # NOTE: lists must be passed via CMAKE_CACHE_ARGS using -Dvar:STRING=${var}
 # the variable type must be included e.g. STRING
 
-# checks for updated external projects when "false"
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY
-EP_UPDATE_DISCONNECTED false
-)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/ExtProj.cmake)
-
-# --- read JSON with URLs for each library
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/cmake/libraries.json json_meta)
+# template function
+include(cmake/ExtProj.cmake)
 
 # --- GNU Make
 find_program(MAKE_EXECUTABLE
