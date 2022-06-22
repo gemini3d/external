@@ -5,7 +5,9 @@ list(APPEND mpi_flags
 --with-device=ch3
 )
 
-if(CMAKE_Fortran_COMPILER_ID STREQUAL GNU AND CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER_EQUAL 10)
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" AND
+  CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER_EQUAL 10
+)
 # need FCFLAGS and FFLAGS
   list(APPEND mpi_flags
   FCFLAGS=-fallow-argument-mismatch

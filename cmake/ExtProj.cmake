@@ -16,7 +16,7 @@ list(PREPEND cmake_args
 
 string(JSON url GET ${json_meta} ${name} url)
 
-if(url_type STREQUAL git)
+if(url_type STREQUAL "git")
 
   string(JSON tag GET ${json_meta} ${name} tag)
 
@@ -30,7 +30,7 @@ if(url_type STREQUAL git)
   TEST_COMMAND ""
   DEPENDS ${depends}
   )
-elseif(url_type STREQUAL archive)
+elseif(url_type STREQUAL "archive")
 
   string(JSON sha256 GET ${json_meta} ${name} sha256)
 

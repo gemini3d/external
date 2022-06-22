@@ -64,7 +64,7 @@ function(checkup exe)
 
 get_filename_component(path ${exe} DIRECTORY)
 set(ep $ENV{PATH})
-if(NOT ep MATCHES ${path})
+if(NOT ep MATCHES "${path}")
   message(STATUS "add to environment variable PATH ${path}")
 endif()
 
