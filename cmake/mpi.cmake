@@ -14,8 +14,7 @@ endif()
 # libtool: fork: Resource temporarily unavailable
 # clang: error: unable to execute command: posix_spawn failed: Resource temporarily unavailable
 
-include(ProcessorCount)
-ProcessorCount(Ncpu)
+cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
 
 set(mpi_flags --prefix=${CMAKE_INSTALL_PREFIX})
 
