@@ -48,6 +48,7 @@ set(cmake_args
 
 # --- don't crash while building on low resource systems
 cmake_host_system_information(RESULT N QUERY NUMBER_OF_PHYSICAL_CORES)
+message(STATUS "Detected ${N} CPU cores")
 cmake_host_system_information(RESULT memMB QUERY AVAILABLE_PHYSICAL_MEMORY)
 if(memMB LESS 2000)
   set(N 1)
