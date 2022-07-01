@@ -46,6 +46,13 @@ set(cmake_args
 -DCMAKE_INSTALL_PREFIX:PATH=${path}
 )
 
+# --- don't crash while building on low resource systems
+cmake_host_system_information(RESULT N QUERY NUMBER_OF_PHYSICAL_CORES)
+cmake_host_system_information(RESULT memMB QUERY AVAILABLE_PHYSICAL_MEMORY)
+if(memMB LESS 2000)
+  set(N 1)
+endif()
+
 # --- URL
 set(host ${host}v${version}/)
 set(stem cmake-${version})
@@ -112,7 +119,8 @@ if(NOT err EQUAL 0)
   message(FATAL_ERROR "failed to configure CMake")
 endif()
 
-execute_process(COMMAND ${CMAKE_COMMAND} --build ${path}/build --parallel
+message(STATUS "building CMake with ${N} threads")
+execute_process(COMMAND ${CMAKE_COMMAND} --build ${path}/build --parallel ${N}
 RESULT_VARIABLE err
 )
 if(NOT err EQUAL 0)
