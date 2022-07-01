@@ -127,7 +127,9 @@ if(NOT file_arch)
   Try building CMake from source:
     cmake -P ${CMAKE_CURRENT_LIST_DIR}/build_cmake.cmake
   or use Python:
-    pip install cmake")
+    pip install cmake
+  or use Snap:
+    snap install cmake")
 endif()
 
 set(stem ${vname}${file_arch})
