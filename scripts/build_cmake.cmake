@@ -56,8 +56,8 @@ endif()
 
 # --- URL
 set(host ${host}v${version}/)
-set(stem cmake-${version})
-set(name ${stem}.tar.gz)
+set(stem CMake-${version})
+set(name cmake-${version}.tar.gz)
 
 # --- defaults
 
