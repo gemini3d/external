@@ -83,7 +83,7 @@
 
 "mumps": {
   "url": "https://github.com/scivision/mumps.git",
-  "tag": "v5.5.0.1"
+  "tag": "v5.5.0.2"
 },
 "scalapack": {
   "url": "https://github.com/scivision/scalapack.git",
