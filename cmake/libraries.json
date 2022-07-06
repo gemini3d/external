@@ -56,7 +56,7 @@
 
 "h5fortran": {
   "url": "https://github.com/geospace-code/h5fortran.git",
-  "tag": "v4.6.3"
+  "tag": "v4.7.0"
 },
 "nc4fortran": {
   "url": "https://github.com/geospace-code/nc4fortran.git",
