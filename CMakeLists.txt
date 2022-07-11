@@ -9,7 +9,7 @@ endif()
 
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
-VERSION 1.0.3
+VERSION 1.0.4
 )
 
 include(cmake/options.cmake)
