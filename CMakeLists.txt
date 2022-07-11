@@ -56,6 +56,9 @@ extproj(glow git "" "")
 extproj(hwm14 git "" "")
 
 # --- HWLOC
+if(find)
+  find_package(HWLOC)
+endif()
 if(HWLOC_FOUND)
   add_custom_target(hwloc)
   # dummy target to avoid error if user `cmake --build --target hwloc`
@@ -64,27 +67,13 @@ else()
 endif()
 
 # --- MPI
-if(NOT usempi)
-  extproj(mpi_scalapack_stub git "" "")
+
+if(build_mpi)
+  include(cmake/mpi.cmake)
 endif()
 
-if(usempi)
-  if(NOT build_all)
-    find_package(MPI COMPONENTS C Fortran)
-  endif()
-  if(MPI_FOUND)
-    add_custom_target(mpi)
-  elseif(CRAY)
-    message(FATAL_ERROR "Cray systems should use cray-mpich. Setup Cray PE by:
-    cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
-    )
-  else()
-    include(cmake/mpi.cmake)
-  endif()
-endif(usempi)
-
 # --- LAPACK
-if(CRAY OR DEFINED ENV{MKLROOT} OR (NOT build_all AND find))
+if(find OR CRAY OR DEFINED ENV{MKLROOT})
   find_package(LAPACK)
 endif()
 if(LAPACK_FOUND)
@@ -103,26 +92,24 @@ set(scalapack_args
 if(NOT LAPACK_FOUND)
   set(scalapack_deps lapack)
 endif()
-if(NOT MPI_FOUND)
+if(build_mpi)
   list(APPEND scalapack_deps mpi)
 endif()
 
-if(usempi)
-  if(CRAY OR DEFINED ENV{MKLROOT} OR (NOT build_all AND find))
-    find_package(SCALAPACK)
-  endif()
-  if(SCALAPACK_FOUND)
-    add_custom_target(scalapack)
-  else()
-    extproj(scalapack git "${scalapack_args}" "${scalapack_deps}")
-  endif()
-endif(usempi)
+if(find OR CRAY OR DEFINED ENV{MKLROOT})
+  find_package(SCALAPACK)
+endif()
+if(SCALAPACK_FOUND)
+  add_custom_target(scalapack)
+else()
+  extproj(scalapack git "${scalapack_args}" "${scalapack_deps}")
+endif()
 
 # --- MUMPS
 set(mumps_cmake_args
 -Dscotch:BOOL=${scotch}
 -Dopenmp:BOOL=false
--Dparallel:BOOL=${usempi}
+-Dparallel:BOOL=true
 -Darith=${arith}
 -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
 )
@@ -131,23 +118,12 @@ if(MSVC AND BUILD_SHARED_LIBS)
   list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
 endif()
 
-set(mumps_deps)
-if(usempi)
-  if(NOT SCALAPACK_FOUND)
-    list(APPEND mumps_deps scalapack)
-  endif()
-else()
-  if(NOT LAPACK_FOUND)
-    list(APPEND mumps_deps lapack mpi_scalapack_stub)
-  endif()
+if(NOT SCALAPACK_FOUND)
+  set(mumps_deps scalapack)
 endif()
 
-if(NOT build_all AND find)
-  if(usempi)
-    find_package(MUMPS COMPONENTS ${arith})
-  else()
-    find_package(MUMPS COMPONENTS ${arith} mpiseq)
-  endif()
+if(find)
+  find_package(MUMPS COMPONENTS ${arith})
 endif()
 if(MUMPS_FOUND)
   add_custom_target(mumps)
@@ -156,15 +132,23 @@ else()
 endif()
 
 # --- HDF5
-include(cmake/hdf5.cmake)
+if(find)
+  find_package(HDF5 COMPONENTS C Fortran HL)
+endif()
+if(HDF5_FOUND)
+  add_custom_target(hdf5)
+else()
+  include(cmake/hdf5.cmake)
+endif()
 
 # --- h5fortran
 set(h5fortran_deps)
-list(APPEND h5fortran_deps "zlib;hdf5")
-if(NOT MPI_FOUND AND hdf5_parallel)
-  list(APPEND h5fortran_deps mpi)
+if(NOT HDF5_FOUND)
+  list(APPEND h5fortran_deps "hdf5")
+  if(build_mpi AND hdf5_parallel)
+    list(APPEND h5fortran_deps mpi)
+  endif()
 endif()
-
 
 extproj(h5fortran git "-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "${h5fortran_deps}")
 
@@ -173,7 +157,7 @@ extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
 # --- p4est
 if(amr)
-  extproj(libsc git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "zlib")
-  extproj(p4est git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "zlib;libsc")
-  extproj(forestclaw git "-Dmpi:BOOL=${usempi};-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX};-Dclawpatch:BOOL=true" "zlib;libsc;p4est")
+  extproj(libsc git "-Dmpi:BOOL=true;-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "zlib")
+  extproj(p4est git "-Dmpi:BOOL=true;-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "libsc")
+  extproj(forestclaw git "-Dmpi:BOOL=true;-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX};-Dclawpatch:BOOL=true" "p4est")
 endif()

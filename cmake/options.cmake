@@ -1,8 +1,9 @@
 # --- user options
 
+set(PYGEMINI_MIN_PYTHON 3.7)
+
 option(BUILD_SHARED_LIBS "Build shared libraries")
 
-option(build_all "Don't search for any libs, build them all")
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
 option(amr "build packages used for AMR")
@@ -16,7 +17,7 @@ option(msis2 "MSIS2 and MSISE00")
 # to avoid problems for new users and automated systems, MSIS2 is off
 # by default but users can select MSIS2 if they wish.
 
-option(usempi "Use MPI" true)
+option(build_mpi "build MPI")
 
 option(hdf5_parallel "HDF5 parallel")
 option(netcdf "NetCDF4 / nc4fortran build")
@@ -24,8 +25,8 @@ option(netcdf "NetCDF4 / nc4fortran build")
 option(mpich "build MPICH instead of OpenMPI")
 
 if(NOT DEFINED python)
-  find_package(Python 3.7 COMPONENTS Interpreter)
-  if(NOT Python_FOUND)
+  find_package(Python COMPONENTS Interpreter)
+  if(NOT Python_FOUND OR "${Python_VERSION}" VERSION_LESS ${PYGEMINI_MIN_PYTHON})
     set(python true)
   endif()
 endif()
@@ -33,10 +34,6 @@ endif()
 option(python "build Python")
 # Some systems can't use Anaconda for license reasons, and have too old system Python
 # This is a universal way to make a recent Python available
-
-if(hdf5_parallel AND NOT usempi)
-  message(FATAL_ERROR "HDF5 parallel requires MPI")
-endif()
 
 if(DEFINED ENV{CRAYPE_VERSION})
   set(CRAY true)
