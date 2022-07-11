@@ -56,9 +56,6 @@ extproj(glow git "" "")
 extproj(hwm14 git "" "")
 
 # --- HWLOC
-if(NOT build_all)
-  find_package(HWLOC 2.4)
-endif()
 if(HWLOC_FOUND)
   add_custom_target(hwloc)
   # dummy target to avoid error if user `cmake --build --target hwloc`
@@ -159,35 +156,17 @@ else()
 endif()
 
 # --- HDF5
-if(NOT build_all)
-  find_package(HDF5 COMPONENTS C Fortran HL)
-endif()
-if(HDF5_FOUND)
-  add_custom_target(hdf5)
-# elseif(CRAY)
-# too compiler specific
-#   message(FATAL_ERROR "Cray systems should use cray-hdf5. Setup Cray PE by:
-#   cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/cray.cmake"
-#   )
-else()
-  include(cmake/hdf5.cmake)
-endif()
+include(cmake/hdf5.cmake)
 
 # --- h5fortran
 set(h5fortran_deps)
-if(NOT HDF5_FOUND)
-  list(APPEND h5fortran_deps "zlib;hdf5")
-  if(NOT MPI_FOUND AND hdf5_parallel)
-    list(APPEND h5fortran_deps mpi)
-  endif()
+list(APPEND h5fortran_deps "zlib;hdf5")
+if(NOT MPI_FOUND AND hdf5_parallel)
+  list(APPEND h5fortran_deps mpi)
 endif()
+
 
 extproj(h5fortran git "-DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}" "${h5fortran_deps}")
-
-# --- nc4fortran
-if(netcdf)
-  extproj(nc4fortran git "" "zlib;hdf5")
-endif()
 
 # --- MSIS
 extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
