@@ -20,7 +20,6 @@ option(msis2 "MSIS2 and MSISE00")
 option(build_mpi "build MPI")
 
 option(hdf5_parallel "HDF5 parallel")
-option(netcdf "NetCDF4 / nc4fortran build")
 
 option(mpich "build MPICH instead of OpenMPI")
 
@@ -35,7 +34,7 @@ option(python "build Python")
 # Some systems can't use Anaconda for license reasons, and have too old system Python
 # This is a universal way to make a recent Python available
 
-if(DEFINED ENV{CRAYPE_VERSION})
+if(NOT DEFINED CRAY AND DEFINED ENV{CRAYPE_VERSION})
   set(CRAY true)
 endif()
 
