@@ -85,8 +85,6 @@ cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem -Dopenmpi=yes
 cmake --build build -t mpi
 ```
 
-That builds HWLOC and then OpenMPI.
-
 ### Build MPICH
 
 ```sh
@@ -94,8 +92,6 @@ cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem -Dmpich=yes
 
 cmake --build build -t mpi
 ```
-
-That builds HWLOC and then MPICH
 
 ### Build Scalapack
 

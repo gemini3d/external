@@ -9,7 +9,7 @@ endif()
 
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
-VERSION 1.0.4
+VERSION 1.0.5
 )
 
 include(cmake/options.cmake)
@@ -55,21 +55,18 @@ extproj(glow git "" "")
 # --- HWM14
 extproj(hwm14 git "" "")
 
-# --- HWLOC
-if(find)
-  find_package(HWLOC)
-endif()
-if(HWLOC_FOUND)
-  add_custom_target(hwloc)
-  # dummy target to avoid error if user `cmake --build --target hwloc`
-else()
-  include(cmake/hwloc.cmake)
-endif()
-
 # --- MPI
 
 if(build_mpi)
   include(cmake/mpi.cmake)
+else()
+  find_package(MPI COMPONENTS C Fortran)
+endif()
+
+if(build_mpi OR MPI_FOUND)
+  set(use_mpi true)
+else()
+  set(use_mpi false)
 endif()
 
 # --- LAPACK
@@ -84,52 +81,14 @@ else()
 endif()
 
 # --- Scalapack
-set(scalapack_args
--Darith=${arith}
--DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
-)
-
-if(NOT LAPACK_FOUND)
-  set(scalapack_deps lapack)
-endif()
-if(build_mpi)
-  list(APPEND scalapack_deps mpi)
-endif()
-
-if(find OR CRAY OR DEFINED ENV{MKLROOT})
-  find_package(SCALAPACK)
-endif()
-if(SCALAPACK_FOUND)
-  add_custom_target(scalapack)
+if(use_mpi)
+  include(cmake/scalapack.cmake)
 else()
-  extproj(scalapack git "${scalapack_args}" "${scalapack_deps}")
+  extproj(mpi_scalapack_stub git "" "")
 endif()
 
 # --- MUMPS
-set(mumps_cmake_args
--Dscotch:BOOL=${scotch}
--Dopenmp:BOOL=false
--Dparallel:BOOL=true
--Darith=${arith}
--DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
-)
-if(MSVC AND BUILD_SHARED_LIBS)
-  # long-standing bug in MUMPS that can't handle shared libraries with MSVC (Windows Intel oneAPI)
-  list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
-endif()
-
-if(NOT SCALAPACK_FOUND)
-  set(mumps_deps scalapack)
-endif()
-
-if(find)
-  find_package(MUMPS COMPONENTS ${arith})
-endif()
-if(MUMPS_FOUND)
-  add_custom_target(mumps)
-else()
-  extproj(mumps git "${mumps_cmake_args}" "${mumps_deps}")
-endif()
+include(cmake/mumps.cmake)
 
 # --- HDF5
 if(find)
