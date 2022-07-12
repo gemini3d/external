@@ -33,11 +33,6 @@ set(zlib_cmake_args
 
 extproj(zlib git "${zlib_cmake_args}" "")
 
-# --- Python
-if(python)
-  include(cmake/python.cmake)
-endif()
-
 # --- Fortran filesystem
 extproj(ffilesystem git "" "")
 

@@ -1,7 +1,5 @@
 # --- user options
 
-set(PYGEMINI_MIN_PYTHON 3.7)
-
 option(BUILD_SHARED_LIBS "Build shared libraries")
 
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
@@ -22,17 +20,6 @@ option(build_mpi "build MPI")
 option(hdf5_parallel "HDF5 parallel")
 
 option(mpich "build MPICH instead of OpenMPI")
-
-if(NOT DEFINED python)
-  find_package(Python COMPONENTS Interpreter)
-  if(NOT Python_FOUND OR "${Python_VERSION}" VERSION_LESS ${PYGEMINI_MIN_PYTHON})
-    set(python true)
-  endif()
-endif()
-
-option(python "build Python")
-# Some systems can't use Anaconda for license reasons, and have too old system Python
-# This is a universal way to make a recent Python available
 
 if(NOT DEFINED CRAY AND DEFINED ENV{CRAYPE_VERSION})
   set(CRAY true)

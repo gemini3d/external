@@ -13,11 +13,6 @@
   "tag": "develop"
 },
 
-"python": {
-  "url": "https://github.com/gemini3d/cmake-python-build.git",
-  "tag": "main"
-},
-
 "iniparser": {
   "url": "https://github.com/gemini3d/iniparser.git",
   "tag": "v4.1.0.1"
