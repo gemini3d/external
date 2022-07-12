@@ -23,8 +23,6 @@ include(cmake/compilers.cmake)
 # template function
 include(cmake/ExtProj.cmake)
 
-find_package(Autotools)
-
 # --- Zlib
 set(zlib_cmake_args
 -DZLIB_COMPAT:BOOL=on
@@ -37,9 +35,6 @@ extproj(zlib git "${zlib_cmake_args}" "")
 
 # --- Python
 if(python)
-  if(NOT WIN32 AND NOT Autotools_FOUND)
-    message(FATAL_ERROR "Python on Unix-like systems requires Autotools")
-  endif()
   include(cmake/python.cmake)
 endif()
 

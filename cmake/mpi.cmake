@@ -1,14 +1,8 @@
-if(NOT MAKE_EXECUTABLE)
-  message(FATAL_ERROR "MPI build requires GNU Make.")
-endif()
-
 if(WIN32)
   message(WARNING "Windows users normally use MS-MPI or Intel MPI")
 endif()
 
-if(NOT Autotools_FOUND)
-  message(FATAL_ERROR "MPI on Unix-like systems requires Autotools")
-endif()
+find_package(Autotools REQUIRED)
 
 # MPI builds spawn too many threads with bare "make -j" giving build crashes like
 # libtool: fork: Resource temporarily unavailable
