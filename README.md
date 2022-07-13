@@ -10,7 +10,7 @@ These scripts are intended to work on nearly any Linux, MacOS or Windows compute
 If your CMake is too old, install a recent CMake version by:
 
 ```sh
-cmake -P scripts/install_cmake.cmake
+cmake -S scripts/install_cmake
 ```
 
 If that script doesn't work, try to build CMake:

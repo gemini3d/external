@@ -6,14 +6,9 @@ project(ninja LANGUAGES C CXX)
 
 include(ExternalProject)
 
-if(NOT prefix)
-  set(prefix "~")
-endif()
-
-file(READ ${CMAKE_CURRENT_LIST_DIR}/../versions.json _j)
-
 if(NOT version)
-  string(JSON version GET ${_j} ninja latest)
+  file(READ ${CMAKE_CURRENT_LIST_DIR}/../versions.json _j)
+  string(JSON version GET ${_j} ninja)
 endif()
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -39,8 +34,9 @@ GIT_SHALLOW true
 CMAKE_ARGS ${cmake_args}
 TEST_COMMAND ""
 INACTIVITY_TIMEOUT 60
-CONFIGURE_HANDLED_BY_BUILD ON
+UPDATE_DISCONNECTED true
 TLS_VERIFY true
+CONFIGURE_HANDLED_BY_BUILD ON
 )
 
 message(STATUS "Next run command:

@@ -30,9 +30,8 @@ set(CMAKE_TLS_VERIFY true)
 # --- config checks
 
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
-  # needs to be before project()
   message(FATAL_ERROR "Visual Studio doesn't work with many libraries here. Please first install Ninja:
-  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_ninja.cmake
+  cmake -S ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_ninja
   ")
 endif()
 
@@ -84,6 +83,11 @@ if(CMAKE_PREFIX_PATH)
 endif()
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+
+# --- auto-ignore build directory
+if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
+  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
+endif()
 
 # --- check for updated external projects when "false"
 set_directory_properties(PROPERTIES EP_UPDATE_DISCONNECTED false)
