@@ -1,5 +1,3 @@
-#!/usr/bin/env -S cmake -P
-
 # build and install a recent Ninja version
 
 cmake_minimum_required(VERSION 3.15...3.24)

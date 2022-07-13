@@ -1,6 +1,4 @@
-#!/usr/bin/env -S cmake -P
-
-# NOTE: most users should use install_cmake.cmake instead.
+# Most users should use install_cmake.cmake instead.
 #
 # builds and installs a recent CMake version
 #
@@ -60,4 +58,8 @@ TLS_VERIFY true
 
 message(STATUS "Next run command:
 cmake --build ${CMAKE_BINARY_DIR}
+
+and add to environment variable PATH:
+
+${CMAKE_INSTALL_PREFIX}/bin
 ")
