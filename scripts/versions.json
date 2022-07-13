@@ -1,7 +1,6 @@
 {
   "cmake": {
     "binary": "https://github.com/Kitware/CMake/releases/download/",
-    "source": "https://github.com/Kitware/CMake/archive/refs/tags/",
     "latest": "3.23",
     "3.24": "3.24.0-rc3",
     "3.23": "3.23.2",
@@ -30,7 +29,6 @@
   },
   "ninja": {
     "binary": "https://github.com/ninja-build/ninja/releases/download/",
-    "source": "https://github.com/ninja-build/ninja/archive/refs/tags/",
     "latest": "1.11.0"
   },
   "zstd": "1.5.2"

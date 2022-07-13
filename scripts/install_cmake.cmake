@@ -125,7 +125,7 @@ endif()
 if(NOT file_arch)
   message(FATAL_ERROR "No CMake ${version} binary downwload available for ${arch}.
   Try building CMake from source:
-    cmake -P ${CMAKE_CURRENT_LIST_DIR}/build_cmake.cmake
+    cmake -S ${CMAKE_CURRENT_LIST_DIR}/build_cmake -B build
   or use Python:
     pip install cmake
   or use Snap:
