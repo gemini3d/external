@@ -32,7 +32,7 @@
 
 "mpi_scalapack_stub": {
   "url": "https://github.com/scivision/mpi_scalapack_stub.git",
-  "tag": "main"
+  "tag": "v1.0.1"
 },
 
 "glow": {

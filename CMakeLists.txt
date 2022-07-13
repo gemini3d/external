@@ -74,7 +74,7 @@ endif()
 if(use_mpi)
   include(cmake/scalapack.cmake)
 else()
-  extproj(mpi_scalapack_stub git "" "")
+  extproj(mpi_scalapack_stub git "-DMPI1:BOOL=true" "")
 endif()
 
 # --- MUMPS
