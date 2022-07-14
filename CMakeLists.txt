@@ -9,7 +9,7 @@ endif()
 
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
-VERSION 1.0.5
+VERSION 1.1.0
 )
 
 include(cmake/options.cmake)
@@ -76,7 +76,7 @@ endif()
 if(use_mpi)
   include(cmake/scalapack.cmake)
 else()
-  extproj(mpi_scalapack_stub git "-DMPI1:BOOL=true" "")
+  extproj(mpi_scalapack_stub git "-DMPI1:BOOL=false" "")
 endif()
 
 # --- MUMPS
