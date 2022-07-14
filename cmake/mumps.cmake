@@ -11,8 +11,10 @@ set(mumps_cmake_args
 -Dopenmp:BOOL=false
 -Dparallel:BOOL=${use_mpi}
 -Darith=${arith}
--DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
 )
+if(build_mpi)
+  list(APPEND mumps_cmake_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
+endif()
 
 if(MSVC AND BUILD_SHARED_LIBS)
   # long-standing bug in MUMPS that can't handle shared libraries with MSVC (Windows Intel oneAPI)
