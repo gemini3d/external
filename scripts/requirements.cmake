@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-cmake_path(SET prereq_file NORMALIZE ${CMAKE_CURRENT_LIST_DIR}/../requirements.json)
+cmake_path(SET prereq_file NORMALIZE ${CMAKE_CURRENT_LIST_DIR}/requirements.json)
 
 # --- helper functions
 

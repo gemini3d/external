@@ -1,6 +1,6 @@
 {
   "apt": {
-    "pkgs": ["ninja-build", "g++", "gfortran", "libopenmpi-dev", "openmpi-bin", "libhdf5-dev"],
+    "pkgs": ["g++", "gfortran", "libopenmpi-dev", "openmpi-bin", "libhdf5-dev"],
     "cmd": "apt install --no-install-recommends"
   },
   "yum": {
@@ -16,7 +16,7 @@
     "cmd": "zypper install"
   },
   "brew": {
-    "pkgs": ["gcc", "ninja", "open-mpi", "hdf5", "libaec"],
+    "pkgs": ["gcc", "open-mpi", "hdf5", "libaec"],
     "cmd": "brew install"
   },
   "port": {
@@ -24,8 +24,7 @@
     "cmd": "port install"
   },
   "msys2": {
-    "pkgs": ["mingw-w64-x86_64-gcc", "mingw-w64-x86_64-gcc-fortran", "mingw-w64-x86_64-ninja",
-             "mingw-w64-x86_64-msmpi", "mingw-w64-x86_64-hdf5"],
+    "pkgs": ["mingw-w64-x86_64-gcc", "mingw-w64-x86_64-gcc-fortran", "mingw-w64-x86_64-hdf5"],
     "cmd": "pacman -S --needed"
   }
 }
