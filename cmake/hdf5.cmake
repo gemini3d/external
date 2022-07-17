@@ -19,7 +19,7 @@ if(hdf5_parallel)
 endif()
 
 set(hdf5_deps zlib)
-if(hdf5_parallel)
+if(build_mpi AND hdf5_parallel)
   list(APPEND hdf5_deps mpi)
 endif()
 
