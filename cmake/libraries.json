@@ -41,8 +41,8 @@
 },
 
 "h5fortran": {
-  "url": "https://github.com/geospace-code/h5fortran.git",
-  "tag": "v4.9.0"
+  "url": "https://github.com/geospace-code/h5fortran-mpi.git",
+  "tag": "main"
 },
 
 "zlib": {

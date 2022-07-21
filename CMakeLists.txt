@@ -72,7 +72,7 @@ include(cmake/mumps.cmake)
 
 # --- HDF5
 if(find)
-  find_package(HDF5 COMPONENTS C Fortran HL)
+  find_package(HDF5 COMPONENTS C Fortran parallel)
 endif()
 if(HDF5_FOUND)
   add_custom_target(hdf5)

@@ -19,8 +19,6 @@ option(msis2 "MSIS2 and MSISE00")
 
 option(build_mpi "build MPI")
 
-option(hdf5_parallel "HDF5 parallel")
-
 option(mpich "build MPICH instead of OpenMPI")
 
 if(NOT DEFINED CRAY AND DEFINED ENV{CRAYPE_VERSION})
