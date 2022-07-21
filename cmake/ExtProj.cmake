@@ -14,6 +14,7 @@ list(PREPEND cmake_args
 -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
 )
 
+# NOTE: remove this workaround when h5fortran-mpi is established default
 string(JSON url GET ${json_meta} ${name} url)
 
 if(url_type STREQUAL "git")

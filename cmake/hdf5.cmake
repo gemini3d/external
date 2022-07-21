@@ -11,15 +11,14 @@ set(hdf5_cmake_args
 -DHDF5_BUILD_CPP_LIB:BOOL=false
 -DHDF5_BUILD_EXAMPLES:BOOL=false
 -DUSE_LIBAEC:bool=true
--DHDF5_BUILD_TOOLS:BOOL=$<NOT:$<BOOL:${hdf5_parallel}>>
--DHDF5_ENABLE_PARALLEL:BOOL=$<BOOL:${hdf5_parallel}>
+-DHDF5_BUILD_TOOLS:BOOL=false  # doesn't work with HDF5-MPI
+-DHDF5_ENABLE_PARALLEL:BOOL=true # for HDf5-MPI
 )
-if(hdf5_parallel)
-  list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
-endif()
 
 set(hdf5_deps zlib)
-if(build_mpi AND hdf5_parallel)
+
+if(build_mpi)
+  list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
   list(APPEND hdf5_deps mpi)
 endif()
 
