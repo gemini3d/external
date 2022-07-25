@@ -80,19 +80,19 @@ endfunction(iter_json)
 
 file(READ ${file_json} json)
 
-string(JSON Lf LENGTH ${json} "files")
-math(EXPR Lf "${Lf} - 1")
+string(JSON L LENGTH ${json} "files")
+math(EXPR L "${L} - 1")
 
-foreach(i RANGE ${Lf})
+foreach(i RANGE ${L})
 
   string(JSON d GET ${json} "files" ${i})
+
   iter_json("${d}" "os" "${sname}" "os_key")
   if(NOT os_key)
     continue()
   endif()
   # message(DEBUG "os_key: ${os_key}")
 
-  string(JSON d GET ${json} "files" ${i})
   iter_json("${d}" "architecture" "${arch}" "arch_key")
   if(NOT arch_key)
     continue()
@@ -113,7 +113,47 @@ if(NOT filename)
   unknown_archive()
 endif()
 
+# hash
+string(JSON L LENGTH ${json} "hashFiles")
+math(EXPR L "${L} - 1")
+foreach(i RANGE ${L})
+  string(JSON d GET ${json} "hashFiles" ${i})
+
+  iter_json("${d}" "algorithm" "sha256" "hash_key")
+  if(NOT hash_key)
+    continue()
+  endif()
+
+  string(JSON hash_name GET ${json} "hashFiles" ${i} "name")
+  break()
+endforeach()
+
+set(hash_url ${url_stem}/${hash_name})
+set(hash_file ${CMAKE_CURRENT_BINARY_DIR}/${hash_name})
+message(STATUS "CMake ${version} hash: ${hash_url} => ${hash_file}")
+
+file(DOWNLOAD ${hash_url} ${hash_file} INACTIVITY_TIMEOUT 60 TLS_VERIFY true STATUS ret)
+list(GET ret 0 stat)
+if(NOT stat EQUAL 0)
+  list(GET ret 1 err)
+  message(FATAL_ERROR "CMake hash download failed: ${err}")
+endif()
+
+set(pat "([0-9a-f]+)  ${filename}")
+file(STRINGS ${hash_file} sha256
+LIMIT_COUNT 1
+REGEX ${pat}
+)
+string(REGEX MATCH ${pat} sha256 ${sha256})
+set(sha256 ${CMAKE_MATCH_1})
+if(NOT sha256)
+  message(FATAL_ERROR "did not extract sha256 hash from ${hash_file}")
+endif()
+
+message(STATUS "CMake ${version} ${filename} sha256 hash: ${sha256}")
+
 set(${out} ${filename} PARENT_SCOPE)
+set(sha256 ${sha256} PARENT_SCOPE)
 
 endfunction(cmake_archive_name)
 
@@ -203,9 +243,19 @@ if(exe1)
 endif()
 
 set(url_stem https://github.com/Kitware/CMake/releases/download/v${version})
+set(FETCHCONTENT_QUIET false)
+
+message(STATUS "Download CMake ${version}")
 
 if(CMAKE_VERSION VERSION_LESS 3.19 OR version VERSION_LESS 3.20)
   cmake_legacy_name("archive")
+
+  FetchContent_Declare(cmake
+  URL ${url_stem}/${archive}
+  TLS_VERIFY true
+  UPDATE_DISCONNECTED true
+  INACTIVITY_TIMEOUT 60
+  )
 else()
   set(json_name cmake-${version}-files-v1.json)
   set(json_file ${CMAKE_CURRENT_BINARY_DIR}/${json_name})
@@ -220,20 +270,15 @@ else()
   endif()
 
   cmake_archive_name(${json_file} "archive")
+
+  FetchContent_Declare(cmake
+  URL ${url_stem}/${archive}
+  URL_HASH SHA256=${sha256}
+  TLS_VERIFY true
+  UPDATE_DISCONNECTED true
+  INACTIVITY_TIMEOUT 60
+  )
 endif()
-
-set(archive_url ${url_stem}/${archive})
-
-message(STATUS "Download CMake ${version}")
-
-set(FETCHCONTENT_QUIET false)
-
-FetchContent_Declare(cmake
-URL ${archive_url}
-TLS_VERIFY true
-UPDATE_DISCONNECTED true
-INACTIVITY_TIMEOUT 60
-)
 
 FetchContent_Populate(cmake)
 
