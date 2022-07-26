@@ -25,6 +25,7 @@ if(NOT SCALAPACK_FOUND)
   set(mumps_deps scalapack)
 endif()
 
+
 if(NOT LAPACK_FOUND)
   list(APPEND mumps_deps lapack)
 endif()
