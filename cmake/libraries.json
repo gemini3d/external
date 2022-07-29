@@ -42,7 +42,7 @@
 
 "h5fortran": {
   "url": "https://github.com/geospace-code/h5fortran-mpi.git",
-  "tag": "v2.0.0"
+  "tag": "v2.0.2"
 },
 
 "zlib": {
