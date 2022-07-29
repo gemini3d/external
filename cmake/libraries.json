@@ -47,7 +47,7 @@
 
 "h5fortran": {
   "url": "https://github.com/geospace-code/h5fortran-mpi.git",
-  "tag": "v2.0.0"
+  "tag": "v2.0.2"
 },
 
 "zlib": {
@@ -65,7 +65,7 @@
 },
 "msis": {
   "url": "https://github.com/gemini3d/msis.git",
-  "tag": "v1.0.6"
+  "tag": "v2.1.0.0"
 },
 
 "mumps": {
@@ -74,11 +74,11 @@
 },
 "scalapack": {
   "url": "https://github.com/scivision/scalapack.git",
-  "tag": "v2.2.0.5"
+  "tag": "v2.2.0.6"
 },
 "lapack": {
   "url": "https://github.com/scivision/lapack.git",
-  "tag": "v3.10.1.1"
+  "tag": "v3.10.1.2"
 }
 
 }
