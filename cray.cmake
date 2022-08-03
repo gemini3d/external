@@ -68,7 +68,10 @@ if(mods MATCHES "${peintel}")
 elseif(mods MATCHES "${pegnu}")
   message(STATUS "Using ${pegnu} program environment")
 elseif(mods MATCHES "${pecray}")
-  message(WARNING "${pecray} PE may not work with this project")
+  message(WARNING "${pecray} PE may not work with this project. Try command like this first:
+  module swap ${pecray} ${pegnu}
+  OR
+  module swap ${pecray} ${peintel}")
 else()
-  message(WARNING "Unknown program environment")
+  message(WARNING "Unknown toolchain program environment")
 endif()
