@@ -61,13 +61,13 @@ endfunction(gcc_toolchain)
 # the module commands only affect the current process, not the parent shell
 env_module_list(mods)
 
-if(mods MATCHES peintel)
+if(mods MATCHES "${peintel}")
   # check GCC toolchain for Intel compiler
   gcc_toolchain()
   message(STATUS "Using ${peintel} program environment")
-elseif(mods MATCHES pegnu)
+elseif(mods MATCHES "${pegnu}")
   message(STATUS "Using ${pegnu} program environment")
-elseif(mods MATCHES pecray)
+elseif(mods MATCHES "${pecray}")
   message(WARNING "${pecray} PE may not work with this project")
 else()
   message(WARNING "Unknown program environment")
