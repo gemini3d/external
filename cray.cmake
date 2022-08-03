@@ -61,17 +61,19 @@ endfunction(gcc_toolchain)
 # the module commands only affect the current process, not the parent shell
 env_module_list(mods)
 
+cmake_host_system_information(RESULT host QUERY HOSTNAME)
+
 if(mods MATCHES "${peintel}")
   # check GCC toolchain for Intel compiler
   gcc_toolchain()
-  message(STATUS "Using ${peintel} program environment")
+  message(STATUS "Using ${peintel} program environment on ${host}")
 elseif(mods MATCHES "${pegnu}")
-  message(STATUS "Using ${pegnu} program environment")
+  message(STATUS "Using ${pegnu} program environment on ${host}")
 elseif(mods MATCHES "${pecray}")
-  message(WARNING "${pecray} PE may not work with this project. Try command like this first:
+  message(WARNING "${pecray} PE may not work with this project on ${host}. Try command like this first:
   module swap ${pecray} ${pegnu}
   OR
   module swap ${pecray} ${peintel}")
 else()
-  message(WARNING "Unknown toolchain program environment")
+  message(WARNING "Unknown toolchain program environment on ${host}")
 endif()
