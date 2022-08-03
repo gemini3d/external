@@ -7,7 +7,7 @@
 # NOTE: to specify install directory, run like:
 #   cmake -DCMAKE_INSTALL_PREFIX=<install_dir> -P cray.cmake
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20.2)
 
 # --- module names (may be different on your system)
 
