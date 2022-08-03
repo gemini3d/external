@@ -13,6 +13,9 @@ list(PREPEND cmake_args
 -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
 -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
 )
+if(CMAKE_TOOLCHAIN_FILE)
+  list(APPEND cmake_args -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE})
+endif()
 
 string(JSON url GET ${json_meta} ${name} url)
 
