@@ -1,3 +1,5 @@
+message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHAIN_FILE}")
+
 # --- user options
 
 option(BUILD_SHARED_LIBS "Build shared libraries")
