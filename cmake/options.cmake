@@ -92,7 +92,7 @@ if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
 endif()
 
 # --- check for updated external projects when "false"
-set_directory_properties(PROPERTIES EP_UPDATE_DISCONNECTED false)
+set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED false)
 
 # --- read JSON with URLs for each library
 file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json_meta)

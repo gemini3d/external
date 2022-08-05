@@ -9,7 +9,7 @@ endif()
 set(mumps_cmake_args
 -Dscotch:BOOL=${scotch}
 -Dopenmp:BOOL=false
--Dparallel:BOOL=${use_mpi}
+-Dparallel:BOOL=true
 -Darith=${arith}
 )
 if(build_mpi)
@@ -21,12 +21,8 @@ if(MSVC AND BUILD_SHARED_LIBS)
   list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
 endif()
 
-if(use_mpi)
-  if(NOT SCALAPACK_FOUND)
-    set(mumps_deps scalapack)
-  endif()
-else()
-  set(mumps_deps mpi_scalapack_stub)
+if(NOT SCALAPACK_FOUND)
+  set(mumps_deps scalapack)
 endif()
 
 if(NOT LAPACK_FOUND)

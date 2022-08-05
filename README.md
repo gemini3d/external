@@ -3,14 +3,14 @@
 Scripts to build/install external libraries used by Gemini3D.
 These will install nearly everything needed except the compilers themselves.
 If something doesn't work, please let us know.
-These scripts are intended to work on nearly any Linux, MacOS or Windows computer.
+These scripts are intended to work on nearly any modern Linux, MacOS or Windows computer.
 
 ## CMake build system
 
 If your CMake is too old, install a recent CMake version by:
 
 ```sh
-cmake -S scripts/install_cmake
+cmake -S scripts/install_cmake -B build
 ```
 
 If that script doesn't work, try to build CMake:

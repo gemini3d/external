@@ -49,16 +49,8 @@ extproj(hwm14 git "" "")
 
 if(build_mpi)
   include(cmake/mpi.cmake)
-elseif(use_mpi)
-  find_package(MPI COMPONENTS C Fortran REQUIRED)
-elseif(NOT DEFINED use_mpi)
-  find_package(MPI COMPONENTS C Fortran)
-endif()
-
-if(NOT DEFINED use_mpi AND (build_mpi OR MPI_FOUND))
-  set(use_mpi true)
 else()
-  set(use_mpi false)
+  find_package(MPI COMPONENTS C Fortran REQUIRED)
 endif()
 
 # --- LAPACK
@@ -73,11 +65,7 @@ else()
 endif()
 
 # --- Scalapack
-if(use_mpi)
-  include(cmake/scalapack.cmake)
-else()
-  extproj(mpi_scalapack_stub git "-DMPI1:BOOL=false" "")
-endif()
+include(cmake/scalapack.cmake)
 
 # --- MUMPS
 include(cmake/mumps.cmake)
@@ -96,7 +84,7 @@ endif()
 set(h5fortran_deps)
 if(NOT HDF5_FOUND)
   list(APPEND h5fortran_deps "hdf5")
-  if(build_mpi AND hdf5_parallel)
+  if(build_mpi)
     list(APPEND h5fortran_deps mpi)
     set(h5fortran_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
   endif()
@@ -109,7 +97,7 @@ extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
 # --- p4est
 if(amr)
-  set(amr_args -Dmpi:BOOL=${use_mpi})
+  set(amr_args -Dmpi:BOOL=true)
   if(build_mpi)
     list(APPEND amr_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
   endif()
