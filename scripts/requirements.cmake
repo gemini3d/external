@@ -42,7 +42,7 @@ if(APPLE)
 elseif(UNIX)
   set(names apt yum pacman zypper)
 elseif(WIN32)
-  message(FATAL_ERROR "Windows: suggest MSYS2 or WSL")
+  message(FATAL_ERROR "Windows: suggest Windows Subsystem for Linux (WSL) https://aka.ms/wsl ")
 endif()
 
 foreach(t IN LISTS names)
