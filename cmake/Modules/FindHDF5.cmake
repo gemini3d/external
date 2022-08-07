@@ -156,7 +156,11 @@ if("${_def}" MATCHES
 endif()
 
 # avoid picking up incompatible zlib over the desired zlib
-cmake_path(GET HDF5_C_INCLUDE_DIR PARENT_PATH zlib_dir)
+if(CMAKE_VERSION VERSION_LESS 3.20)
+  get_filename_component(zlib_dir ${HDF5_C_INCLUDE_DIR} DIRECTORY)
+else()
+  cmake_path(GET HDF5_C_INCLUDE_DIR PARENT_PATH zlib_dir)
+endif()
 if(NOT ZLIB_ROOT)
   set(ZLIB_ROOT "${HDF5_ROOT};${zlib_dir}")
 endif()
@@ -876,7 +880,7 @@ set(CMAKE_REQUIRED_LIBRARIES)
 set(CMAKE_REQUIRED_INCLUDES)
 
 # pop off ignored paths so rest of script can find Python
-list(REMOVE_ITEM CMAKE_IGNORE_PATH ${h5_ignore_path})
+list(REMOVE_ITEM CMAKE_IGNORE_PATH "${h5_ignore_path}")
 
 
 include(FindPackageHandleStandardArgs)

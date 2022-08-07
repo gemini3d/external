@@ -1,7 +1,7 @@
 # install a recent CMake version
 # we didn't use -P script to enable nicer features
 
-cmake_minimum_required(VERSION 3.13...3.25)
+cmake_minimum_required(VERSION 3.11...3.25)
 
 project(cmake LANGUAGES NONE)
 
@@ -9,7 +9,7 @@ include(FetchContent)
 
 # --- version
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  set(version 3.23.2)
+  set(version 3.24.0)
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
