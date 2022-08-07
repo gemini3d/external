@@ -69,7 +69,7 @@ if(DEFINED ENV{CONDA_PREFIX})
 endif()
 
 # --- CMake Module search path (for Find*.cmake)
-cmake_path(SET CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/Modules)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 # --- look in CMAKE_PREFIX_PATH for Find*.cmake as well
 if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})
