@@ -9,7 +9,7 @@ endif()
 
 string(JSON mpi_url GET ${json_meta} msmpi url)
 
-cmake_path(SET mpi_archive ${CMAKE_CURRENT_BINARY_DIR}/msmpisetup.exe)
+set(mpi_archive ${CMAKE_CURRENT_BINARY_DIR}/msmpisetup.exe)
 
 if(NOT EXISTS ${mpi_archive})
 file(DOWNLOAD ${mpi_url} ${mpi_archive} INACTIVITY_TIMEOUT 60 STATUS ret)

@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.19)
 
 function(check_tls)
 # some CMake may not have SSL/TLS enabled, or may have missing/broken system certificates.
 # this is a publicly-usable service (as per their TOS)
 
 set(url https://www.howsmyssl.com/a/check)
-cmake_path(SET tls_check_file ${PROJECT_BINARY_DIR}/check_tls.json)
+set(tls_check_file ${PROJECT_BINARY_DIR}/check_tls.json)
 
 if(EXISTS ${tls_check_file})
   # we've already checked this computer's TLS configuration.

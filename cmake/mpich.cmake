@@ -1,5 +1,12 @@
-string(JSON mpi_url GET ${json_meta} mpich url)
-string(JSON mpi_tag GET ${json_meta} mpich tag)
+if(CMAKE_VERSION VERSION_LESS 3.19)
+  include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
+  sbeParseJson(meta json_meta)
+  set(mpi_url ${meta.mpich.url})
+  set(mpi_tag ${meta.mpich.tag})
+else()
+  string(JSON mpi_url GET ${json_meta} mpich url)
+  string(JSON mpi_tag GET ${json_meta} mpich tag)
+endif()
 
 list(APPEND mpi_flags
 --with-device=ch3

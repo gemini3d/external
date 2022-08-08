@@ -33,7 +33,8 @@ endif()
 
 # OpenMPI/MPICH have trouble finding -lm on MacOS especially
 find_library(math NAMES m REQUIRED)
-cmake_path(GET math PARENT_PATH math_LIBDIR)
+get_filename_component(math_LIBDIR ${math} DIRECTORY)
+
 set(mpi_ldflags "LDFLAGS=${CMAKE_LIBRARY_PATH_FLAG}${math_LIBDIR}")
 
 

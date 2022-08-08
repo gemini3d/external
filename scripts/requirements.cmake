@@ -3,6 +3,10 @@
 
 cmake_minimum_required(VERSION 3.11...3.25)
 
+if(CMAKE_VERSION VERSION_LESS 3.19)
+  include(${CMAKE_CURRENT_LIST_DIR}/../cmake/Modules/JsonParse.cmake)
+endif()
+
 set(prereq_file ${CMAKE_CURRENT_LIST_DIR}/requirements.json)
 
 # --- helper functions
@@ -14,7 +18,6 @@ function(read_prereqs sys_id)
   set(prereqs)
 
   if(CMAKE_VERSION VERSION_LESS 3.19)
-    include(${CMAKE_CURRENT_LIST_DIR}/../cmake/Modules/JsonParse.cmake)
     sbeParseJson(meta json)
     foreach(i IN LISTS meta.${sys_id}.pkgs)
       list(APPEND prereqs ${meta.${sys_id}.pkgs_${i}})

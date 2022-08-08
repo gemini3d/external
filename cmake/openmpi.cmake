@@ -1,5 +1,12 @@
-string(JSON mpi_url GET ${json_meta} openmpi url)
-string(JSON mpi_tag GET ${json_meta} openmpi tag)
+if(CMAKE_VERSION VERSION_LESS 3.19)
+  include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
+  sbeParseJson(meta json_meta)
+  set(mpi_url ${meta.openmpi.url})
+  set(mpi_tag ${meta.openpmi.tag})
+else()
+  string(JSON mpi_url GET ${json_meta} openmpi url)
+  string(JSON mpi_tag GET ${json_meta} openmpi tag)
+endif()
 
 list(APPEND mpi_flags
 --with-hwloc=internal
@@ -11,7 +18,8 @@ list(APPEND mpi_flags
 
 find_package(ZLIB)
 if(ZLIB_FOUND)
-  cmake_path(GET ZLIB_LIBRARIES PARENT_PATH ZLIB_LIBDIR)
+  get_filename_component(ZLIB_LIBDIR ${ZLIB_LIBRARIES} DIRECTORY)
+
   string(APPEND mpi_ldflags " ${CMAKE_LIBRARY_PATH_FLAG}${ZLIB_LIBDIR}")
 endif()
 
