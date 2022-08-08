@@ -1,6 +1,6 @@
 # builds all Gemini3D external libraries
 
-cmake_minimum_required(VERSION 3.20.2...3.25)
+cmake_minimum_required(VERSION 3.17...3.25)
 
 if(NOT CMAKE_BUILD_TYPE)
   # ignore ENV{CMAKE_BUILD_TYPE} as we want to directly capture this project's user intent
