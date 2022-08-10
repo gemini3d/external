@@ -26,7 +26,7 @@ endif()
 
 if(NOT stem)
   message(FATAL_ERROR "unknown CPU arch ${arch}. Try building Ninja from source:
-    cmake -S ${CMAKE_CURRENT_LIST_DIR}/build_ninja -B build")
+    cmake -P ${CMAKE_CURRENT_LIST_DIR}/build_ninja.cmake")
 endif()
 
 set(url ${host}${stem}.zip)

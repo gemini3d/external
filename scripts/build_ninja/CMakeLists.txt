@@ -38,11 +38,3 @@ UPDATE_DISCONNECTED true
 TLS_VERIFY true
 CONFIGURE_HANDLED_BY_BUILD ON
 )
-
-message(STATUS "Next run command:
-cmake --build ${CMAKE_BINARY_DIR}
-
-and add to environment variable PATH:
-
-${CMAKE_INSTALL_PREFIX}/bin
-")
