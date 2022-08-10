@@ -60,7 +60,7 @@
 },
 "msis": {
   "url": "https://github.com/gemini3d/msis.git",
-  "tag": "v2.1.0.1"
+  "tag": "v2.1.0.2"
 },
 
 "mumps": {
