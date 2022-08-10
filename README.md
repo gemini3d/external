@@ -10,15 +10,13 @@ These scripts are intended to work on nearly any modern Linux, MacOS or Windows 
 If your CMake is too old, install a recent CMake version by:
 
 ```sh
-cmake -S scripts/install_cmake -B build
+cmake -P scripts/install_cmake.cmake
 ```
 
 If that script doesn't work, try to build CMake:
 
 ```sh
-cmake -S scripts/build_cmake -B build
-cmake --build build
-cmake --install build
+cmake -P scripts/build_cmake.cmake
 ```
 
 ## Essential build tools

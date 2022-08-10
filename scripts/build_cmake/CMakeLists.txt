@@ -12,9 +12,9 @@ include(ExternalProject)
 
 # --- version
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  set(version 3.23.2)
+  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version)
 else()
-  file(READ ${CMAKE_CURRENT_LIST_DIR}/../versions.json _j)
+  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
   if(version VERSION_LESS 3.1)
     string(JSON version GET ${_j} cmake latest)
@@ -40,10 +40,26 @@ set(cmake_args
 -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
 )
 
+find_package(OpenSSL)
+if(NOT OPENSSL_FOUND)
+  find_program(brew NAMES brew)
+  if(brew)
+    execute_process(COMMAND ${brew} --prefix openssl
+    OUTPUT_VARIABLE out
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE ret
+    TIMEOUT 5
+    )
+    if(ret EQUAL 0)
+      list(APPEND cmake_args -DOPENSSL_ROOT_DIR=${out})
+    endif()
+  endif()
+endif()
+
 set(url https://gitlab.kitware.com/cmake/cmake.git)
 set(tag v${version})
 
-message(STATUS "installing CMake ${tag} to ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "install CMake ${tag} => ${CMAKE_INSTALL_PREFIX}/bin")
 
 ExternalProject_Add(CMAKE
 GIT_REPOSITORY ${url}
@@ -56,11 +72,3 @@ UPDATE_DISCONNECTED true
 TLS_VERIFY true
 CONFIGURE_HANDLED_BY_BUILD ON
 )
-
-message(STATUS "Next run command:
-cmake --build ${CMAKE_BINARY_DIR}
-
-and add to environment variable PATH:
-
-${CMAKE_INSTALL_PREFIX}/bin
-")

@@ -9,7 +9,7 @@ include(FetchContent)
 
 # --- version
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  set(version 3.24.0)
+  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version)
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
@@ -230,10 +230,12 @@ if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/.gitignore)
   file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore "*")
 endif()
 
+set(CMAKE_FIND_APPBUNDLE LAST)
+
 find_program(exe1
 NAMES cmake
 HINTS ${path}
-PATH_SUFFIXES bin
+PATH_SUFFIXES bin CMake.app/Contents/bin
 NO_DEFAULT_PATH
 NO_CACHE
 )
@@ -282,7 +284,12 @@ endif()
 
 FetchContent_Populate(cmake)
 
-message(STATUS "Install CMake ${version} under ${path}   (takes about a minute or so)")
+set(_txt "Installing CMake ${version} => ${path}")
+if(WIN32)
+  string(APPEND _txt "   (takes about a minute or so)")
+endif()
+message(STATUS "${_txt}")
+
 file(MAKE_DIRECTORY ${path})
 file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${path})
 # must have trailing slash on source dir
@@ -291,7 +298,7 @@ file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${path})
 find_program(exe2
 NAMES cmake
 HINTS ${path}
-PATH_SUFFIXES bin
+PATH_SUFFIXES bin CMake.app/Contents/bin
 NO_DEFAULT_PATH
 NO_CACHE
 )
@@ -299,9 +306,8 @@ if(NOT exe2)
   message(FATAL_ERROR "failed to install CMake ${version} to ${path}")
 endif()
 
-message(STATUS "installed CMake ${version} to ${path}")
-
-set(bindir ${path}/bin)
+get_filename_component(bindir ${exe2} DIRECTORY)
+message(STATUS "installed CMake ${version} to ${bindir}")
 
 set(ep $ENV{PATH})
 if(NOT ep MATCHES "${bindir}")
