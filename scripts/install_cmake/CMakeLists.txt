@@ -29,7 +29,7 @@ function(unknown_archive)
 
 message(FATAL_ERROR "No CMake ${version} binary download available for ${arch}.
 Try building CMake from source:
-  cmake -S ${CMAKE_CURRENT_SOURCE_DIR}/build_cmake -B build
+  cmake -P ${CMAKE_CURRENT_SOURCE_DIR}/build_cmake.cmake
 or use Python:
   pip install cmake
 or use Snap:
