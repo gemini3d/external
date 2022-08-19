@@ -21,6 +21,10 @@ if(MSVC AND BUILD_SHARED_LIBS)
   list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
 endif()
 
+if(local)
+  list(APPEND mumps_cmake_args -Dlocal:PATH=${local})
+endif()
+
 if(NOT SCALAPACK_FOUND)
   set(mumps_deps scalapack)
 endif()

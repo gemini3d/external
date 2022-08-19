@@ -10,6 +10,8 @@ if(NOT DEFINED outdir)
   set(outdir ~/gemini_package)
 endif()
 
+set(CMAKE_TLS_VERIFY true)
+
 get_filename_component(outdir ${outdir} ABSOLUTE)
 file(MAKE_DIRECTORY ${outdir})
 message(STATUS "Packing archives under ${outdir}")
@@ -23,7 +25,7 @@ h5fortran hdf5 zlib
 glow hwm14 msis
 lapack lapack_src
 scalapack scalapack_src
-mumps
+mumps mumps_src
 )
 
 # --- main program
@@ -33,8 +35,17 @@ find_program(tar NAMES tar REQUIRED)
 
 foreach(p IN LISTS package_names)
 
-set(pfile ${outdir}/${p}.tar.bz2)
 set(wd ${outdir}/${p})
+if(IS_DIRECTORY ${wd})
+  message(STATUS "${p}: ${wd} exists, SKIPPING package")
+  continue()
+endif()
+
+if(p STREQUAL "mumps_src")
+  set(pfile ${outdir}/${p}.tar.gz)
+else()
+  set(pfile ${outdir}/${p}.tar.bz2)
+endif()
 
 set(exclude --exclude-vcs --exclude=.github/)
 if(p STREQUAL "hdf5")
@@ -45,27 +56,52 @@ elseif(p STREQUAL "scalapack_src")
   list(APPEND exclude --exclude=TESTING/ --exclude=TIMING/ --exclude=CMAKE/)
 endif()
 
-
 string(JSON url GET ${meta} ${p} url)
-string(JSON tag GET ${meta} ${p} tag)
 
-# NOTE: "git archive" doesn't work with most modern servers.
-if(IS_DIRECTORY ${wd})
-  message(WARNING "${p}: ${wd} exists, SKIPPING package")
-  continue()
+
+
+if(url MATCHES "\.git$")
+  # clone shallow, then make archive
+  message(STATUS "${p}: Git: ${url}")
+
+  string(JSON tag GET ${meta} ${p} tag)
+
+  # NOTE: "git archive" doesn't work with most modern servers.
+  execute_process(
+  COMMAND ${git} clone ${url} --depth 1 --branch ${tag} --single-branch ${wd}
+  TIMEOUT 120
+  )
+
+  message(STATUS "Creating archive ${pfile}")
+  execute_process(
+  COMMAND ${tar} --create --file ${pfile} --bzip2 ${exclude} .
+  WORKING_DIRECTORY ${wd}
+  TIMEOUT 120
+  COMMAND_ECHO STDOUT
+  )
+
+else()
+
+  message(STATUS "${p}: archive: ${url} => ${pfile}")
+
+  string(JSON sha256 GET ${meta} ${p} sha256)
+
+  # assume archive directly
+  file(DOWNLOAD ${url} ${pfile}
+  INACTIVITY_TIMEOUT 60
+  EXPECTED_HASH SHA256=${sha256}
+  SHOW_PROGRESS
+  STATUS ret
+  )
+  list(GET ret 0 stat)
+  if(stat EQUAL 0)
+    message(STATUS "${p}: ${ret}")
+  else()
+    message(FATAL_ERROR "${p}: archive download failed: ${ret}")
+  endif()
+
 endif()
 
-execute_process(
-COMMAND ${git} clone ${url} --depth 1 --branch ${tag} --single-branch ${wd}
-TIMEOUT 120
-)
 
-message(STATUS "Creating archive ${pfile}")
-execute_process(
-COMMAND ${tar} --create --file ${pfile} --bzip2 ${exclude} .
-WORKING_DIRECTORY ${wd}
-TIMEOUT 120
-COMMAND_ECHO STDOUT
-)
 
 endforeach()

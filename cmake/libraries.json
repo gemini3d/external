@@ -62,7 +62,11 @@
 
 "mumps": {
   "url": "https://github.com/scivision/mumps.git",
-  "tag": "v5.5.1.2"
+  "tag": "v5.5.1.4"
+},
+"mumps_src": {
+  "sha256": "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15",
+  "url": "https://graal.ens-lyon.fr/MUMPS/MUMPS_5.5.1.tar.gz"
 },
 
 "scalapack": {
