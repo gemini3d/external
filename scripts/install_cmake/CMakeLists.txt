@@ -7,9 +7,13 @@ project(cmake LANGUAGES NONE)
 
 include(FetchContent)
 
-# --- version
+
+function(full_version)
+
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version)
+  file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version
+    REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
+    )
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
@@ -23,6 +27,10 @@ else()
     string(JSON version GET ${_j} cmake ${version})
   endif()
 endif()
+
+set(version ${version} PARENT_SCOPE)
+
+endfunction(full_version)
 
 
 function(unknown_archive)
@@ -217,13 +225,18 @@ set(${out} cmake-${version}-${file_arch}${suffix} PARENT_SCOPE)
 
 endfunction(cmake_legacy_name)
 
+# --- main program ---
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   get_filename_component(p ~ ABSOLUTE)
   set(CMAKE_INSTALL_PREFIX ${p} CACHE PATH "install path" FORCE)
 endif()
 
+full_version()
+
 set(path ${CMAKE_INSTALL_PREFIX}/cmake-${version})
+
+message(STATUS "Using CMake ${CMAKE_VERSION} to install CMake ${version} to ${path}")
 
 # --- auto-ignore build directory
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/.gitignore)

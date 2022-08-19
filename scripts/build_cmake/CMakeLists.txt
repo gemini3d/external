@@ -4,15 +4,18 @@
 #
 # NOTE: CMake 3.24 needs CMake >= 3.13 to build CMake itself.
 
-cmake_minimum_required(VERSION 3.13...3.24)
+cmake_minimum_required(VERSION 3.13...3.25)
 
 project(cmake LANGUAGES C CXX)
 
 include(ExternalProject)
 
-# --- version
+function(full_version)
+
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version)
+  file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version
+    REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
+    )
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
@@ -27,11 +30,19 @@ else()
   endif()
 endif()
 
+set(version ${version} PARENT_SCOPE)
+
+endfunction(full_version)
+
 # --- CMake build arguments
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   get_filename_component(p ~ ABSOLUTE)
   set(CMAKE_INSTALL_PREFIX ${p} CACHE PATH "install path" FORCE)
 endif()
+
+full_version()
+
+message(STATUS "Using CMake ${CMAKE_VERSION} to build CMake ${version} and install to ${CMAKE_INSTALL_PREFIX}")
 
 set(cmake_args
 -DBUILD_TESTING:BOOL=OFF
