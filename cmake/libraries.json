@@ -64,13 +64,23 @@
   "url": "https://github.com/scivision/mumps.git",
   "tag": "v5.5.1.2"
 },
+
 "scalapack": {
   "url": "https://github.com/scivision/scalapack.git",
-  "tag": "v2.2.1.0"
+  "tag": "v2.2.1.1"
 },
+"scalapack_src": {
+  "tag": "v2.2.1",
+  "url": "https://github.com/Reference-ScaLAPACK/scalapack.git"
+},
+
 "lapack": {
   "url": "https://github.com/scivision/lapack.git",
-  "tag": "v3.10.1.3"
+  "tag": "v3.10.1.4"
+},
+"lapack_src": {
+  "tag": "v3.10.1",
+  "url": "https://github.com/Reference-LAPACK/lapack.git"
 }
 
 }

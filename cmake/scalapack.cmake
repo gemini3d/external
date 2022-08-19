@@ -18,4 +18,8 @@ if(build_mpi)
   list(APPEND scalapack_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
 endif()
 
+if(local)
+  list(APPEND scalapack_args -Dlocal:PATH=${local})
+endif()
+
 extproj(scalapack git "${scalapack_args}" "${scalapack_deps}")

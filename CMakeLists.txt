@@ -55,7 +55,7 @@ if(LAPACK_FOUND)
   add_custom_target(lapack)
   # dummy target to avoid error if user `cmake --build --target lapack`
 else()
-  extproj(lapack git "-Darith=${arith}" "")
+  extproj(lapack git "-Darith=${arith};-Dlocal:PATH=${local}" "")
 endif()
 
 # --- Scalapack

@@ -21,7 +21,9 @@ iniparser
 ffilesystem
 h5fortran hdf5 zlib
 glow hwm14 msis
-lapack scalapack mumps
+lapack lapack_src
+scalapack scalapack_src
+mumps
 )
 
 # --- main program
@@ -37,6 +39,10 @@ set(wd ${outdir}/${p})
 set(exclude --exclude-vcs --exclude=.github/)
 if(p STREQUAL "hdf5")
   list(APPEND exclude --exclude=testfiles/ --exclude=doxygen/ --exclude=java/ --exclude=tools/test/ --exclude=release_docs/ --exclude=c++/ --exclude=examples/ --exclude=configure)
+elseif(p STREQUAL "lapack_src")
+  list(APPEND exclude --exclude=TESTING/ --exclude=LAPACKE/ --exclude=CBLAS/ --exclude=DOCS/ --exclude=CMAKE/)
+elseif(p STREQUAL "scalapack_src")
+  list(APPEND exclude --exclude=TESTING/ --exclude=TIMING/ --exclude=CMAKE/)
 endif()
 
 
