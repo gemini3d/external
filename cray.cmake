@@ -5,7 +5,7 @@
 # NOTE: your Cray system may have different versions/paths, treat this like a template.
 #
 # Copy this file to a convenient location like ~ directory, and use with any project on Cray like:
-#  cmake --toolchain ~/cray.cmake -B build
+#  cmake -DCMAKE_TOOLCHAIN_FILE=~/cray.cmake -B build
 
 # --- module names (may be different on your system)
 

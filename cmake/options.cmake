@@ -1,3 +1,7 @@
+if(CMAKE_TOOLCHAIN_FILE)
+  get_filename_component(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE} ABSOLUTE)
+endif()
+
 message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHAIN_FILE}")
 
 # --- user options
