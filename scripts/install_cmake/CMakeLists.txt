@@ -228,15 +228,13 @@ endfunction(cmake_legacy_name)
 # --- main program ---
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  get_filename_component(p ~ ABSOLUTE)
+  get_filename_component(p ~/cmake-${version} ABSOLUTE)
   set(CMAKE_INSTALL_PREFIX ${p} CACHE PATH "install path" FORCE)
 endif()
 
 full_version()
 
-set(path ${CMAKE_INSTALL_PREFIX}/cmake-${version})
-
-message(STATUS "Using CMake ${CMAKE_VERSION} to install CMake ${version} to ${path}")
+message(STATUS "Using CMake ${CMAKE_VERSION} to install CMake ${version} to ${CMAKE_INSTALL_PREFIX}")
 
 # --- auto-ignore build directory
 if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/.gitignore)
@@ -285,26 +283,26 @@ endif()
 
 FetchContent_Populate(cmake)
 
-set(_txt "Installing CMake ${version} => ${path}")
+set(_txt "Installing CMake ${version} => ${CMAKE_INSTALL_PREFIX}")
 if(WIN32)
   string(APPEND _txt "   (takes about a minute or so)")
 endif()
 message(STATUS "${_txt}")
 
-file(MAKE_DIRECTORY ${path})
-file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${path})
+file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 # must have trailing slash on source dir
 
 # --- verify
 find_program(cmake_exe
 NAMES cmake
-HINTS ${path}
+HINTS ${CMAKE_INSTALL_PREFIX}
 PATH_SUFFIXES bin CMake.app/Contents/bin
 NO_DEFAULT_PATH
 NO_CACHE
 )
 if(NOT cmake_exe)
-  message(FATAL_ERROR "failed to install CMake ${version} to ${path}")
+  message(FATAL_ERROR "failed to install CMake ${version} to ${CMAKE_INSTALL_PREFIX}")
 endif()
 
 get_filename_component(bindir ${cmake_exe} DIRECTORY)
