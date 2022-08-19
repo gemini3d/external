@@ -27,16 +27,6 @@ cmake -DCMAKE_INSTALL_PREFIX=~/mylibs")
 # template function
 include(cmake/ExtProj.cmake)
 
-# --- Zlib
-set(zlib_cmake_args
--DZLIB_COMPAT:BOOL=on
--DZLIB_ENABLE_TESTS:BOOL=off
--DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=on
-)
-# CMAKE_POSITION_INDEPENDENT_CODE=on is needed for Zlib even when using static libs.
-
-extproj(zlib git "${zlib_cmake_args}" "")
-
 # --- Fortran filesystem
 extproj(ffilesystem git "" "")
 
@@ -75,12 +65,13 @@ include(cmake/scalapack.cmake)
 include(cmake/mumps.cmake)
 
 # --- HDF5
-if(find)
+if(find OR CRAY)
   find_package(HDF5 COMPONENTS C Fortran HL)
 endif()
 if(HDF5_FOUND)
   add_custom_target(hdf5)
 else()
+  include(cmake/zlib.cmake)
   include(cmake/hdf5.cmake)
 endif()
 
@@ -105,6 +96,8 @@ if(amr)
   if(build_mpi)
     list(APPEND amr_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
   endif()
+
+  include(cmake/zlib.cmake)
   extproj(libsc git "${amr_args}" "zlib")
   extproj(p4est git "${amr_args}" "libsc")
   set(fclaw_args ${amr_args} -Dclawpatch:BOOL=true)
