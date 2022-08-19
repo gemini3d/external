@@ -245,18 +245,6 @@ endif()
 
 set(CMAKE_FIND_APPBUNDLE LAST)
 
-find_program(exe1
-NAMES cmake
-HINTS ${path}
-PATH_SUFFIXES bin CMake.app/Contents/bin
-NO_DEFAULT_PATH
-NO_CACHE
-)
-if(exe1)
-  message(STATUS "CMake already installed at ${exe1}")
-  return()
-endif()
-
 set(url_stem https://github.com/Kitware/CMake/releases/download/v${version})
 set(FETCHCONTENT_QUIET false)
 
@@ -308,18 +296,18 @@ file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${path})
 # must have trailing slash on source dir
 
 # --- verify
-find_program(exe2
+find_program(cmake_exe
 NAMES cmake
 HINTS ${path}
 PATH_SUFFIXES bin CMake.app/Contents/bin
 NO_DEFAULT_PATH
 NO_CACHE
 )
-if(NOT exe2)
+if(NOT cmake_exe)
   message(FATAL_ERROR "failed to install CMake ${version} to ${path}")
 endif()
 
-get_filename_component(bindir ${exe2} DIRECTORY)
+get_filename_component(bindir ${cmake_exe} DIRECTORY)
 message(STATUS "installed CMake ${version} to ${bindir}")
 
 set(ep $ENV{PATH})
