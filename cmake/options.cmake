@@ -4,6 +4,14 @@ message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHA
 
 option(BUILD_SHARED_LIBS "Build shared libraries")
 
+if(local)
+  get_filename_component(local ${local} ABSOLUTE)
+
+  if(NOT IS_DIRECTORY ${local})
+    message(FATAL_ERROR "Local directory ${local} does not exist")
+  endif()
+endif()
+
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
 option(amr "build packages used for AMR")

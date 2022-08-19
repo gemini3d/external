@@ -17,6 +17,10 @@ include(cmake/compilers.cmake)
 
 # --- main program
 
+message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}
+ensure this is the directory you wish to install libraries to, or set like:
+cmake -DCMAKE_INSTALL_PREFIX=~/mylibs")
+
 # NOTE: lists must be passed via CMAKE_CACHE_ARGS using -Dvar:STRING=${var}
 # the variable type must be included e.g. STRING
 
