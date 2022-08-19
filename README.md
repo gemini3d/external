@@ -94,3 +94,21 @@ cmake --build build -t mumps
 
 If MPI isn't available MPI will be build before MUMPS.
 Also LAPACK and Scalapack are built before MUMPS.
+
+## Offline packaging
+
+Some computing environments can't easily use the internet.
+To support these users, create an archive of all Gemini3D library software stack like:
+
+```sh
+cmake -Doutdir=~/mypkg -P scripts/package.cmake
+```
+
+Which creates several *.tar.bz2 source archives under ~/mypkg.
+Then, the user would refer to these source archives like:
+
+```sh
+cmake -Bbuild -Dlocal=~/mypkg
+```
+
+The absolute paths are not encoded in the archives, so they can be easily copied among offline systems.
