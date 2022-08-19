@@ -34,13 +34,14 @@ set(version ${version} PARENT_SCOPE)
 
 endfunction(full_version)
 
-# --- CMake build arguments
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  get_filename_component(p ~ ABSOLUTE)
-  set(CMAKE_INSTALL_PREFIX ${p} CACHE PATH "install path" FORCE)
-endif()
+# --- main program ---
 
 full_version()
+
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  get_filename_component(p ~/cmake-${version} ABSOLUTE)
+  set(CMAKE_INSTALL_PREFIX ${p} CACHE PATH "install path" FORCE)
+endif()
 
 message(STATUS "Using CMake ${CMAKE_VERSION} to build CMake ${version} and install to ${CMAKE_INSTALL_PREFIX}")
 
@@ -78,8 +79,8 @@ GIT_TAG ${tag}
 GIT_SHALLOW true
 CMAKE_ARGS ${cmake_args}
 TEST_COMMAND ""
+TLS_VERIFY true
 INACTIVITY_TIMEOUT 60
 UPDATE_DISCONNECTED true
-TLS_VERIFY true
 CONFIGURE_HANDLED_BY_BUILD ON
 )
