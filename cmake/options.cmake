@@ -51,13 +51,6 @@ if(is_multi_config)
   ")
 endif()
 
-# --- user must specify where to install libraries
-
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  message(FATAL_ERROR "Please define an install location like
-  cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem")
-endif()
-
 # --- exclude Conda from search
 if(DEFINED ENV{CONDA_PREFIX})
   set(ignore_path
@@ -69,7 +62,7 @@ if(DEFINED ENV{CONDA_PREFIX})
 endif()
 
 # --- CMake Module search path (for Find*.cmake)
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 # --- look in CMAKE_PREFIX_PATH for Find*.cmake as well
 if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})

@@ -29,7 +29,7 @@ set(zlib_cmake_args
 -DZLIB_ENABLE_TESTS:BOOL=off
 -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=on
 )
-# CMAKE_POSITION_INDEPENDENT_CODE=on is needed for zlib to work with Python, even when using static libs.
+# CMAKE_POSITION_INDEPENDENT_CODE=on is needed for Zlib even when using static libs.
 
 extproj(zlib git "${zlib_cmake_args}" "")
 
