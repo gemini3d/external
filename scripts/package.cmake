@@ -1,4 +1,6 @@
-# Creates Zstd archives from all packages Git tags using "git archive"
+# Creates archive file of archive filess from all packages Git tags.
+# This is to avoid problems with having ~ million files in a single archive.
+#
 # this allows for an offline-installer script
 #
 # Usage:
@@ -10,14 +12,13 @@ cmake_minimum_required(VERSION 3.19...3.25)
 if(NOT DEFINED outdir)
   set(outdir ~/gemini_package)
 endif()
-
-set(CMAKE_TLS_VERIFY true)
-
 get_filename_component(outdir ${outdir} ABSOLUTE)
-file(MAKE_DIRECTORY ${outdir})
-message(STATUS "Packing archives under ${outdir}")
 
-file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
+if(NOT DEFINED top_archive)
+  set(top_archive ${outdir}/gemini_package.tar.bz2)
+endif()
+
+if(NOT DEFINED packages)
 
 set(packages
 iniparser
@@ -28,6 +29,10 @@ lapack lapack_src
 scalapack scalapack_src
 mumps mumps_src
 )
+
+endif()
+
+set(CMAKE_TLS_VERIFY true)
 
 # --- functions
 
@@ -148,6 +153,12 @@ endfunction(system_meta)
 
 # --- main program
 
+file(MAKE_DIRECTORY ${outdir})
+message(STATUS "Packing archives under ${outdir}")
+
+file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
+
+
 find_package(Git REQUIRED)
 find_program(tar NAMES tar REQUIRED)
 
@@ -194,8 +205,6 @@ string(JSON json SET ${json} "packages" ${pkg} "archive" \"${archive_name}\")
 
 if(${pkg}_tag)
   string(JSON json SET ${json} "packages" ${pkg} "tag" \"${${pkg}_tag}\")
-elseif(${pkg}_sha256)
-  string(JSON json SET ${json} "packages" ${pkg} "sha256" \"${${pkg}_sha256}\")
 endif()
 
 string(TIMESTAMP time UTC)
@@ -209,3 +218,38 @@ file(WRITE ${jsonfile} "${json}")
 # write meta for each file in case of error, so that we don't waste prior effort
 
 endforeach()
+
+
+# --- create one big archive file of all the archive files above
+
+message(STATUS "Creating top-level archive ${top_archive} of:
+${packages}")
+
+set(manifest_txt ${outdir}/manifest.txt)
+file(WRITE ${manifest_txt}
+"manifest.json
+")
+
+foreach(pkg IN LISTS packages)
+
+string(JSON archive_name GET ${json} "packages" ${pkg} archive)
+
+file(APPEND ${manifest_txt}
+"${archive_name}
+")
+
+endforeach()
+
+execute_process(
+COMMAND ${tar} --create --file ${top_archive} --bzip2 --no-recursion --files-from ${manifest_txt}
+RESULT_VARIABLE ret
+TIMEOUT 120
+COMMAND_ECHO STDOUT
+RESULT_VARIABLE ret
+ERROR_VARIABLE err
+WORKING_DIRECTORY ${outdir}
+)
+if(NOT ret EQUAL 0)
+  message(FATAL_ERROR "Failed to create archive ${top_archive}:
+  ${ret}: ${err}")
+endif()
