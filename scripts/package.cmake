@@ -15,7 +15,7 @@ endif()
 get_filename_component(outdir ${outdir} ABSOLUTE)
 
 if(NOT DEFINED top_archive)
-  set(top_archive ${outdir}/gemini_package.tar.bz2)
+  set(top_archive ${outdir}/gemini_package.tar)
 endif()
 
 if(NOT DEFINED packages)
@@ -241,7 +241,7 @@ file(APPEND ${manifest_txt}
 endforeach()
 
 execute_process(
-COMMAND ${tar} --create --file ${top_archive} --bzip2 --no-recursion --files-from ${manifest_txt}
+COMMAND ${tar} --create --file ${top_archive} --no-recursion --files-from ${manifest_txt}
 RESULT_VARIABLE ret
 TIMEOUT 120
 COMMAND_ECHO STDOUT
