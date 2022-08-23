@@ -89,6 +89,11 @@ if(CMAKE_PREFIX_PATH)
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_PREFIX_PATH}/cmake)
 endif()
 
+get_filename_component(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} ABSOLUTE)
+file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX})  # ensure we have write access
+message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}
+ensure this is the directory you wish to install libraries to.")
+
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 
 # --- auto-ignore build directory
