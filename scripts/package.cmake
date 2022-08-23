@@ -21,6 +21,7 @@ endif()
 if(NOT DEFINED packages)
 
 set(packages
+gemini3d
 iniparser
 ffilesystem
 h5fortran hdf5 zlib
@@ -163,6 +164,11 @@ find_package(Git REQUIRED)
 find_program(tar NAMES tar REQUIRED)
 
 set(jsonfile ${outdir}/manifest.json)
+set(manifest_txt ${outdir}/manifest.txt)
+
+file(WRITE ${manifest_txt}
+"manifest.json
+")
 
 system_meta(${jsonfile})
 
@@ -215,6 +221,9 @@ string(JSON json SET ${json} "packages" ${pkg} "sha256" \"${sha256}\")
 
 message(DEBUG "${json}")
 file(WRITE ${jsonfile} "${json}")
+file(APPEND ${manifest_txt}
+"${archive_name}
+")
 # write meta for each file in case of error, so that we don't waste prior effort
 
 endforeach()
@@ -224,21 +233,6 @@ endforeach()
 
 message(STATUS "Creating top-level archive ${top_archive} of:
 ${packages}")
-
-set(manifest_txt ${outdir}/manifest.txt)
-file(WRITE ${manifest_txt}
-"manifest.json
-")
-
-foreach(pkg IN LISTS packages)
-
-string(JSON archive_name GET ${json} "packages" ${pkg} archive)
-
-file(APPEND ${manifest_txt}
-"${archive_name}
-")
-
-endforeach()
 
 execute_process(
 COMMAND ${tar} --create --file ${top_archive} --no-recursion --files-from ${manifest_txt}

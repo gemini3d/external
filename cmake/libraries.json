@@ -1,5 +1,10 @@
 {
 
+"gemini3d": {
+  "url": "https://github.com/gemini3d/gemini3d.git",
+  "tag": "main"
+},
+
 "libsc": {
   "url": "https://github.com/cburstedde/libsc.git",
   "tag": "prev3-develop"
