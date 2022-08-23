@@ -283,11 +283,7 @@ endif()
 
 FetchContent_Populate(cmake)
 
-set(_txt "Installing CMake ${version} => ${CMAKE_INSTALL_PREFIX}")
-if(WIN32)
-  string(APPEND _txt "   (takes about a minute or so)")
-endif()
-message(STATUS "${_txt}")
+message(STATUS "Installing CMake ${version} => ${CMAKE_INSTALL_PREFIX} (takes about a minute or so)")
 
 file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX})
 file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${CMAKE_INSTALL_PREFIX})
