@@ -22,6 +22,7 @@ if(NOT DEFINED packages)
 
 set(packages
 gemini3d
+libsc p4est forestclaw
 iniparser
 ffilesystem
 h5fortran hdf5 zlib
@@ -78,12 +79,11 @@ elseif(pkg STREQUAL "scalapack_src")
   list(APPEND exclude --exclude=TESTING/ --exclude=TIMING/ --exclude=CMAKE/)
 endif()
 
-message(STATUS "Creating archive ${archive}")
+message(STATUS "${pkg}: create archive ${archive}")
 execute_process(
 COMMAND ${tar} --create --file ${archive} --bzip2 ${exclude} .
 WORKING_DIRECTORY ${dir}
 TIMEOUT 120
-COMMAND_ECHO STDOUT
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 )
@@ -238,7 +238,6 @@ execute_process(
 COMMAND ${tar} --create --file ${top_archive} --no-recursion --files-from ${manifest_txt}
 RESULT_VARIABLE ret
 TIMEOUT 120
-COMMAND_ECHO STDOUT
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 WORKING_DIRECTORY ${outdir}
