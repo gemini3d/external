@@ -1,7 +1,3 @@
-if(CMAKE_TOOLCHAIN_FILE)
-  get_filename_component(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE} ABSOLUTE)
-endif()
-
 message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHAIN_FILE}")
 
 # --- user options
@@ -34,10 +30,6 @@ option(build_mpi "build MPI")
 option(hdf5_parallel "HDF5 parallel")
 
 option(mpich "build MPICH instead of OpenMPI")
-
-if(NOT DEFINED CRAY AND DEFINED ENV{CRAYPE_VERSION})
-  set(CRAY true)
-endif()
 
 set(CMAKE_TLS_VERIFY true)
 
@@ -90,7 +82,7 @@ if(CMAKE_PREFIX_PATH)
 endif()
 
 get_filename_component(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} ABSOLUTE)
-file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX})  # ensure we have write access
+file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/cmake)  # ensure we have write access
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}
 ensure this is the directory you wish to install libraries to.")
 

@@ -7,6 +7,8 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Release default")
 endif()
 
+include(cmake/toolchain.cmake)
+
 project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
 VERSION 1.1.1
@@ -22,6 +24,11 @@ include(cmake/compilers.cmake)
 
 # template function
 include(cmake/ExtProj.cmake)
+
+if(CRAY)
+  # install toolchain file for future use
+  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cray.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake/)
+endif()
 
 # --- Fortran filesystem
 extproj(ffilesystem git "" "")

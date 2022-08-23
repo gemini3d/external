@@ -5,31 +5,13 @@ These will install nearly everything needed except the compilers themselves.
 If something doesn't work, please let us know.
 These scripts are intended to work on nearly any modern Linux, MacOS or Windows computer.
 
-## CMake build system
-
-If your CMake is too old, install a recent CMake version by:
-
-```sh
-cmake -P scripts/install_cmake.cmake
-```
-
-If that script doesn't work, try to build CMake:
-
-```sh
-cmake -P scripts/build_cmake.cmake
-```
-
-## Essential build tools
-
-There are a minimal set of compilers and tools useful to build scientific programs in general.
-If you have "sudo" / admin access, you can install them with:
+A minimal set of required tools is revealed by:
 
 ```sh
 cmake -P scripts/requirements.cmake
 ```
 
-If you don't have permission to install these programs, try the external library build below anyway.
-If something is missing that stops the build, try asking your system administrator and/or us.
+Even if you can't install the packages above, try the external library build below.
 
 ## Build all Gemini3D external libraries
 
@@ -51,6 +33,20 @@ cd ~/code/gemini3d
 cmake -B build -DCMAKE_PREFIX_PATH=~/libgem
 
 cmake --build build
+```
+
+## CMake update
+
+If your CMake is too old (if you get an error message saying so), install a recent CMake version by:
+
+```sh
+cmake -P scripts/install_cmake.cmake
+```
+
+If that script doesn't work, try to build CMake:
+
+```sh
+cmake -P scripts/build_cmake.cmake
 ```
 
 ## Build specific libraries
