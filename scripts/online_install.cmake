@@ -9,7 +9,7 @@ set(wd ${CMAKE_CURRENT_LIST_DIR}/../build)
 
 # heuristic to determine compiler family.
 if(NOT bindir)
-  find_program(CC NAMES $ENV{CC} cc)
+  find_program(CC NAMES $ENV{CC} icx icc icl cc)
 
   set(bin_name generic)
   if(CC)
