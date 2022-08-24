@@ -1,6 +1,8 @@
 function(compiler_id outvar)
 
 set(wd ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../build)
+get_filename_component(wd ${wd} ABSOLUTE)
+file(MAKE_DIRECTORY ${wd})
 
 set(${outvar} generic PARENT_SCOPE)
 
