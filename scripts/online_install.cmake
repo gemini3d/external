@@ -5,6 +5,11 @@
 
 cmake_minimum_required(VERSION 3.17)
 
+if(CMAKE_VERSION VERSION_LESS 3.19)
+  include(${CMAKE_CURRENT_LIST_DIR}/../cmake/Modules/JsonParse.cmake)
+endif()
+
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/compiler_id.cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
@@ -33,7 +38,7 @@ set(args
 -DCMAKE_INSTALL_PREFIX:PATH=${prefix}
 )
 
-message(STATUS "Building in ${bindir} with options:
+message(STATUS "Building Gemini3D external libraries in ${bindir} with options:
 ${args}")
 
 execute_process(
@@ -56,4 +61,55 @@ if(ret EQUAL 0)
   message(STATUS "Gemini3D external libraries install complete.")
 else()
   message(FATAL_ERROR "Gemini3D external libraries failed to build/install.")
+endif()
+
+# --- Gemini3D
+
+set(gemini3d_src ${bindir}/GEMINI3D-prefix)
+set(gemini3d_bin ${gemini3d_src}/build)
+
+message(STATUS "Building Gemini3D in ${gemini3d_src} with options:
+${args}")
+
+file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json json_meta)
+if(CMAKE_VERSION VERSION_LESS 3.19)
+  sbeParseJson(meta json_meta)
+  set(url ${meta.gemini3d.url})
+  set(tag ${meta.gemini3d.tag})
+else()
+  string(JSON url GET ${json_meta} "gemini3d" "url")
+  string(JSON tag GET ${json_meta} "gemini3d" "tag")
+endif()
+
+git_clone("gemini3d" ${url} ${tag} ${gemini3d_src})
+
+execute_process(
+COMMAND ${CMAKE_COMMAND} ${args}
+-B${gemini3d_bin}
+-S${gemini3d_src}
+RESULT_VARIABLE ret
+)
+
+if(NOT ret EQUAL 0)
+  message(FATAL_ERROR "Gemini3D failed to configure.")
+endif()
+
+execute_process(
+COMMAND ${CMAKE_COMMAND} --build ${gemini3d_bin}
+RESULT_VARIABLE ret
+)
+if(ret EQUAL 0)
+  message(STATUS "Gemini3D build complete.")
+else()
+  message(FATAL_ERROR "Gemini3D failed to build.")
+endif()
+
+execute_process(
+COMMAND ${CMAKE_COMMAND} --install ${gemini3d_bin}
+RESULT_VARIABLE ret
+)
+if(ret EQUAL 0)
+  message(STATUS "Gemini3D install complete.")
+else()
+  message(FATAL_ERROR "Gemini3D failed to install.")
 endif()

@@ -9,6 +9,8 @@
 cmake_minimum_required(VERSION 3.19...3.25)
 # to save JSON metadata, we use CMake >= 3.19
 
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
+
 if(NOT DEFINED outdir)
   set(outdir ~/gemini_package)
 endif()
@@ -37,36 +39,6 @@ endif()
 set(CMAKE_TLS_VERIFY true)
 
 # --- functions
-
-function(git_clone pkg url tag dir)
-
-# NOTE: "git archive" doesn't work with most modern servers.
-
-if(IS_DIRECTORY ${dir})
-  execute_process(COMMAND ${GIT_EXECUTABLE} -C ${dir} describe --tags
-  RESULT_VARIABLE ret
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-  OUTPUT_VARIABLE out
-  TIMEOUT 5
-  )
-  if(ret EQUAL 0 AND out STREQUAL "${tag}")
-    message(STATUS "${pkg}: Already up-to-date")
-    return()
-  endif()
-endif()
-
-execute_process(
-COMMAND ${GIT_EXECUTABLE} clone ${url} --depth 1 --branch ${tag} --single-branch ${dir}
-TIMEOUT 120
-RESULT_VARIABLE ret
-)
-
-if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "${pkg}: Failed to Git clone ${url} to ${dir}")
-endif()
-
-endfunction(git_clone)
-
 
 function(tar_create pkg archive dir)
 
@@ -159,8 +131,6 @@ message(STATUS "Packing archives under ${outdir}")
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
 
-
-find_package(Git REQUIRED)
 find_program(tar NAMES tar REQUIRED)
 
 set(jsonfile ${outdir}/manifest.json)
