@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.17)
 
 function(compiler_id outvar)
 
-set(wd ${CMAKE_CURRENT_LIST_DIR}/../build)
+set(wd ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../build)
 
 set(${outvar} generic PARENT_SCOPE)
 
@@ -25,7 +25,7 @@ if(NOT CC)
 endif()
 
 execute_process(
-COMMAND ${CC} ${CMAKE_CURRENT_LIST_DIR}/compiler_id.c -o ${wd}/compiler_id
+COMMAND ${CC} ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/compiler_id.c -o ${wd}/compiler_id
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 TIMEOUT 20
@@ -35,8 +35,13 @@ if(NOT ret EQUAL 0)
   return()
 endif()
 
+find_program(compiler_id_exe NAMES compiler_id HINTS ${wd} NO_DEFAULT_PATH)
+if(NOT compiler_id_exe)
+  return()
+endif()
+
 execute_process(
-COMMAND ${wd}/compiler_id
+COMMAND ${compiler_id_exe}
 OUTPUT_VARIABLE out
 OUTPUT_STRIP_TRAILING_WHITESPACE
 RESULT_VARIABLE ret
@@ -46,6 +51,7 @@ TIMEOUT 5
 message(DEBUG "Identify C compiler ${CC} with id ${out}:  ${ret}")
 
 if(ret EQUAL 0)
+  set(compiler_id_exe ${compiler_id_exe} PARENT_SCOPE)
   set(${outvar} ${out} PARENT_SCOPE)
 endif()
 

@@ -3,9 +3,9 @@
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
 
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.17)
 
-include(${CMAKE_CURRENT_LIST_DIR}/compiler_id.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/compiler_id.cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
@@ -16,19 +16,22 @@ if(NOT bindir)
 endif()
 get_filename_component(bindir ${bindir} ABSOLUTE)
 
-# need to remove cache to avoid corner cases
-file(REMOVE ${bindir}/CMakeCache.txt)
-
-set(args)
-if(prefix)
-  list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
-else()
+if(NOT prefix)
   if(NOT bin_name)
     compiler_id(bin_name)
   endif()
-  list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=~/libgem_${bin_name})
+  set(prefix ~/libgem_${bin_name})
+endif()
+get_filename_component(prefix ${prefix} ABSOLUTE)
+file(MAKE_DIRECTORY ${prefix}/bin)
+
+if(compiler_id_exe)
+  file(COPY ${compiler_id_exe} DESTINATION ${prefix}/bin/)
 endif()
 
+set(args
+-DCMAKE_INSTALL_PREFIX:PATH=${prefix}
+)
 
 message(STATUS "Building in ${bindir} with options:
 ${args}")
