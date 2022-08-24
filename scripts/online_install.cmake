@@ -7,6 +7,8 @@ cmake_minimum_required(VERSION 3.13)
 
 include(${CMAKE_CURRENT_LIST_DIR}/compiler_id.cmake)
 
+set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
+
 # heuristic to determine compiler family.
 if(NOT bindir)
   compiler_id(bin_name)
