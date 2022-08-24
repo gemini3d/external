@@ -23,7 +23,7 @@ endif()
 if(NOT DEFINED packages)
 
 set(packages
-gemini3d
+gemini3d external
 libsc p4est forestclaw
 iniparser
 ffilesystem

@@ -4,6 +4,10 @@
   "url": "https://github.com/gemini3d/gemini3d.git",
   "tag": "main"
 },
+"external": {
+  "url": "https://github.com/gemini3d/external.git",
+  "tag": "main"
+},
 
 "libsc": {
   "url": "https://github.com/cburstedde/libsc.git",
