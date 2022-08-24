@@ -9,14 +9,19 @@ set(wd ${CMAKE_CURRENT_LIST_DIR}/../build)
 
 # heuristic to determine compiler family.
 if(NOT bindir)
-  find_program(CC NAMES $ENV{CC} icx icc icl cc)
+  if(DEFINED ENV{MKLROOT})
+    set(cc_name icx icc icl cc)
+  else()
+    set(cc_name cc)
+  endif()
+  find_program(CC NAMES $ENV{CC} ${cc_name})
 
   set(bin_name generic)
   if(CC)
     execute_process(
     COMMAND ${CC} ${CMAKE_CURRENT_LIST_DIR}/compiler_id.c -o ${wd}/compiler_id
     RESULT_VARIABLE ret
-    TIMEOUT 10
+    TIMEOUT 20
     )
     if(ret EQUAL 0)
       execute_process(
