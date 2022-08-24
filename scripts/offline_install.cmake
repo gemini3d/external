@@ -1,45 +1,55 @@
-# Build Gemini3D external libraries using internet connection to download
+# Build Gemini3D external libraries using local tarfile without internet.
+#
 # options:
 #
-# -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
+# -Dprefix: where to install libraries under (default ~/libgem)
+# -Dtarfile: where is the tarfile (default ./gemini_package.tar or ~/gemini_package.tar)
+# -Dbindir: where to build libraries under
 
 cmake_minimum_required(VERSION 3.17)
 
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  include(${CMAKE_CURRENT_LIST_DIR}/../cmake/Modules/JsonParse.cmake)
-endif()
-
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/compiler_id.cmake)
-
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
-# heuristic to determine compiler family.
 if(NOT bindir)
-  compiler_id(bin_name)
-  set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build_${bin_name})
+  set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build)
 endif()
 get_filename_component(bindir ${bindir} ABSOLUTE)
 
 if(NOT prefix)
-  if(NOT bin_name)
-    compiler_id(bin_name)
-  endif()
-  set(prefix ~/libgem_${bin_name})
+  set(prefix ~/libgem)
 endif()
 get_filename_component(prefix ${prefix} ABSOLUTE)
-file(MAKE_DIRECTORY ${prefix}/bin)
 
-if(compiler_id_exe)
-  file(COPY ${compiler_id_exe} DESTINATION ${prefix}/bin/)
+# find tarfile
+if(NOT tarfile)
+  find_file(tarfile NAMES gemini_package.tar
+  PATHS . ENV HOME ENV USERPROFILE
+  NO_DEFAULT_PATH
+  )
+  if(NOT tarfile)
+    message(FATAL_ERROR "Could not find gemini_package.tar
+    Specify like:
+    cmake -Dtarfile=<fullpath to gemini_package.tar> -P ${CMAKE_CURRENT_LIST_FILE}")
+  endif()
 endif()
+get_filename_component(tarfile ${tarfile} ABSOLUTE)
+get_filename_component(arcdir ${tarfile} DIRECTORY)
+
+# extract tarfile
+message(STATUS "Extracting ${tarfile} to ${arcdir}")
+execute_process(
+COMMAND ${CMAKE_COMMAND} -E tar x ${tarfile}
+WORKING_DIRECTORY ${arcdir}
+TIMEOUT 120
+)
 
 set(args
+-Dlocal:BOOL=${arcdir}
 -DCMAKE_INSTALL_PREFIX:PATH=${prefix}
 -DCMAKE_PREFIX_PATH:PATH=${prefix}
 )
 
-message(STATUS "Building Gemini3D external libraries in ${bindir} with options:
+message(STATUS "offline: build Gemini3D external libraries in ${bindir} with options:
 ${args}")
 
 execute_process(
@@ -66,23 +76,17 @@ endif()
 
 # --- Gemini3D
 
-set(gemini3d_src ${bindir}/gemini3d-prefix)
+set(gemini3d_src ${arcdir})
 set(gemini3d_bin ${gemini3d_src}/build)
 
 message(STATUS "Building Gemini3D in ${gemini3d_src} with options:
 ${args}")
 
-file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json json_meta)
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  sbeParseJson(meta json_meta)
-  set(url ${meta.gemini3d.url})
-  set(tag ${meta.gemini3d.tag})
-else()
-  string(JSON url GET ${json_meta} "gemini3d" "url")
-  string(JSON tag GET ${json_meta} "gemini3d" "tag")
-endif()
-
-git_clone("gemini3d" ${url} ${tag} ${gemini3d_src})
+execute_process(
+COMMAND ${CMAKE_COMMAND} -E tar x gemini3d.tar.bz2
+WORKING_DIRECTORY ${arcdir}
+TIMEOUT 120
+)
 
 execute_process(
 COMMAND ${CMAKE_COMMAND} ${args}
