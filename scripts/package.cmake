@@ -198,6 +198,12 @@ file(APPEND ${manifest_txt}
 
 endforeach()
 
+# append scripts/offline_install.cmake
+file(APPEND ${manifest_txt}
+"offline_install.cmake
+")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/offline_install.cmake DESTINATION ${outdir}/)
+
 
 # --- create one big archive file of all the archive files above
 
