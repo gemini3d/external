@@ -18,21 +18,15 @@ Even if you can't install the packages above, try the external library build bel
 Pick a directory to install under, say $HOME/libgem:
 
 ```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem
-
-cmake --build build
+cmake -P scripts/online_install.cmake -Dprefix=~/libgem
 ```
 
-That installs files under ~/libgem/[lib,include,bin] and similar.
+That installs files under ~/libgem/.
 
 From Gemini3D, use those libraries like:
 
 ```sh
-cd ~/code/gemini3d
-
-cmake -B build -DCMAKE_PREFIX_PATH=~/libgem
-
-cmake --build build
+cmake -S gemini3d -B gemini3d/build -DCMAKE_PREFIX_PATH=~/libgem
 ```
 
 ## CMake update
@@ -54,6 +48,7 @@ cmake -P scripts/build_cmake.cmake
 To build a specific library after configuration, issue build command like:
 
 ```sh
+cmake -Bbuild
 cmake --build build -t <library>
 ```
 
