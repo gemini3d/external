@@ -65,7 +65,7 @@ endif()
 
 # --- Gemini3D
 
-set(gemini3d_src ${bindir}/GEMINI3D-prefix)
+set(gemini3d_src ${bindir}/gemini3d-prefix)
 set(gemini3d_bin ${gemini3d_src}/build)
 
 message(STATUS "Building Gemini3D in ${gemini3d_src} with options:
