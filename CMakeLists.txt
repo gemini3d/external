@@ -26,6 +26,12 @@ include(cmake/package/cpack.cmake)
 # template function
 include(cmake/ExtProj.cmake)
 
+if(package)
+  file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
+  set(manifest_txt ${PROJECT_BINARY_DIR}/package/manifest.txt)
+  file(WRITE ${manifest_txt} "")
+endif()
+
 if(CRAY)
   # install toolchain file for future use
   file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cray.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake/)

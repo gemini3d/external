@@ -17,6 +17,16 @@ list(INSERT cmake_args 0
 if(CMAKE_TOOLCHAIN_FILE)
   list(APPEND cmake_args -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE})
 endif()
+if(package)
+  list(APPEND cmake_args
+  -DCPACK_SOURCE_PACKAGE_FILE_NAME=${name}
+  -DCPACK_PACKAGE_FILE_NAME=${name}-${CMAKE_SYSTEM_NAME}
+  )
+  file(APPEND ${manifest_txt}
+  "${name}.tar.bz2
+${name}-${CMAKE_SYSTEM_NAME}.tar.bz2
+")
+endif()
 
 set(extproj_args
 CMAKE_ARGS ${cmake_args}

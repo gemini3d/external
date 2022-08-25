@@ -9,7 +9,7 @@ endif()
 
 execute_process(
 COMMAND ${CMAKE_CPACK_COMMAND}
--G TZST
+-G TBZ2
 --config ${cfg}
 -B ${proj_bindir}/package
 TIMEOUT 30

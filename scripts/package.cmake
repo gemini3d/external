@@ -7,9 +7,10 @@
 #   cmake -Doutdir=~/gempkg -P scripts/package.cmake
 
 cmake_minimum_required(VERSION 3.19...3.25)
-# to save JSON metadata, we use CMake >= 3.19
+# to save JSON metadata requires CMake >= 3.19
 
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
 
 if(NOT DEFINED outdir)
   set(outdir ~/gemini_package)
@@ -84,44 +85,6 @@ else()
 endif()
 
 endfunction(download_archive)
-
-
-function(system_meta jsonfile)
-
-# metadata creation
-if(EXISTS ${jsonfile})
-  file(READ ${jsonfile} json)
-else()
-  set(json "{}")
-endif()
-message(STATUS "Writing package metadata to ${jsonfile}")
-
-# system metadata
-execute_process(COMMAND ${tar} --version
-OUTPUT_VARIABLE tar_version
-OUTPUT_STRIP_TRAILING_WHITESPACE
-RESULT_VARIABLE ret
-TIMEOUT 5
-)
-if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "tar ${tar} isn't working")
-endif()
-
-string(JSON json SET ${json} "system" "{}")
-string(JSON json SET ${json} "system" "cmake" \"${CMAKE_VERSION}\")
-string(JSON json SET ${json} "system" "git" \"${GIT_VERSION_STRING}\")
-string(JSON json SET ${json} "system" "tar" \"${tar_version}\")
-string(TIMESTAMP time UTC)
-string(JSON json SET ${json} "system" "time" \"${time}\")
-
-string(JSON m ERROR_VARIABLE e GET "packages")
-if(NOT m)
-  string(JSON json SET ${json} "packages" "{}")
-endif()
-
-set(json ${json} PARENT_SCOPE)
-
-endfunction(system_meta)
 
 
 # --- main program
@@ -212,7 +175,6 @@ ${packages}")
 
 execute_process(
 COMMAND ${tar} --create --file ${top_archive} --no-recursion --files-from ${manifest_txt}
-RESULT_VARIABLE ret
 TIMEOUT 120
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
