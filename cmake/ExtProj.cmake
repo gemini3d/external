@@ -93,17 +93,24 @@ endif()
 
 if(package)
 
+# for project not controlled by us, CPack may not be enabled
+# no problem, we override with our CPackConfig
+
 ExternalProject_Add_Step(${name} CPackSource
-COMMAND ${CMAKE_CPACK_COMMAND}
-  --config <BINARY_DIR>/CPackSourceConfig.cmake
-  -B ${PROJECT_BINARY_DIR}/package
+COMMAND ${CMAKE_COMMAND}
+  -Dproj_bindir:PATH=${PROJECT_BINARY_DIR}
+  -Dbindir:PATH=<BINARY_DIR>
+  -Dname=${name}
+  -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_source.cmake
 DEPENDEES configure
 )
 
 ExternalProject_Add_Step(${name} CPackBinary
-COMMAND ${CMAKE_CPACK_COMMAND}
-  --config <BINARY_DIR>/CPackConfig.cmake
-  -B ${PROJECT_BINARY_DIR}/package
+COMMAND ${CMAKE_COMMAND}
+  -Dproj_bindir:PATH=${PROJECT_BINARY_DIR}
+  -Dbindir:PATH=<BINARY_DIR>
+  -Dname=${name}
+  -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_binary.cmake
 DEPENDEES build
 )
 
