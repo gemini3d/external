@@ -1,10 +1,10 @@
 find_file(cfg
-NAMES CPackSourceConfig.cmake
+NAMES ${cfg_name}
 HINTS ${bindir}
 NO_DEFAULT_PATH
 )
 if(NOT cfg)
-  message(FATAL_ERROR "${name}: did not find CPackSourceConfig.cmake in ${bindir}")
+  message(FATAL_ERROR "${name}: did not find ${cfg_name} in ${bindir}")
 endif()
 
 execute_process(
@@ -18,5 +18,5 @@ ERROR_VARIABLE err
 )
 
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "${name}: failed to package source ${err}")
+  message(FATAL_ERROR "${name}: failed to package ${err}")
 endif()

@@ -101,7 +101,8 @@ COMMAND ${CMAKE_COMMAND}
   -Dproj_bindir:PATH=${PROJECT_BINARY_DIR}
   -Dbindir:PATH=<BINARY_DIR>
   -Dname=${name}
-  -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_source.cmake
+  -Dcfg_name=CPackSourceConfig.cmake
+  -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_run.cmake
 DEPENDEES configure
 )
 
@@ -110,7 +111,8 @@ COMMAND ${CMAKE_COMMAND}
   -Dproj_bindir:PATH=${PROJECT_BINARY_DIR}
   -Dbindir:PATH=<BINARY_DIR>
   -Dname=${name}
-  -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_binary.cmake
+  -Dcfg_name=CPackConfig.cmake
+  -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_run.cmake
 DEPENDEES build
 )
 
