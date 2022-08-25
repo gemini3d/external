@@ -106,3 +106,6 @@ if(amr)
   set(fclaw_args ${amr_args} -Dclawpatch:BOOL=true)
   extproj(forestclaw git "${fclaw_args}" "p4est")
 endif()
+
+# --- CPack
+#include(cmake/cpack.cmake)

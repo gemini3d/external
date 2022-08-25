@@ -3,6 +3,7 @@ message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHA
 # --- user options
 
 option(BUILD_SHARED_LIBS "Build shared libraries")
+option(package "recursively create source and binary packages with CPack")
 
 if(local)
   get_filename_component(local ${local} ABSOLUTE)

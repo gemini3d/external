@@ -90,4 +90,23 @@ else()
   message(FATAL_ERROR "unsure how to use resource of type ${url_type}")
 endif()
 
+
+if(package)
+
+ExternalProject_Add_Step(${name} CPackSource
+COMMAND ${CMAKE_CPACK_COMMAND}
+  --config <BINARY_DIR>/CPackSourceConfig.cmake
+  -B ${PROJECT_BINARY_DIR}/package
+DEPENDEES configure
+)
+
+ExternalProject_Add_Step(${name} CPackBinary
+COMMAND ${CMAKE_CPACK_COMMAND}
+  --config <BINARY_DIR>/CPackConfig.cmake
+  -B ${PROJECT_BINARY_DIR}/package
+DEPENDEES build
+)
+
+endif()
+
 endfunction(extproj)
