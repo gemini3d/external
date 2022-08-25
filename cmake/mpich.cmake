@@ -1,3 +1,5 @@
+set(extproj_args)
+
 if(CMAKE_VERSION VERSION_LESS 3.19)
   include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
   sbeParseJson(meta json_meta)
@@ -6,6 +8,10 @@ if(CMAKE_VERSION VERSION_LESS 3.19)
 else()
   string(JSON mpi_url GET ${json_meta} mpich url)
   string(JSON mpi_tag GET ${json_meta} mpich tag)
+  list(APPEND extproj_args
+  INACTIVITY_TIMEOUT 60
+  CONFIGURE_HANDLED_BY_BUILD ON
+  )
 endif()
 
 list(APPEND mpi_flags
@@ -30,6 +36,5 @@ CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
 TEST_COMMAND ""
-INACTIVITY_TIMEOUT 60
-CONFIGURE_HANDLED_BY_BUILD ON
+${extproj_args}
 )

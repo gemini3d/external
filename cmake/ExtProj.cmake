@@ -18,12 +18,26 @@ if(CMAKE_TOOLCHAIN_FILE)
   list(APPEND cmake_args -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE})
 endif()
 
+set(extproj_args
+CMAKE_ARGS ${cmake_args}
+TEST_COMMAND ""
+DEPENDS ${depends}
+)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
+  list(APPEND extproj_args GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
+endif()
+
 if(CMAKE_VERSION VERSION_LESS 3.19)
   sbeParseJson(meta json_meta)
   set(url ${meta.${name}.url})
 else()
   string(JSON url GET ${json_meta} ${name} url)
+  list(APPEND extproj_args
+  INACTIVITY_TIMEOUT 60
+  CONFIGURE_HANDLED_BY_BUILD true
+  )
 endif()
+
 
 if(local)
   # archive file on this computer or network drive
@@ -42,10 +56,7 @@ if(local)
 
   ExternalProject_Add(${name}
   URL ${${name}_archive}
-  CMAKE_ARGS ${cmake_args}
-  CONFIGURE_HANDLED_BY_BUILD true
-  TEST_COMMAND ""
-  DEPENDS ${depends}
+  ${extproj_args}
   )
 
 elseif(url_type STREQUAL "git")
@@ -60,11 +71,7 @@ elseif(url_type STREQUAL "git")
   GIT_REPOSITORY ${url}
   GIT_TAG ${tag}
   GIT_SHALLOW true
-  CMAKE_ARGS ${cmake_args}
-  INACTIVITY_TIMEOUT 60
-  CONFIGURE_HANDLED_BY_BUILD true
-  TEST_COMMAND ""
-  DEPENDS ${depends}
+  ${extproj_args}
   )
 elseif(url_type STREQUAL "archive")
 
@@ -77,11 +84,7 @@ elseif(url_type STREQUAL "archive")
   ExternalProject_Add(${name}
   URL ${url}
   URL_HASH SHA256=${sha256}
-  CMAKE_ARGS ${cmake_args}
-  INACTIVITY_TIMEOUT 60
-  CONFIGURE_HANDLED_BY_BUILD true
-  TEST_COMMAND ""
-  DEPENDS ${depends}
+  ${extproj_args}
   )
 else()
   message(FATAL_ERROR "unsure how to use resource of type ${url_type}")
