@@ -52,8 +52,8 @@
 },
 
 "zlib": {
-  "url" : "https://github.com/zlib-ng/zlib-ng.git",
-  "tag": "2.0.6"
+  "url" : "https://github.com/scivision/zlib-ng.git",
+  "tag": "2.0.6-cpack"
 },
 "hdf5": {
   "url": "https://github.com/HDFGroup/hdf5.git",
