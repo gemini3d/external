@@ -29,7 +29,14 @@ include(cmake/ExtProj.cmake)
 if(package)
   file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
   set(manifest_txt ${PROJECT_BINARY_DIR}/package/manifest.txt)
-  file(WRITE ${manifest_txt} "")
+  file(WRITE ${manifest_txt}
+  "lapack_src.tar.bz2
+scalapack_src.tar.bz2
+mumps_src.tar.bz2
+")
+  fetch_source(lapack_src git)
+  fetch_source(scalapack_src git)
+  fetch_source(mumps_src archive)
 endif()
 
 if(CRAY)

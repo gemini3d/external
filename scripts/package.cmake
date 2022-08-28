@@ -11,6 +11,9 @@ cmake_minimum_required(VERSION 3.19...3.25)
 
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/tar.cmake)
+
+set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
 if(NOT DEFINED outdir)
   set(outdir ~/gemini_package)
@@ -41,33 +44,6 @@ set(CMAKE_TLS_VERIFY true)
 
 # --- functions
 
-function(tar_create pkg archive dir)
-
-set(exclude --exclude-vcs --exclude=.github/)
-if(pkg STREQUAL "hdf5")
-  list(APPEND exclude --exclude=testfiles/ --exclude=doxygen/ --exclude=java/ --exclude=tools/test/ --exclude=release_docs/ --exclude=c++/ --exclude=examples/ --exclude=configure)
-elseif(pkg STREQUAL "lapack_src")
-  list(APPEND exclude --exclude=TESTING/ --exclude=LAPACKE/ --exclude=CBLAS/ --exclude=DOCS/ --exclude=CMAKE/)
-elseif(pkg STREQUAL "scalapack_src")
-  list(APPEND exclude --exclude=TESTING/ --exclude=TIMING/ --exclude=CMAKE/)
-endif()
-
-message(STATUS "${pkg}: create archive ${archive}")
-execute_process(
-COMMAND ${tar} --create --file ${archive} --bzip2 ${exclude} .
-WORKING_DIRECTORY ${dir}
-TIMEOUT 120
-RESULT_VARIABLE ret
-ERROR_VARIABLE err
-)
-if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "${pkg}: Failed to create archive ${archive}:
-  ${ret}: ${err}")
-endif()
-
-endfunction(tar_create)
-
-
 function(download_archive pkg url archive sha256)
 
 # assume archive directly
@@ -93,8 +69,6 @@ file(MAKE_DIRECTORY ${outdir})
 message(STATUS "Packing archives under ${outdir}")
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
-
-find_program(tar NAMES tar REQUIRED)
 
 set(jsonfile ${outdir}/manifest.json)
 set(manifest_txt ${outdir}/manifest.txt)

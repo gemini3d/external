@@ -2,47 +2,64 @@
 # This is to avoid problems with having ~ million files in a single archive.
 # this allows for an offline-installer script
 #
-# NOTE: before running this script, build gemini3d/external like
-#
-#   cmake -Bbuild -Dpackage=on
-#   cmake --build build -j1
+# The top-level package will be under this repo's build/gemini_package.tar
 #
 # Usage:
-#   cmake -Doutdir=~/gempkg -P scripts/package.cmake
+#   cmake -P scripts/package_cpack.cmake
 
 cmake_minimum_required(VERSION 3.19...3.25)
 # to save JSON metadata requires CMake >= 3.19
 
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
 
-if(NOT DEFINED outdir)
-  set(outdir ~/gemini_package)
-endif()
-get_filename_component(outdir ${outdir} ABSOLUTE)
+set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
-if(NOT DEFINED bindir)
-  set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build/package)
-endif()
-get_filename_component(bindir ${bindir} ABSOLUTE)
-if(NOT IS_DIRECTORY ${bindir})
-  message(FATAL_ERROR "did not find CPack directory ${bindir}")
+get_filename_component(build_dir ${CMAKE_CURRENT_LIST_DIR}/../build ABSOLUTE)
+set(bindir ${build_dir}/package)
+
+set(top_archive ${bindir}/gemini_package.tar)
+
+# --- configure
+
+set(args
+-DCMAKE_INSTALL_PREFIX:PATH=${build_dir}
+-DCMAKE_PREFIX_PATH:PATH=${build_dir}
+-Dpackage:BOOL=true
+)
+
+message(STATUS "build Gemini3D external libraries in ${bindir} with options:
+${args}")
+
+execute_process(
+COMMAND ${CMAKE_COMMAND} ${args}
+-B${build_dir}
+-S${CMAKE_CURRENT_LIST_DIR}/..
+RESULT_VARIABLE ret
+)
+
+if(NOT ret EQUAL 0)
+  message(FATAL_ERROR "Gemini3D external libraries failed to configure.")
 endif()
 
-if(NOT DEFINED top_archive)
-  set(top_archive ${outdir}/gemini_package.tar)
+# --- build and CPack (via ExternalProject)
+
+execute_process(
+COMMAND ${CMAKE_COMMAND} --build ${build_dir}
+RESULT_VARIABLE ret
+)
+
+if(ret EQUAL 0)
+  message(STATUS "Gemini3D external libraries build complete.")
+else()
+  message(FATAL_ERROR "Gemini3D external libraries failed to build.")
 endif()
 
-# --- main program
-
-file(MAKE_DIRECTORY ${outdir})
-message(STATUS "Packing archives under ${outdir}")
+# --- prepare for top archive
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
 
-set(jsonfile ${outdir}/manifest.json)
-set(manifest_txt ${outdir}/manifest.txt)
-
-file(COPY ${bindir}/manifest.txt DESTINATION ${outdir}/)
+set(jsonfile ${bindir}/manifest.json)
+set(manifest_txt ${bindir}/manifest.txt)
 
 system_meta(${jsonfile})
 
