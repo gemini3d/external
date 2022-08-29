@@ -111,8 +111,9 @@ COMMAND ${CMAKE_COMMAND}
   -Dcfg_name=CPackConfig.cmake
   -Dsys_name=${CMAKE_SYSTEM_NAME}
   -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_run.cmake
-DEPENDEES build
+DEPENDEES "CPackSource;build"
 )
+# CPackSource is a dependee to avoid race condition in ${pkgdir}/_CPack_Packaging directory.
 
 endif()
 
