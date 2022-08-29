@@ -1,3 +1,5 @@
+include_guard()
+
 if(CMAKE_VERSION VERSION_LESS 3.19)
   include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
 endif()

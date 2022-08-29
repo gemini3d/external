@@ -33,7 +33,7 @@ if(package)
   file(WRITE ${manifest_txt}
   "lapack_src.tar.bz2
 scalapack_src.tar.bz2
-mumps_src.tar.bz2
+mumps_src.tar.gz
 ")
   fetch_source(lapack_src git)
   fetch_source(scalapack_src git)

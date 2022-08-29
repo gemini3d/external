@@ -43,6 +43,16 @@ elseif(url_type STREQUAL "archive")
 
 get_hash(${name} ${json_meta})
 
+if(url MATCHES ".tar.gz$")
+  set(download_name ${name}.tar.gz)
+elseif(url MATCHES ".tar.bz2$")
+  set(download_name ${name}.tar.bz2)
+elseif(url MATCHES ".tar.zst$")
+  set(download_name ${name}.tar.zst)
+else()
+  message(FATAL_ERROR "${name}: unknown source archive type")
+endif()
+
 ExternalProject_Add(${name}
 URL ${url}
 URL_HASH SHA256=${sha256}
@@ -52,7 +62,7 @@ BUILD_COMMAND ${CMAKE_COMMAND} -E copy <DOWNLOADED_FILE> ${PROJECT_BINARY_DIR}/p
 TEST_COMMAND ""
 INSTALL_COMMAND ""
 DOWNLOAD_NO_EXTRACT true
-DOWNLOAD_NAME ${name}.bz2
+DOWNLOAD_NAME ${download_name}
 )
 
 endif()
