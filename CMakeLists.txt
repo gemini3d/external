@@ -25,6 +25,7 @@ include(cmake/package/cpack.cmake)
 
 # template function
 include(cmake/ExtProj.cmake)
+include(cmake/FetchSource.cmake)
 
 if(package)
   file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
