@@ -21,6 +21,18 @@ set(pkgdir ${build_dir}/package)
 
 set(top_archive ${pkgdir}/gemini_package.tar)
 
+set(manifest_txt ${pkgdir}/manifest.txt)
+
+if(WIN32)
+  set(CMAKE_SYSTEM_NAME Windows)
+elseif(APPLE)
+  set(CMAKE_SYSTEM_NAME Darwin)
+elseif(UNIX)
+  set(CMAKE_SYSTEM_NAME Linux)
+else()
+  message(FATAL_ERROR "Unknown operating system")
+endif()
+
 # --- configure
 
 set(args
@@ -54,6 +66,40 @@ if(ret EQUAL 0)
   message(STATUS "Gemini3D external libraries build complete.")
 else()
   message(FATAL_ERROR "Gemini3D external libraries failed to build.")
+endif()
+
+# --- CPack gemini3d/external itself
+
+file(APPEND ${manifest_txt}
+"external.tar.bz2
+external-${CMAKE_SYSTEM_NAME}.tar.bz2
+")
+
+execute_process(
+COMMAND ${CMAKE_COMMAND}
+-Dpkgdir:PATH=${build_dir}/package
+-Dbindir:PATH=${build_dir}
+-Dname=external
+-Dcfg_name=CPackSourceConfig.cmake
+-P ${CMAKE_CURRENT_LIST_DIR}/../cmake/package/cpack_run.cmake
+RESULT_VARIABLE ret
+)
+if(NOT ret EQUAL 0)
+  message(FATAL_ERROR "Gemini3D/external libraries failed to source package.")
+endif()
+
+execute_process(
+COMMAND ${CMAKE_COMMAND}
+-Dpkgdir:PATH=${build_dir}/package
+-Dbindir:PATH=${build_dir}
+-Dname=external
+-Dcfg_name=CPackConfig.cmake
+-Dsys_name=${CMAKE_SYSTEM_NAME}
+-P ${CMAKE_CURRENT_LIST_DIR}/../cmake/package/cpack_run.cmake
+RESULT_VARIABLE ret
+)
+if(NOT ret EQUAL 0)
+  message(FATAL_ERROR "Gemini3D/external libraries failed to binary package.")
 endif()
 
 # --- prepare for top archive

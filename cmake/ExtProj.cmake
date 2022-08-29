@@ -98,7 +98,6 @@ COMMAND ${CMAKE_COMMAND}
   -Dbindir:PATH=<BINARY_DIR>
   -Dname=${name}
   -Dcfg_name=CPackSourceConfig.cmake
-  -Dsys_name=${CMAKE_SYSTEM_NAME}
   -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/package/cpack_run.cmake
 DEPENDEES configure
 )

@@ -29,7 +29,9 @@ include(cmake/FetchSource.cmake)
 
 if(package)
   file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
-  set(manifest_txt ${PROJECT_BINARY_DIR}/package/manifest.txt)
+  if(NOT DEFINED manifest_txt)
+    set(manifest_txt ${PROJECT_BINARY_DIR}/package/manifest.txt)
+  endif()
   file(WRITE ${manifest_txt}
   "lapack_src.tar.bz2
 scalapack_src.tar.bz2
