@@ -92,9 +92,6 @@ endif()
 
 if(package)
 
-# for project not controlled by us, CPack may not be enabled
-# no problem, we override with our CPackConfig
-
 ExternalProject_Add_Step(${name} CPackSource
 COMMAND ${CMAKE_COMMAND}
   -Dpkgdir:PATH=${PROJECT_BINARY_DIR}/package

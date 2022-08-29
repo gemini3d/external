@@ -12,12 +12,14 @@ cmake_minimum_required(VERSION 3.19...3.25)
 
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
+
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
 get_filename_component(build_dir ${CMAKE_CURRENT_LIST_DIR}/../build ABSOLUTE)
-set(bindir ${build_dir}/package)
+set(pkgdir ${build_dir}/package)
 
-set(top_archive ${bindir}/gemini_package.tar)
+set(top_archive ${pkgdir}/gemini_package.tar)
 
 # --- configure
 
@@ -27,7 +29,7 @@ set(args
 -Dpackage:BOOL=true
 )
 
-message(STATUS "build Gemini3D external libraries in ${bindir} with options:
+message(STATUS "package Gemini3D external libraries in ${pkgdir} with options:
 ${args}")
 
 execute_process(
@@ -58,8 +60,8 @@ endif()
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
 
-set(jsonfile ${bindir}/manifest.json)
-set(manifest_txt ${bindir}/manifest.txt)
+set(jsonfile ${pkgdir}/manifest.json)
+set(manifest_txt ${pkgdir}/manifest.txt)
 
 system_meta(${jsonfile})
 
@@ -70,7 +72,7 @@ libraries.json
 file(COPY
 ${CMAKE_CURRENT_LIST_DIR}/offline_install.cmake
 ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json
-DESTINATION ${bindir}/
+DESTINATION ${pkgdir}/
 )
 
 # --- create big archive file of CPack archive files
@@ -82,9 +84,20 @@ COMMAND ${CMAKE_COMMAND} -E tar c ${top_archive} --files-from=${manifest_txt}
 RESULT_VARIABLE ret
 TIMEOUT 120
 ERROR_VARIABLE err
-WORKING_DIRECTORY ${bindir}
+WORKING_DIRECTORY ${pkgdir}
 )
 if(NOT ret EQUAL 0)
   message(FATAL_ERROR "Failed to create archive ${top_archive}:
   ${ret}: ${err}")
+endif()
+
+# --- GPG sign big archive file
+find_package(GPG)
+
+if(GPG_FOUND)
+  gpg_sign(${top_archive})
+  file(COPY ${top_archive}.asc DESTINATION ${pkgdir}/)
+else()
+  message(WARNING "could not GPG sign ${top_archive} as GPG is not present/working.")
+  return()
 endif()
