@@ -30,14 +30,13 @@ endif()
 set(extproj_args
 CMAKE_ARGS ${cmake_args}
 TLS_VERIFY true
-TEST_COMMAND ""
 DEPENDS ${depends}
 )
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
   list(APPEND extproj_args GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
 endif()
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.19)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
   list(APPEND extproj_args
   INACTIVITY_TIMEOUT 60
   CONFIGURE_HANDLED_BY_BUILD true
@@ -56,13 +55,14 @@ if(local)
   )
 
   if(NOT ${name}_archive)
-    message(FATAL_ERROR "Archive file for ${name} does not exist under ${local}")
+    message(FATAL_ERROR "${name}: Archive file does not exist under ${local}")
   endif()
 
   message(STATUS "${name}: using source archive ${${name}_archive}")
 
   ExternalProject_Add(${name}
   URL ${${name}_archive}
+  TEST_COMMAND ""
   ${extproj_args}
   )
 
@@ -74,6 +74,7 @@ elseif(url_type STREQUAL "git")
   GIT_REPOSITORY ${url}
   GIT_TAG ${tag}
   GIT_SHALLOW true
+  TEST_COMMAND ""
   ${extproj_args}
   )
 elseif(url_type STREQUAL "archive")
@@ -83,10 +84,11 @@ elseif(url_type STREQUAL "archive")
   ExternalProject_Add(${name}
   URL ${url}
   URL_HASH SHA256=${sha256}
+  TEST_COMMAND ""
   ${extproj_args}
   )
 else()
-  message(FATAL_ERROR "unsure how to use resource of type ${url_type}")
+  message(FATAL_ERROR "${name}: unsure how to use resource of type ${url_type}")
 endif()
 
 
