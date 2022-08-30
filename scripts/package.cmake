@@ -15,6 +15,8 @@ include(${CMAKE_CURRENT_LIST_DIR}/../cmake/tar.cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
+
 if(NOT DEFINED outdir)
   set(outdir ~/gemini_package)
 endif()
@@ -148,7 +150,7 @@ message(STATUS "Creating top-level archive ${top_archive} of:
 ${packages}")
 
 execute_process(
-COMMAND ${tar} --create --file ${top_archive} --no-recursion --files-from ${manifest_txt}
+COMMAND ${CMAKE_COMMAND} -E tar c ${top_archive} --files-from=${manifest_txt}
 TIMEOUT 120
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
@@ -157,4 +159,15 @@ WORKING_DIRECTORY ${outdir}
 if(NOT ret EQUAL 0)
   message(FATAL_ERROR "Failed to create archive ${top_archive}:
   ${ret}: ${err}")
+endif()
+
+# --- GPG sign big archive file
+find_package(GPG)
+
+if(GPG_FOUND)
+  gpg_sign(${top_archive})
+  file(COPY ${top_archive}.asc DESTINATION ${outdir}/)
+else()
+  message(WARNING "could not GPG sign ${top_archive} as GPG is not present/working.")
+  return()
 endif()
