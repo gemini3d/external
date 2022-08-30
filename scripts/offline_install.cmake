@@ -40,6 +40,7 @@ if(NOT ret EQUAL 0)
   message(FATAL_ERROR "Failed to extract ${tarfile} to ${arcdir}: ${ret}")
 endif()
 
+# build Gemini3D external libraries
 set(gemini_ext_tar ${arcdir}/external.tar.bz2)
 
 message(STATUS "Extract Gemini3D/external project ${gemini_ext_tar} in ${arcdir}")
@@ -53,7 +54,6 @@ if(NOT ret EQUAL 0)
 endif()
 
 set(args
--Dlocal:BOOL=${arcdir}
 -DCMAKE_INSTALL_PREFIX:PATH=${prefix}
 -DCMAKE_PREFIX_PATH:PATH=${prefix}
 )
@@ -66,6 +66,7 @@ ${args}")
 
 execute_process(
 COMMAND ${CMAKE_COMMAND} ${args}
+-Dlocal:PATH=${arcdir}
 -B${bindir}
 -S${srcdir}
 RESULT_VARIABLE ret
@@ -84,22 +85,24 @@ else()
   message(FATAL_ERROR "Gemini3D external libraries failed to build/install: ${ret}")
 endif()
 
-# --- Gemini3D
+# --- build Gemini3D itself
+set(gemini3d_tar ${arcdir}/gemini3d.tar.bz2)
 
-set(gemini3d_src ${arcdir})
-set(gemini3d_bin ${gemini3d_src}/build)
-
-message(STATUS "Building Gemini3D in ${gemini3d_src} with options:
-${args}")
-
+message(STATUS "Extract Gemini3D project ${gemini3d_tar} in ${arcdir}")
 execute_process(
-COMMAND ${CMAKE_COMMAND} -E tar x gemini3d.tar.bz2
+COMMAND ${CMAKE_COMMAND} -E tar x ${gemini3d_tar}
 WORKING_DIRECTORY ${arcdir}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Failed to extract Gemini3D to ${gemini3d_src}: ${ret}")
+  message(FATAL_ERROR "Gemini3d tar failed to extract in ${arcdir}: ${ret}")
 endif()
+
+set(gemini3d_src ${arcdir}/gemini3d)
+set(gemini3d_bin ${gemini3d_src}/build)
+
+message(STATUS "Building Gemini3D in ${gemini3d_src} with options:
+${args}")
 
 execute_process(
 COMMAND ${CMAKE_COMMAND} ${args}
