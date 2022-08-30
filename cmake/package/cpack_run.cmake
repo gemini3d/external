@@ -12,13 +12,13 @@ COMMAND ${CMAKE_CPACK_COMMAND}
 -G TBZ2
 --config ${cfg}
 -B ${bindir}
+-DCPACK_PACKAGE_INSTALL_DIRECTORY=""
 TIMEOUT 30
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 )
-# we use "-B ${bindir}" in case the sub-project has an
-# arbitrary CPACK_PACKAGE_DIRECTORY specified in itself
-
+# "-B ${bindir}" in case the sub-project has an arbitrary CPACK_PACKAGE_DIRECTORY specified in itself
+# -DCPACK_PACKAGE_INSTALL_DIRECTORY="" in case the sub-project has arbitrary source layout (e.g. HDF5)
 if(NOT ret EQUAL 0)
   message(FATAL_ERROR "${name}: failed to package using ${cfg}:
   ${err}")
