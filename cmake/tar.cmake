@@ -29,8 +29,3 @@ if(NOT ret EQUAL 0)
 endif()
 
 endfunction(tar_create)
-
-
-if(CMAKE_SCRIPT_MODE_FILE)
-  tar_create(${pkg} ${archive} ${dir})
-endif()

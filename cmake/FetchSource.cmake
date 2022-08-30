@@ -34,7 +34,7 @@ GIT_SHALLOW true
 GIT_PROGRESS true
 ${extproj_args}
 CONFIGURE_COMMAND ""
-BUILD_COMMAND ${CMAKE_COMMAND} -Dpkg=${name} -Darchive=${PROJECT_BINARY_DIR}/package/${name}.tar.bz2 -Ddir:PATH=<SOURCE_DIR> -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/tar.cmake
+BUILD_COMMAND ${CMAKE_COMMAND} -Dpkg=${name} -Darchive=${PROJECT_BINARY_DIR}/package/${name}.tar.bz2 -Ddir:PATH=<SOURCE_DIR> -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/tar_create.cmake
 TEST_COMMAND ""
 INSTALL_COMMAND ""
 )
