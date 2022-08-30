@@ -13,14 +13,14 @@ COMMAND ${CMAKE_CPACK_COMMAND}
 --config ${cfg}
 -B ${bindir}
 -DCPACK_PACKAGE_INSTALL_DIRECTORY=""
-TIMEOUT 30
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 )
 # "-B ${bindir}" in case the sub-project has an arbitrary CPACK_PACKAGE_DIRECTORY specified in itself
 # -DCPACK_PACKAGE_INSTALL_DIRECTORY="" in case the sub-project has arbitrary source layout (e.g. HDF5)
+
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "${name}: failed to package using ${cfg}:
+  message(FATAL_ERROR "${name}: failed to package using ${cfg}: ${ret}:
   ${err}")
 endif()
 

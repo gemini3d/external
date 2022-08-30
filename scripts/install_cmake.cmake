@@ -23,5 +23,5 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "CMake install complete.")
 else()
-  message(FATAL_ERROR "CMake failed to install.")
+  message(FATAL_ERROR "CMake failed to install: ${ret}")
 endif()

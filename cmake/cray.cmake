@@ -34,11 +34,11 @@ find_program(cc NAMES gcc REQUIRED)
 
 execute_process(COMMAND ${cc} -dumpversion
 OUTPUT_VARIABLE gcc_vers
+ERROR_VARIABLE err
 RESULT_VARIABLE ret
-TIMEOUT 10
 )
 if(NOT ret EQUAL 0)
-  message(WARNING "ERROR: failed to get ${gcc_mod} version: ${ret}")
+  message(WARNING "ERROR: failed to get ${gcc_mod} version: ${ret}  ${err}")
   return()
 endif()
 if(gcc_vers VERSION_LESS 9.1)
@@ -50,10 +50,9 @@ execute_process(COMMAND ${cc} -v
 OUTPUT_VARIABLE gcc_verb
 ERROR_VARIABLE gcc_verb
 RESULT_VARIABLE ret
-TIMEOUT 10
 )
 if(NOT ret EQUAL 0)
-  message(WARNING "ERROR: failed to get ${gcc_mod} build details: ${ret}")
+  message(WARNING "ERROR: failed to get ${gcc_mod} build details: ${ret}   ${gcc_verb}")
   return()
 endif()
 

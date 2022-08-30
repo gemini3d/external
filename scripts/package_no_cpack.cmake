@@ -146,7 +146,6 @@ ${packages}")
 
 execute_process(
 COMMAND ${CMAKE_COMMAND} -E tar c ${top_archive} --files-from=${manifest_txt}
-TIMEOUT 120
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 WORKING_DIRECTORY ${outdir}

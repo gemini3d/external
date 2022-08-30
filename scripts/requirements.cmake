@@ -43,11 +43,11 @@ endfunction(read_prereqs)
 
 # --- main program
 
-execute_process(COMMAND uname -s OUTPUT_VARIABLE id TIMEOUT 5)
+execute_process(COMMAND uname -s OUTPUT_VARIABLE id)
 
 if(id MATCHES "^MINGW64")
   read_prereqs("msys2")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E echo "${cmd} ${prereqs}" TIMEOUT 2)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E echo "${cmd} ${prereqs}")
   return()
 endif()
 
@@ -63,7 +63,7 @@ foreach(t IN LISTS names)
   find_program(${t} NAMES ${t})
   if(${t})
     read_prereqs(${t})
-    execute_process(COMMAND ${CMAKE_COMMAND} -E echo "${cmd} ${prereqs}" TIMEOUT 2)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E echo "${cmd} ${prereqs}")
     return()
   endif()
 endforeach()

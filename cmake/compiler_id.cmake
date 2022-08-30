@@ -28,7 +28,6 @@ execute_process(
 COMMAND ${CC} ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/compiler_id.c -o ${wd}/compiler_id
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
-TIMEOUT 20
 )
 message(DEBUG "Build compiler_id: ${ret}  ${err}")
 if(NOT ret EQUAL 0)
@@ -45,7 +44,6 @@ COMMAND ${compiler_id_exe}
 OUTPUT_VARIABLE out
 OUTPUT_STRIP_TRAILING_WHITESPACE
 RESULT_VARIABLE ret
-TIMEOUT 5
 )
 
 message(DEBUG "Identify C compiler ${CC} with id ${out}:  ${ret}")

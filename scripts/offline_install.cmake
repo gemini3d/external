@@ -37,7 +37,7 @@ WORKING_DIRECTORY ${arcdir}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Failed to extract ${tarfile} to ${arcdir}")
+  message(FATAL_ERROR "Failed to extract ${tarfile} to ${arcdir}: ${ret}")
 endif()
 
 set(gemini_ext_tar ${arcdir}/external.tar.bz2)
@@ -49,7 +49,7 @@ WORKING_DIRECTORY ${arcdir}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3d/external tar failed to extract in ${arcdir}")
+  message(FATAL_ERROR "Gemini3d/external tar failed to extract in ${arcdir}: ${ret}")
 endif()
 
 set(args
@@ -81,7 +81,7 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D external libraries install complete.")
 else()
-  message(FATAL_ERROR "Gemini3D external libraries failed to build/install.")
+  message(FATAL_ERROR "Gemini3D external libraries failed to build/install: ${ret}")
 endif()
 
 # --- Gemini3D
@@ -98,7 +98,7 @@ WORKING_DIRECTORY ${arcdir}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Failed to extract Gemini3D to ${gemini3d_src}")
+  message(FATAL_ERROR "Failed to extract Gemini3D to ${gemini3d_src}: ${ret}")
 endif()
 
 execute_process(
@@ -108,7 +108,7 @@ COMMAND ${CMAKE_COMMAND} ${args}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D failed to configure.")
+  message(FATAL_ERROR "Gemini3D failed to configure: ${ret}")
 endif()
 
 execute_process(
@@ -118,7 +118,7 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D build complete.")
 else()
-  message(FATAL_ERROR "Gemini3D failed to build.")
+  message(FATAL_ERROR "Gemini3D failed to build: ${ret}")
 endif()
 
 execute_process(
@@ -128,5 +128,5 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D install complete.")
 else()
-  message(FATAL_ERROR "Gemini3D failed to install.")
+  message(FATAL_ERROR "Gemini3D failed to install: ${ret}")
 endif()

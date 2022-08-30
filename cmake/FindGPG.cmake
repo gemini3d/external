@@ -40,7 +40,6 @@ if(GPG_EXECUTABLE AND NOT DEFINED GPG_HAVE_KEYS)
   RESULT_VARIABLE ret
   OUTPUT_VARIABLE keys
   OUTPUT_STRIP_TRAILING_WHITESPACE
-  TIMEOUT 10
   )
   if(ret EQUAL 0 AND NOT "${keys}" STREQUAL "")
     set(GPG_HAVE_KEYS true CACHE BOOL "GPG keys found")
@@ -82,9 +81,10 @@ else()
   file(REMOVE ${target_sig})
 
   execute_process(COMMAND ${GPG_EXECUTABLE} --detach-sign --armor --output ${target_file}.asc ${target_file}
-  RESULT_VARIABLE ret)
+  RESULT_VARIABLE ret
+  )
   if(NOT ret EQUAL 0)
-    message(FATAL_ERROR "${GPG_EXECUTABLE} Failed to sign ${target_file}")
+    message(FATAL_ERROR "${GPG_EXECUTABLE} Failed to sign ${target_file}: ${ret}")
   endif()
 endif()
 
@@ -114,7 +114,7 @@ execute_process(COMMAND ${GPG_EXECUTABLE} --verify ${sigfile} ${binary_file}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Failed to GPG verify ${binary_file} with ${GPG_EXECUTABLE}")
+  message(FATAL_ERROR "Failed to GPG verify ${binary_file} with ${GPG_EXECUTABLE}: ${ret}")
 endif()
 
 endfunction(gpg_verify)

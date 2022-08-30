@@ -18,10 +18,9 @@ if(tar)
   OUTPUT_VARIABLE tar_version
   OUTPUT_STRIP_TRAILING_WHITESPACE
   RESULT_VARIABLE ret
-  TIMEOUT 5
   )
   if(NOT ret EQUAL 0)
-    message(FATAL_ERROR "tar ${tar} isn't working")
+    message(FATAL_ERROR "tar ${tar} isn't working: ${ret}")
   endif()
 
   string(JSON json SET ${json} "system" "tar" \"${tar_version}\")

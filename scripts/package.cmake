@@ -48,7 +48,7 @@ RESULT_VARIABLE ret
 )
 
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D external libraries failed to configure.")
+  message(FATAL_ERROR "Gemini3D external libraries failed to configure: ${ret}")
 endif()
 
 # --- build and CPack (via ExternalProject)
@@ -61,7 +61,7 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D external libraries build complete.")
 else()
-  message(FATAL_ERROR "Gemini3D external libraries failed to build.")
+  message(FATAL_ERROR "Gemini3D external libraries failed to build: ${ret}")
 endif()
 
 # --- CPack gemini3d/external itself
@@ -81,7 +81,7 @@ COMMAND ${CMAKE_COMMAND}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D/external libraries failed to source package.")
+  message(FATAL_ERROR "Gemini3D/external libraries failed to source package: ${ret}")
 endif()
 
 execute_process(
@@ -95,7 +95,7 @@ COMMAND ${CMAKE_COMMAND}
 RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D/external libraries failed to binary package.")
+  message(FATAL_ERROR "Gemini3D/external libraries failed to binary package: ${ret}")
 endif()
 
 # --- prepare for top archive
@@ -124,7 +124,6 @@ message(STATUS "Creating top-level source archive ${top_archive}")
 execute_process(
 COMMAND ${CMAKE_COMMAND} -E tar c ${top_archive} --files-from=${manifest_txt}
 RESULT_VARIABLE ret
-TIMEOUT 120
 ERROR_VARIABLE err
 WORKING_DIRECTORY ${pkgdir}
 )

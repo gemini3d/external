@@ -19,7 +19,6 @@ message(STATUS "${pkg}: create archive ${archive}")
 execute_process(
 COMMAND ${tar} --create --file ${archive} --bzip2 ${exclude} .
 WORKING_DIRECTORY ${dir}
-TIMEOUT 120
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
 )
