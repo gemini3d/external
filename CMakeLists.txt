@@ -110,7 +110,12 @@ extproj(h5fortran git "${h5fortran_args}" "${h5fortran_deps}")
 # --- MSIS
 extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
-# --- p4est
+# --- Gemini3d project
+if(package)
+  extproj(gemini3d git "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem;iniparser")
+endif()
+
+# --- p4est, forestclaw
 if(amr)
   set(amr_args -Dmpi:BOOL=true)
   if(build_mpi)

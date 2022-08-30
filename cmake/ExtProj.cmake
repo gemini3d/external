@@ -74,6 +74,7 @@ elseif(url_type STREQUAL "git")
   GIT_REPOSITORY ${url}
   GIT_TAG ${tag}
   GIT_SHALLOW true
+  GIT_PROGRESS true
   TEST_COMMAND ""
   ${extproj_args}
   )

@@ -35,6 +35,7 @@ set(args
 -DCMAKE_INSTALL_PREFIX:PATH=${build_dir}
 -DCMAKE_PREFIX_PATH:PATH=${build_dir}
 -Dpackage:BOOL=true
+-Dmanifest_txt:FILEPATH=${manifest_txt}
 )
 
 message(STATUS "package Gemini3D external libraries in ${pkgdir} with options:
@@ -103,7 +104,6 @@ endif()
 file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
 
 set(jsonfile ${pkgdir}/manifest.json)
-set(manifest_txt ${pkgdir}/manifest.txt)
 
 system_meta(${jsonfile})
 
