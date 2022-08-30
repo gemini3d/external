@@ -16,6 +16,7 @@ VERSION 1.1.1
 
 include(cmake/options.cmake)
 include(cmake/compilers.cmake)
+include(cmake/package/cpacker.cmake)
 
 # --- main program
 
@@ -24,6 +25,22 @@ include(cmake/compilers.cmake)
 
 # template function
 include(cmake/ExtProj.cmake)
+include(cmake/FetchSource.cmake)
+
+if(package)
+  file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
+  if(NOT DEFINED manifest_txt)
+    set(manifest_txt ${PROJECT_BINARY_DIR}/package/manifest.txt)
+  endif()
+  file(WRITE ${manifest_txt}
+  "lapack_src.tar.bz2
+scalapack_src.tar.bz2
+mumps_src.tar.gz
+")
+  fetch_source(lapack_src git)
+  fetch_source(scalapack_src git)
+  fetch_source(mumps_src archive)
+endif()
 
 if(CRAY)
   # install toolchain file for future use
@@ -93,7 +110,12 @@ extproj(h5fortran git "${h5fortran_args}" "${h5fortran_deps}")
 # --- MSIS
 extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
 
-# --- p4est
+# --- Gemini3d project
+if(package)
+  extproj(gemini3d git "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem;iniparser")
+endif()
+
+# --- p4est, forestclaw
 if(amr)
   set(amr_args -Dmpi:BOOL=true)
   if(build_mpi)

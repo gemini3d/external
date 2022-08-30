@@ -50,7 +50,7 @@ RESULT_VARIABLE ret
 )
 
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D external libraries failed to configure.")
+  message(FATAL_ERROR "Gemini3D external libraries failed to configure: ${ret}")
 endif()
 
 execute_process(
@@ -61,7 +61,7 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D external libraries install complete.")
 else()
-  message(FATAL_ERROR "Gemini3D external libraries failed to build/install.")
+  message(FATAL_ERROR "Gemini3D external libraries failed to build/install: ${ret}")
 endif()
 
 # --- Gemini3D
@@ -92,7 +92,7 @@ RESULT_VARIABLE ret
 )
 
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D failed to configure.")
+  message(FATAL_ERROR "Gemini3D failed to configure: ${ret}")
 endif()
 
 execute_process(
@@ -102,7 +102,7 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D build complete.")
 else()
-  message(FATAL_ERROR "Gemini3D failed to build.")
+  message(FATAL_ERROR "Gemini3D failed to build: ${ret}")
 endif()
 
 execute_process(
@@ -112,5 +112,5 @@ RESULT_VARIABLE ret
 if(ret EQUAL 0)
   message(STATUS "Gemini3D install complete.")
 else()
-  message(FATAL_ERROR "Gemini3D failed to install.")
+  message(FATAL_ERROR "Gemini3D failed to install: ${ret}")
 endif()

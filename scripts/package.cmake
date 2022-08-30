@@ -1,224 +1,146 @@
-# Creates archive file of archive filess from all packages Git tags.
+# Creates archive file of archive files from CPack.
 # This is to avoid problems with having ~ million files in a single archive.
-#
 # this allows for an offline-installer script
 #
-# Usage:
-#   cmake -Doutdir=~/gempkg -P scripts/package.cmake
+# The top-level package will be under this repo's build/gemini_package.tar
 
-cmake_minimum_required(VERSION 3.19...3.25)
-# to save JSON metadata, we use CMake >= 3.19
+cmake_minimum_required(VERSION 3.17...3.25)
 
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
 
-if(NOT DEFINED outdir)
-  set(outdir ~/gemini_package)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
+
+set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
+
+get_filename_component(build_dir ${CMAKE_CURRENT_LIST_DIR}/../build ABSOLUTE)
+set(pkgdir ${build_dir}/package)
+
+set(top_archive ${pkgdir}/gemini_package.tar)
+
+set(manifest_txt ${pkgdir}/manifest.txt)
+
+if(WIN32)
+  set(CMAKE_SYSTEM_NAME Windows)
+elseif(APPLE)
+  set(CMAKE_SYSTEM_NAME Darwin)
+elseif(UNIX)
+  set(CMAKE_SYSTEM_NAME Linux)
+else()
+  message(FATAL_ERROR "Unknown operating system")
 endif()
-get_filename_component(outdir ${outdir} ABSOLUTE)
 
-if(NOT DEFINED top_archive)
-  set(top_archive ${outdir}/gemini_package.tar)
-endif()
+# --- configure
 
-if(NOT DEFINED packages)
-
-set(packages
-gemini3d external
-libsc p4est forestclaw
-iniparser
-ffilesystem
-h5fortran hdf5 zlib
-glow hwm14 msis
-lapack lapack_src
-scalapack scalapack_src
-mumps mumps_src
+set(args
+-DCMAKE_INSTALL_PREFIX:PATH=${build_dir}
+-DCMAKE_PREFIX_PATH:PATH=${build_dir}
+-Dpackage:BOOL=true
+-Dmanifest_txt:FILEPATH=${manifest_txt}
 )
 
-endif()
+message(STATUS "package Gemini3D external libraries in ${pkgdir} with options:
+${args}")
 
-set(CMAKE_TLS_VERIFY true)
-
-# --- functions
-
-function(tar_create pkg archive dir)
-
-set(exclude --exclude-vcs --exclude=.github/)
-if(pkg STREQUAL "hdf5")
-  list(APPEND exclude --exclude=testfiles/ --exclude=doxygen/ --exclude=java/ --exclude=tools/test/ --exclude=release_docs/ --exclude=c++/ --exclude=examples/ --exclude=configure)
-elseif(pkg STREQUAL "lapack_src")
-  list(APPEND exclude --exclude=TESTING/ --exclude=LAPACKE/ --exclude=CBLAS/ --exclude=DOCS/ --exclude=CMAKE/)
-elseif(pkg STREQUAL "scalapack_src")
-  list(APPEND exclude --exclude=TESTING/ --exclude=TIMING/ --exclude=CMAKE/)
-endif()
-
-message(STATUS "${pkg}: create archive ${archive}")
 execute_process(
-COMMAND ${tar} --create --file ${archive} --bzip2 ${exclude} .
-WORKING_DIRECTORY ${dir}
-TIMEOUT 120
+COMMAND ${CMAKE_COMMAND} ${args}
+-B${build_dir}
+-S${CMAKE_CURRENT_LIST_DIR}/..
 RESULT_VARIABLE ret
-ERROR_VARIABLE err
+)
+
+if(NOT ret EQUAL 0)
+  message(FATAL_ERROR "Gemini3D external libraries failed to configure: ${ret}")
+endif()
+
+# --- build and CPack (via ExternalProject)
+
+execute_process(
+COMMAND ${CMAKE_COMMAND} --build ${build_dir}
+RESULT_VARIABLE ret
+)
+
+if(ret EQUAL 0)
+  message(STATUS "Gemini3D external libraries build complete.")
+else()
+  message(FATAL_ERROR "Gemini3D external libraries failed to build: ${ret}")
+endif()
+
+# --- CPack gemini3d/external itself
+
+file(APPEND ${manifest_txt}
+"external.tar.bz2
+external-${CMAKE_SYSTEM_NAME}.tar.bz2
+")
+
+execute_process(
+COMMAND ${CMAKE_COMMAND}
+-Dpkgdir:PATH=${build_dir}/package
+-Dbindir:PATH=${build_dir}
+-Dname=external
+-Dcfg_name=CPackSourceConfig.cmake
+-P ${CMAKE_CURRENT_LIST_DIR}/../cmake/package/cpack_run.cmake
+RESULT_VARIABLE ret
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "${pkg}: Failed to create archive ${archive}:
-  ${ret}: ${err}")
+  message(FATAL_ERROR "Gemini3D/external libraries failed to source package: ${ret}")
 endif()
 
-endfunction(tar_create)
-
-
-function(download_archive pkg url archive sha256)
-
-# assume archive directly
-file(DOWNLOAD ${url} ${archive}
-INACTIVITY_TIMEOUT 60
-EXPECTED_HASH SHA256=${sha256}
-SHOW_PROGRESS
-STATUS ret
-)
-list(GET ret 0 stat)
-if(stat EQUAL 0)
-  message(STATUS "${pkg}: ${ret}")
-else()
-  message(FATAL_ERROR "${pkg}: archive download failed: ${ret}")
-endif()
-
-endfunction(download_archive)
-
-
-function(system_meta jsonfile)
-
-# metadata creation
-if(EXISTS ${jsonfile})
-  file(READ ${jsonfile} json)
-else()
-  set(json "{}")
-endif()
-message(STATUS "Writing package metadata to ${jsonfile}")
-
-# system metadata
-execute_process(COMMAND ${tar} --version
-OUTPUT_VARIABLE tar_version
-OUTPUT_STRIP_TRAILING_WHITESPACE
+execute_process(
+COMMAND ${CMAKE_COMMAND}
+-Dpkgdir:PATH=${build_dir}/package
+-Dbindir:PATH=${build_dir}
+-Dname=external
+-Dcfg_name=CPackConfig.cmake
+-Dsys_name=${CMAKE_SYSTEM_NAME}
+-P ${CMAKE_CURRENT_LIST_DIR}/../cmake/package/cpack_run.cmake
 RESULT_VARIABLE ret
-TIMEOUT 5
 )
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "tar ${tar} isn't working")
+  message(FATAL_ERROR "Gemini3D/external libraries failed to binary package: ${ret}")
 endif()
 
-string(JSON json SET ${json} "system" "{}")
-string(JSON json SET ${json} "system" "cmake" \"${CMAKE_VERSION}\")
-string(JSON json SET ${json} "system" "git" \"${GIT_VERSION_STRING}\")
-string(JSON json SET ${json} "system" "tar" \"${tar_version}\")
-string(TIMESTAMP time UTC)
-string(JSON json SET ${json} "system" "time" \"${time}\")
-
-string(JSON m ERROR_VARIABLE e GET "packages")
-if(NOT m)
-  string(JSON json SET ${json} "packages" "{}")
-endif()
-
-set(json ${json} PARENT_SCOPE)
-
-endfunction(system_meta)
-
-
-# --- main program
-
-file(MAKE_DIRECTORY ${outdir})
-message(STATUS "Packing archives under ${outdir}")
+# --- prepare for top archive
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json meta)
 
-find_program(tar NAMES tar REQUIRED)
-
-set(jsonfile ${outdir}/manifest.json)
-set(manifest_txt ${outdir}/manifest.txt)
-
-file(WRITE ${manifest_txt}
-"manifest.json
-")
+set(jsonfile ${pkgdir}/manifest.json)
 
 system_meta(${jsonfile})
 
-
-foreach(pkg IN LISTS packages)
-
-set(wd ${outdir}/${pkg})
-
-string(JSON url GET ${meta} ${pkg} url)
-
-
-if(pkg STREQUAL "mumps_src")
-  set(archive_name ${pkg}.tar.gz)
-else()
-  set(archive_name ${pkg}.tar.bz2)
-endif()
-set(archive ${outdir}/${archive_name})
-
-if(url MATCHES "\.git$")
-  # clone shallow, then make archive
-  message(STATUS "${pkg}: Git: ${url}")
-
-  string(JSON ${pkg}_tag GET ${meta} ${pkg} "tag")
-
-  git_clone(${pkg} ${url} ${${pkg}_tag} ${wd})
-
-  tar_create(${pkg} ${archive} ${wd})
-
-else()
-  message(STATUS "${pkg}: archive: ${url} => ${archive}")
-
-  string(JSON ${pkg}_sha256 GET ${meta} ${pkg} sha256)
-
-  download_archive(${pkg} ${url} ${archive} ${${pkg}_sha256})
-endif()
-
-# meta for this package
-string(JSON json SET ${json} "packages" ${pkg} "{}")
-string(JSON json SET ${json} "packages" ${pkg} "archive" \"${archive_name}\")
-
-if(${pkg}_tag)
-  string(JSON json SET ${json} "packages" ${pkg} "tag" \"${${pkg}_tag}\")
-endif()
-
-string(TIMESTAMP time UTC)
-string(JSON json SET ${json} "packages" ${pkg} "time" \"${time}\")
-
-file(SHA256 ${archive} sha256)
-string(JSON json SET ${json} "packages" ${pkg} "sha256" \"${sha256}\")
-
-message(DEBUG "${json}")
-file(WRITE ${jsonfile} "${json}")
-file(APPEND ${manifest_txt}
-"${archive_name}
-")
-# write meta for each file in case of error, so that we don't waste prior effort
-
-endforeach()
-
-# append scripts/offline_install.cmake
 file(APPEND ${manifest_txt}
 "offline_install.cmake
+libraries.json
 ")
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/offline_install.cmake DESTINATION ${outdir}/)
+file(COPY
+${CMAKE_CURRENT_LIST_DIR}/offline_install.cmake
+${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json
+DESTINATION ${pkgdir}/
+)
 
+# --- create big archive file of CPack archive files
 
-# --- create one big archive file of all the archive files above
-
-message(STATUS "Creating top-level archive ${top_archive} of:
-${packages}")
+message(STATUS "Creating top-level source archive ${top_archive}")
 
 execute_process(
-COMMAND ${tar} --create --file ${top_archive} --no-recursion --files-from ${manifest_txt}
-RESULT_VARIABLE ret
-TIMEOUT 120
+COMMAND ${CMAKE_COMMAND} -E tar c ${top_archive} --files-from=${manifest_txt}
 RESULT_VARIABLE ret
 ERROR_VARIABLE err
-WORKING_DIRECTORY ${outdir}
+WORKING_DIRECTORY ${pkgdir}
 )
 if(NOT ret EQUAL 0)
   message(FATAL_ERROR "Failed to create archive ${top_archive}:
   ${ret}: ${err}")
 endif()
+
+# --- GPG sign big archive file
+find_package(GPG)
+
+if(GPG_FOUND)
+  gpg_sign(${top_archive})
+  file(COPY ${top_archive}.asc DESTINATION ${pkgdir}/)
+  message(STATUS "signed ${top_archive} in ${top_archive}.asc")
+else()
+  message(WARNING "could not GPG sign ${top_archive} as GPG is not present/working.")
+endif()
+
+message(STATUS "Complete: ${top_archive}")

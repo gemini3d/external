@@ -24,7 +24,7 @@
 
 "iniparser": {
   "url": "https://github.com/gemini3d/iniparser.git",
-  "tag": "v4.1.0.3"
+  "tag": "v4.1.0.4"
 },
 
 "openmpi": {
@@ -38,22 +38,22 @@
 
 "glow": {
   "url": "https://github.com/gemini3d/glow.git",
-  "tag": "v0.981.0.14"
+  "tag": "v0.981.0.15"
 },
 
 "ffilesystem": {
   "url": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v3.7.0"
+  "tag": "v3.7.1"
 },
 
 "h5fortran": {
   "url": "https://github.com/geospace-code/h5fortran.git",
-  "tag": "v4.10.0"
+  "tag": "v4.10.1"
 },
 
 "zlib": {
-  "url" : "https://github.com/zlib-ng/zlib-ng.git",
-  "tag": "2.0.6"
+  "url" : "https://github.com/scivision/zlib-ng.git",
+  "tag": "2.0.6-cpack"
 },
 "hdf5": {
   "url": "https://github.com/HDFGroup/hdf5.git",
@@ -62,16 +62,16 @@
 
 "hwm14": {
   "url": "https://github.com/gemini3d/hwm14.git",
-  "tag": "v1.2.2"
+  "tag": "v1.2.3"
 },
 "msis": {
   "url": "https://github.com/gemini3d/msis.git",
-  "tag": "v2.1.0.2"
+  "tag": "v2.1.0.3"
 },
 
 "mumps": {
   "url": "https://github.com/scivision/mumps.git",
-  "tag": "v5.5.1.4"
+  "tag": "v5.5.1.5"
 },
 "mumps_src": {
   "sha256": "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15",
@@ -80,7 +80,7 @@
 
 "scalapack": {
   "url": "https://github.com/scivision/scalapack.git",
-  "tag": "v2.2.1.1"
+  "tag": "v2.2.1.2"
 },
 "scalapack_src": {
   "tag": "v2.2.1",
@@ -89,7 +89,7 @@
 
 "lapack": {
   "url": "https://github.com/scivision/lapack.git",
-  "tag": "v3.10.1.4"
+  "tag": "v3.10.1.5"
 },
 "lapack_src": {
   "tag": "v3.10.1",

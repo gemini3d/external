@@ -4,6 +4,11 @@ message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHA
 
 option(BUILD_SHARED_LIBS "Build shared libraries")
 
+option(package "recursively create source and binary packages with CPack")
+if(package AND CMAKE_VERSION VERSION_LESS 3.17)
+  message(FATAL_ERROR "Packaging Gemini3D external libraries requires CMake >= 3.17")
+endif()
+
 if(local)
   get_filename_component(local ${local} ABSOLUTE)
 
@@ -73,11 +78,7 @@ if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})
   set(CMAKE_PREFIX_PATH $ENV{CMAKE_MODULE_PATH})
 endif()
 if(CMAKE_PREFIX_PATH)
-  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.21)
-    file(REAL_PATH ${CMAKE_PREFIX_PATH} CMAKE_PREFIX_PATH EXPAND_TILDE)
-  else()
-    get_filename_component(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ABSOLUTE)
-  endif()
+  get_filename_component(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ABSOLUTE)
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_PREFIX_PATH}/cmake)
 endif()
 
@@ -94,7 +95,7 @@ if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
 endif()
 
 # --- check for updated external projects when "false"
-set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED false)
+set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
 
 # --- read JSON with URLs for each library
 file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json_meta)

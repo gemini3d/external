@@ -12,7 +12,6 @@ if(IS_DIRECTORY ${dir})
   RESULT_VARIABLE ret
   OUTPUT_STRIP_TRAILING_WHITESPACE
   OUTPUT_VARIABLE branch
-  TIMEOUT 5
   )
   if(ret EQUAL 0 AND branch STREQUAL "${tag}")
     message(STATUS "${pkg}: Already on Git branch ${branch}")
@@ -24,7 +23,6 @@ if(IS_DIRECTORY ${dir})
   RESULT_VARIABLE ret
   OUTPUT_STRIP_TRAILING_WHITESPACE
   OUTPUT_VARIABLE tag
-  TIMEOUT 5
   )
   if(ret EQUAL 0 AND tag STREQUAL "${tag}")
     message(STATUS "${pkg}: Already up-to-date with Git tag ${tag}")
@@ -34,12 +32,11 @@ endif()
 
 execute_process(
 COMMAND ${GIT_EXECUTABLE} clone ${url} --depth 1 --branch ${tag} --single-branch ${dir}
-TIMEOUT 120
 RESULT_VARIABLE ret
 )
 
 if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "${pkg}: Failed to Git clone ${url} to ${dir}")
+  message(FATAL_ERROR "${pkg}: Failed to Git clone ${url} to ${dir}: ${ret}")
 endif()
 
 endfunction(git_clone)
