@@ -3,9 +3,6 @@
 # this allows for an offline-installer script
 #
 # The top-level package will be under this repo's build/gemini_package.tar
-#
-# Usage:
-#   cmake -P scripts/package_cpack.cmake
 
 cmake_minimum_required(VERSION 3.19...3.25)
 # to save JSON metadata requires CMake >= 3.19

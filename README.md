@@ -15,20 +15,25 @@ cmake -P scripts/requirements.cmake
 
 For advanced use, individual libraries can be [built](./build.md).
 
-## Build all Gemini3D external libraries
+The libraries installed by this package are referred to by other CMake project by specifying the CMake command line parameter `-DCMAKE_PREFIX_PATH=~/libgem` where ~/libgem is the arbitrary path to the libraries install location.
 
-Pick a directory to install under, say ~/libgem:
+## Online: Build Gemini3D and external libraries
+
+For computers where Internet is available, build Gemini3D and external libraries by:
 
 ```sh
-cmake -P scripts/online_install.cmake -Dprefix=~/libgem
+cmake -P scripts/online_install.cmake
 ```
 
-That installs files under ~/libgem/.
+## Offline: Build Gemini3D and external libraries
 
-From Gemini3D, use those libraries like:
+For computers where Internet is not available, one must have a "gemini_package.tar" copied
+to the computer that was previously created by the "package.cmake" script in this repo, as discussed at the bottom of this Readme.
 
 ```sh
-cmake -S gemini3d -B gemini3d/build -DCMAKE_PREFIX_PATH=~/libgem
+cmake -E tar x /path/to/gemini_package.tar offline_install.cmake
+
+cmake -Dtarfile=/path/to/gemini_package.tar -P offline_install.cmake
 ```
 
 ## CMake update
