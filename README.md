@@ -32,8 +32,10 @@ to the computer that was previously created by the "package.cmake" script in thi
 
 ```sh
 cmake -E tar x /path/to/gemini_package.tar offline_install.cmake
+# extracts offline_install.cmake to current directory, which is arbitrary
 
 cmake -Dtarfile=/path/to/gemini_package.tar -P offline_install.cmake
+# build Gemini3D and external libraries without Intenrnet, installing to ~/libgem by default
 ```
 
 ## CMake update
