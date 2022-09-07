@@ -108,7 +108,13 @@ endif()
 extproj(h5fortran git "${h5fortran_args}" "${h5fortran_deps}")
 
 # --- MSIS
-extproj(msis git "-Dmsis2:BOOL=${msis2}" "h5fortran")
+extproj(msis git "-Dmsis2:BOOL=true" "h5fortran")
+# MSIS 2.x is built by default -- to use MSIS 2.x in a simulation run
+# requires the simulation config.nml to have a field like:
+#
+# &neutral_BG
+# msis_version = 21  ! MSIS version multiplied by 10 e.g. 21 is MSIS 2.1
+# /
 
 # --- Gemini3d project
 if(package)
