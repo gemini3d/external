@@ -2,6 +2,7 @@ name: ci
 
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
+  CMAKE_BUILD_PARALLEL_LEVEL: 4
 
 on:
   push:
