@@ -31,8 +31,13 @@ jobs:
     - name: Install CMake 3.17
       run: cmake -Dversion="3.17" -Dprefix:PATH=${{ runner.temp }} -P scripts/install_cmake.cmake
 
-    - name: put CMake 3.17 on Path
+    - name: put CMake 3.17 on Linux Path
+      if: runner.os == 'Linux'
       run: echo "${{ runner.temp }}/bin" >> $GITHUB_PATH
+
+    - name: put CMake 3.17 on Mac Path
+      if: runner.os == 'macOS'
+      run: echo "${{ runner.temp }}/CMake.app/Contents/bin" >> $GITHUB_PATH
 
     - name: Install packages (Linux)
       if: runner.os == 'Linux'
