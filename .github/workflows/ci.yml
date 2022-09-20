@@ -1,0 +1,58 @@
+name: ci
+
+env:
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
+
+on:
+  push:
+    paths:
+    - "**.cmake"
+    - "**/CMakeLists.txt"
+    - ".github/workflows/ci.yml"
+
+jobs:
+
+  core:
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        hwm14: [false]
+        # TODO: temp workaround for fclaw_prep3
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Install CMake 3.17
+      run: cmake -Dversion="3.17" -Dprefix:PATH=${{ runner.temp }} -P scripts/install_cmake.cmake
+
+    - name: put CMake 3.17 on Path
+      run: echo "${{ runner.temp }}/bin" >> $GITHUB_PATH
+
+    - name: Install packages (Linux)
+      if: runner.os == 'Linux'
+      timeout-minutes: 10
+      run: |
+        sudo apt update
+        sudo $(cmake -P scripts/requirements.cmake) liblapack-dev libscalapack-mpi-dev
+
+    - name: Install packages (MacOS)
+      if: runner.os == 'macOS'
+      timeout-minutes: 10
+      run: |
+        $(cmake -P scripts/requirements.cmake)
+        brew install scalapack
+        brew reinstall gcc
+
+    - name: Configure
+      run: cmake -Bbuild -Dfind:BOOL=true -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Install
+      run: cmake --install build
