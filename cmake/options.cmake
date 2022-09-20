@@ -78,7 +78,14 @@ if(CMAKE_PREFIX_PATH)
 endif()
 
 get_filename_component(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} ABSOLUTE)
-file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/cmake)  # ensure we have write access
+# file(MAKE_DIRECTORY) doesn't halt execution. We do this to make a useful error message.
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/cmake
+RESULT_VARIABLE ret)
+if(NOT ret EQUAL "0")
+  message(FATAL_ERROR "Failed to create ${CMAKE_INSTALL_PREFIX}/cmake
+  Please set CMAKE_INSTALL_PREFIX to a writable location")
+endif()
+
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}
 ensure this is the directory you wish to install libraries to.")
 
