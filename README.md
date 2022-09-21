@@ -63,8 +63,11 @@ cmake -P scripts/package.cmake
 
 Which creates a "gemini_package.tar" containing all the source code used by this project and external libraries.
 
-The end-user on the offline computer would use this gemini_package.tar like:
+The end-user on the offline computer would use this gemini_package.tar as follows.
+This command can be executed from any directory, the build will take place under the directory where the gemini_package.tar file is located.
+In this example below for /path/to/gemini_package.tar the build directory would be /path/to/external/ and /path/to/gemini3d/
 
 ```sh
+tar
 cmake -Dprefix=$HOME/libgem -Dtarfile=/path/to/gemini_package.tar -P scripts/offline_install.cmake
 ```

@@ -11,6 +11,7 @@ on:
     - "**/CMakeLists.txt"
     - ".github/workflows/ci.yml"
     - "!scripts/package.cmake"
+    - "!scripts/package_no_cpack.cmake"
     - "!scripts/offline_install.cmake"
     - "!scripts/online_install.cmake"
     - "!cmake/package/**"

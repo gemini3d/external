@@ -9,6 +9,11 @@ cmake_minimum_required(VERSION 3.17...3.25)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
+# parallel build
+if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
+  cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
+endif()
+
 if(NOT prefix)
   set(prefix ~/libgem)
 endif()
@@ -76,7 +81,7 @@ if(NOT ret EQUAL 0)
 endif()
 
 execute_process(
-COMMAND ${CMAKE_COMMAND} --build ${bindir}
+COMMAND ${CMAKE_COMMAND} --build ${bindir} --parallel ${Ncpu}
 RESULT_VARIABLE ret
 )
 if(ret EQUAL 0)
@@ -115,7 +120,7 @@ if(NOT ret EQUAL 0)
 endif()
 
 execute_process(
-COMMAND ${CMAKE_COMMAND} --build ${gemini3d_bin}
+COMMAND ${CMAKE_COMMAND} --build ${gemini3d_bin} --parallel ${Ncpu}
 RESULT_VARIABLE ret
 )
 if(ret EQUAL 0)
