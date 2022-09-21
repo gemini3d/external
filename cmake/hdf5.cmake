@@ -12,10 +12,7 @@ set(hdf5_cmake_args
 -DUSE_LIBAEC:bool=true
 -DHDF5_BUILD_TOOLS:BOOL=$<NOT:$<BOOL:${hdf5_parallel}>>
 -DHDF5_ENABLE_PARALLEL:BOOL=$<BOOL:${hdf5_parallel}>
--DHDF5_EXTERNALLY_CONFIGURED:BOOL=true
 )
-
-# HDF5_EXTERNALLY_CONFIGURED avoids HDF5 setting defaults we don't want, for example to not mess up CPack source dir
 
 set(hdf5_deps zlib)
 
