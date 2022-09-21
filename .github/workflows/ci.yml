@@ -10,6 +10,9 @@ on:
     - "**.cmake"
     - "**/CMakeLists.txt"
     - ".github/workflows/ci.yml"
+    - "!scripts/package.cmake"
+    - "!scripts/offline_install.cmake"
+    - "!scripts/online_install.cmake"
 
 jobs:
 
