@@ -10,7 +10,7 @@ NO_DEFAULT_PATH
 )
 
 if(NOT hdf5_top)
-  message(DEBUG "cpack_hdf5: HDF5 CPack source layout not detected, returning.")
+  message(STATUS "cpack_hdf5: HDF5 CPack source layout not detected, returning.")
   return()
 endif()
 
