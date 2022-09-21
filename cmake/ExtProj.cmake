@@ -32,6 +32,9 @@ CMAKE_ARGS ${cmake_args}
 TLS_VERIFY true
 DEPENDS ${depends}
 )
+if(package)
+  list(APPEND extproj_args INSTALL_COMMAND "")
+endif()
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
   list(APPEND extproj_args GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
 endif()
