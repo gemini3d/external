@@ -41,6 +41,7 @@ set(args
 -DCMAKE_INSTALL_PREFIX:PATH=${build_dir}
 -DCMAKE_PREFIX_PATH:PATH=${build_dir}
 -Dpackage:BOOL=true
+-Dfind:BOOL=false
 -Dmanifest_txt:FILEPATH=${manifest_txt}
 )
 
