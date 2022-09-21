@@ -61,13 +61,43 @@ if(local)
     message(FATAL_ERROR "${name}: Archive file does not exist under ${local}")
   endif()
 
-  message(STATUS "${name}: using source archive ${${name}_archive}")
+  if(name STREQUAL "hdf5")
+    # special handling due to custom HDF5 archive layout
+    # need to strip extra directories HDF_Group/HDF5/${HDF5_VERSION}
+    find_program(tar NAMES tar)
+    if(NOT tar)
+      message(FATAL_ERROR "Could not find tar program")
+    endif()
 
-  ExternalProject_Add(${name}
-  URL ${${name}_archive}
-  TEST_COMMAND ""
-  ${extproj_args}
-  )
+    set(_ext_src ${PROJECT_BINARY_DIR}/${name}_archive)
+    file(MAKE_DIRECTORY ${_ext_src})
+
+    execute_process(
+    COMMAND ${tar} --extract --strip-components=4 --directory ${_ext_src} --file ${${name}_archive}
+    RESULT_VARIABLE ret
+    )
+    if(NOT ret EQUAL "0")
+      message(FATAL_ERROR "${name}: could not extract source archive ${${name}_archive}")
+    endif()
+
+    message(STATUS "${name}: using extracted source ${_ext_src}")
+
+    ExternalProject_Add(${name}
+    SOURCE_DIR ${_ext_src}
+    TEST_COMMAND ""
+    ${extproj_args}
+    )
+
+  else()
+    # default archive without extra custom top-level directories
+    message(STATUS "${name}: using source archive ${${name}_archive}")
+
+    ExternalProject_Add(${name}
+    URL ${${name}_archive}
+    TEST_COMMAND ""
+    ${extproj_args}
+    )
+  endif()
 
 elseif(url_type STREQUAL "git")
 

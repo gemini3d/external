@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.19...3.25)
 # to save JSON metadata requires CMake >= 3.19
 
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/git.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/tar.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/system_meta.cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
