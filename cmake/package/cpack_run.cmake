@@ -1,3 +1,5 @@
+set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
+
 find_file(cfg
 NAMES ${cfg_name}
 HINTS ${bindir}
