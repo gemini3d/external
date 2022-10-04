@@ -43,7 +43,7 @@
 
 "ffilesystem": {
   "url": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v3.7.2"
+  "tag": "v4.0.0"
 },
 
 "h5fortran": {
@@ -72,7 +72,7 @@
 
 "mumps": {
   "url": "https://github.com/scivision/mumps.git",
-  "tag": "v5.5.1.6"
+  "tag": "v5.5.1.7"
 },
 "mumps_src": {
   "sha256": "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15",
