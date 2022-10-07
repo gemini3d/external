@@ -48,7 +48,7 @@ if(CRAY)
 endif()
 
 # --- Fortran filesystem
-extproj(ffilesystem git "-Dcpp:BOOL=false" "")
+extproj(ffilesystem git "-Dcpp:BOOL=false;-DBUILD_SHARED_LIBS:BOOL=true" "")
 
 # --- iniparser (for Gemini3D C++ frontend)
 extproj(iniparser git "" "")
