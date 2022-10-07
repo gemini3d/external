@@ -109,7 +109,7 @@ endif()
 endmacro(find_mpi)
 
 
-function(detect_config)
+macro(detect_config)
 
 set(CMAKE_REQUIRED_INCLUDES ${HDF5_C_INCLUDE_DIR})
 
@@ -120,7 +120,7 @@ NO_DEFAULT_PATH
 )
 
 if(NOT h5_conf)
-  set(HDF5_C_FOUND false PARENT_SCOPE)
+  set(HDF5_C_FOUND false)
   return()
 endif()
 
@@ -131,7 +131,7 @@ check_symbol_exists(H5_HAVE_FILTER_DEFLATE ${h5_conf} hdf5_have_zlib)
 # Always check for HDF5 MPI support because HDF5 link fails if MPI is linked into HDF5.
 check_symbol_exists(H5_HAVE_PARALLEL ${h5_conf} HDF5_HAVE_PARALLEL)
 
-set(HDF5_parallel_FOUND false PARENT_SCOPE)
+set(HDF5_parallel_FOUND false)
 
 if(HDF5_HAVE_PARALLEL)
   find_mpi()
@@ -139,7 +139,7 @@ if(HDF5_HAVE_PARALLEL)
     return()
   endif()
 
-  set(HDF5_parallel_FOUND true PARENT_SCOPE)
+  set(HDF5_parallel_FOUND true)
 endif()
 
 # get version
@@ -152,8 +152,6 @@ if("${_def}" MATCHES
   if(CMAKE_MATCH_3)
     set(HDF5_VERSION ${HDF5_VERSION}.${CMAKE_MATCH_3})
   endif()
-
-  set(HDF5_VERSION ${HDF5_VERSION} PARENT_SCOPE)
 endif()
 
 # avoid picking up incompatible zlib over the desired zlib
@@ -217,9 +215,7 @@ if(UNIX)
   list(APPEND CMAKE_REQUIRED_LIBRARIES m)
 endif()
 
-set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} PARENT_SCOPE)
-
-endfunction(detect_config)
+endmacro(detect_config)
 
 
 function(find_hdf5_fortran)
@@ -799,10 +795,9 @@ endif()
 
 set(hdf5_lsuf lib hdf5/lib)  # need explicit "lib" for self-built HDF5
 if(NOT HDF5_ROOT)
-  if(parallel IN_LIST HDF5_FIND_COMPONENTS)
-    list(INSERT hdf5_lsuf 0 hdf5/openmpi hdf5/mpich)  # Ubuntu
-    list(INSERT hdf5_lsuf 0 openmpi/lib mpich/lib)  # CentOS
-  else()
+  list(INSERT hdf5_lsuf 0 hdf5/openmpi hdf5/mpich)  # Ubuntu
+  list(INSERT hdf5_lsuf 0 openmpi/lib mpich/lib)  # CentOS
+  if(NOT parallel IN_LIST HDF5_FIND_COMPONENTS)
     list(INSERT hdf5_lsuf 0 hdf5/serial)  # Ubuntu
   endif()
 endif()
@@ -817,12 +812,14 @@ else()
   set(hdf5_msuf static include)
 endif()
 
-if(parallel IN_LIST HDF5_FIND_COMPONENTS)
-  list(APPEND hdf5_isuf hdf5/openmpi hdf5/mpich)  # Ubuntu
-  list(APPEND hdf5_msuf hdf5/openmpi hdf5/mpich)  # Ubuntu
-else()
-  list(APPEND hdf5_isuf hdf5/serial)  # Ubuntu
-  list(APPEND hdf5_msuf hdf5/serial)  # Ubuntu
+# Ubuntu
+list(INSERT hdf5_isuf 0 hdf5/openmpi hdf5/mpich)
+list(INSERT hdf5_msuf 0 hdf5/openmpi hdf5/mpich)
+
+if(NOT parallel IN_LIST HDF5_FIND_COMPONENTS)
+  # Ubuntu
+  list(INSERT hdf5_isuf 0 hdf5/serial)
+  list(INSERT hdf5_msuf 0 hdf5/serial)
 endif()
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86_64|AMD64)")
