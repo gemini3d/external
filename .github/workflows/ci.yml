@@ -9,6 +9,7 @@ on:
     paths:
     - "**.cmake"
     - "**/CMakeLists.txt"
+    - "cmake/libraries.json"
     - ".github/workflows/ci.yml"
     - "!scripts/package.cmake"
     - "!scripts/package_no_cpack.cmake"
