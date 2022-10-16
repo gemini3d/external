@@ -5,8 +5,8 @@
 # -Dprefix: where to install libraries under (default ~/libgem)
 # -Dtarfile: where is the tarfile (default ./gemini_package.tar or ~/gemini_package.tar)
 
-cmake_minimum_required(VERSION 3.15...3.25)
-# Gemini3D currently requires CMake 3.15+
+cmake_minimum_required(VERSION 3.14...3.25)
+# Gemini3D currently requires CMake 3.14+
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
