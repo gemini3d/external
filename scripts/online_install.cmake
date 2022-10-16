@@ -3,7 +3,8 @@
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
 
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.15)
+# Gemini3D currently requires CMake 3.15+
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
   include(${CMAKE_CURRENT_LIST_DIR}/../cmake/Modules/JsonParse.cmake)

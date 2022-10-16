@@ -5,9 +5,6 @@ message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHA
 option(BUILD_SHARED_LIBS "Build shared libraries")
 
 option(package "recursively create source and binary packages with CPack")
-if(package AND CMAKE_VERSION VERSION_LESS 3.17)
-  message(FATAL_ERROR "Packaging Gemini3D external libraries requires CMake >= 3.17")
-endif()
 
 if(local)
   get_filename_component(local ${local} ABSOLUTE)
