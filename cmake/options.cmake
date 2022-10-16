@@ -1,4 +1,8 @@
 message(STATUS "${PROJECT_NAME} CMake ${CMAKE_VERSION} Toolchain ${CMAKE_TOOLCHAIN_FILE}")
+cmake_host_system_information(RESULT host_ramMB QUERY TOTAL_PHYSICAL_MEMORY)
+cmake_host_system_information(RESULT host_cpu QUERY PROCESSOR_DESCRIPTION)
+math(EXPR host_ramGB "${host_ramMB} / 1000")
+message(STATUS "${host_ramGB} GB RAM on ${CMAKE_HOST_SYSTEM_NAME} ${CMAKE_HOST_SYSTEM_VERSION} with ${CMAKE_HOST_SYSTEM_PROCESSOR} ${host_cpu}")
 
 # --- user options
 
