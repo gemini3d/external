@@ -43,7 +43,7 @@
 
 "ffilesystem": {
   "url": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v4.1.0"
+  "tag": "v4.1.1"
 },
 
 "h5fortran": {
