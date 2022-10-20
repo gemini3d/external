@@ -1,9 +1,18 @@
 cmake_minimum_required(VERSION 3.13)
 
-set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build/cmake_install)
-
-# need to remove cache to avoid corner cases
-file(REMOVE ${bindir}/CMakeCache.txt)
+if(NOT bindir)
+  find_program(mktemp NAMES mktemp)
+  if(mktemp)
+    execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE)
+  else()
+    string(RANDOM LENGTH 12 _s)
+    if(WIN32)
+      set(bindir $ENV{TEMP}/cmake-${_s})
+    else()
+      set(bindir /tmp/cmake-${_s})
+    endif()
+  endif()
+endif()
 
 set(args)
 if(version)
