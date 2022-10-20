@@ -11,9 +11,9 @@ include(FetchContent)
 function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version
-    REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
-    )
+  file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/../version_cmake_latest.txt version
+  REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
+  )
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
