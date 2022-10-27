@@ -32,6 +32,8 @@ option(hdf5_parallel "HDF5 parallel")
 
 option(mpich "build MPICH instead of OpenMPI")
 
+option(EP_UPDATE_DISCONNECTED "false (default): check for updated Git remote. true: check for updates on each CMake configure")
+
 set(CMAKE_TLS_VERIFY true)
 
 # --- config checks
@@ -98,7 +100,7 @@ if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
 endif()
 
 # --- check for updated external projects when "false"
-set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
+set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED ${EP_UPDATE_DISCONNECTED})
 
 # --- read JSON with URLs for each library
 file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json_meta)
