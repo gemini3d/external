@@ -35,7 +35,29 @@ cmake -E tar x /path/to/gemini_package.tar offline_install.cmake
 # extracts offline_install.cmake to current directory, which is arbitrary
 
 cmake -Dtarfile=/path/to/gemini_package.tar -P offline_install.cmake
-# build Gemini3D and external libraries without Intenrnet, installing to ~/libgem by default
+# build Gemini3D and external libraries without Internet, installing to ~/libgem by default
+```
+
+## Development: local source directory(ies)
+
+For development, one can specify a local source directory(ies) to build from like:
+
+```sh
+cmake -Dglow_source=/path/to/my_glow_code ...
+```
+
+That assumes the glow source directory that you're making changes is at the path specified.
+Git/downloading is not used for that library.
+The libraries this work for include:
+
+```
+ffilesystem iniparser glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw
+```
+
+In general to speed build time, optionally build just that library (and its prereqs) like:
+
+```sh
+cmake --build build -t glow
 ```
 
 ## CMake update
