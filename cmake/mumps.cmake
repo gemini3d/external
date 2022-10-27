@@ -33,4 +33,4 @@ if(NOT LAPACK_FOUND)
   list(APPEND mumps_deps lapack)
 endif()
 
-extproj(mumps git "${mumps_cmake_args}" "${mumps_deps}")
+extproj(mumps ${mumps_method} "${mumps_cmake_args}" "${mumps_deps}")

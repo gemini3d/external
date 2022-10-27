@@ -51,7 +51,21 @@ endif()
 
 get_url(${name} ${json_meta})
 
-if(local)
+if(url_type STREQUAL "source_dir")
+  # local development with a specific source directory out of tree
+
+  get_filename_component(${name}_source ${${name}_source} ABSOLUTE)
+
+  message(STATUS "${name}: local source development directory: ${${name}_source}")
+  ExternalProject_Add(${name}
+  SOURCE_DIR ${${name}_source}
+  BUILD_ALWAYS false
+  ${extproj_args}
+  )
+  # NOTE: "BUILD_ALWAYS true" is suggested by ExternalProject_Add()
+  # docs when SOURCE_DIR is used w/o Download step, if source_dir changes aren't being detected.
+
+elseif(url_type STREQUAL "local")
   # archive file on this computer or network drive
 
   find_file(${name}_archive

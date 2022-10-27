@@ -47,17 +47,37 @@ if(CRAY)
   file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cray.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake/)
 endif()
 
-# --- Fortran filesystem
-extproj(ffilesystem git "-Dcpp:BOOL=false;-DBUILD_SHARED_LIBS:BOOL=true" "")
+# determine possible user overrides for each of the libraries we might develop
+# we specifically exclude from this manual override:
+#   MPI, HDF5, ZLIB, lapack_src, scalapack_src, mumps_src
+# as we're unlikely to modify those libraries
+
+foreach(n ffilesystem iniparser glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw)
+  set(${n}_method "git")
+
+  if(local)
+    set(${n}_method "local")
+  endif()
+
+  if(${n}_source)
+    # user command line point to source directory out of tree
+    set(${n}_method "source_dir")
+  endif()
+
+  message(DEBUG "${n} method: ${${n}_method}")
+endforeach()
+
+# --- Fortran-filesystem
+extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=false;-DBUILD_SHARED_LIBS:BOOL=true" "")
 
 # --- iniparser (for Gemini3D C++ frontend)
-extproj(iniparser git "" "")
+extproj(iniparser ${iniparser_method} "" "")
 
 # --- GLOW
-extproj(glow git "" "")
+extproj(glow ${glow_method} "" "")
 
 # --- HWM14
-extproj(hwm14 git "" "")
+extproj(hwm14 ${hwm14_method} "" "")
 
 # --- MPI
 
@@ -75,7 +95,7 @@ if(LAPACK_FOUND)
   add_custom_target(lapack)
   # dummy target to avoid error if user `cmake --build --target lapack`
 else()
-  extproj(lapack git "-Darith=${arith};-Dlocal:PATH=${local}" "")
+  extproj(lapack ${lapack_method} "-Darith=${arith};-Dlocal:PATH=${local}" "")
 endif()
 
 # --- Scalapack
@@ -129,10 +149,10 @@ if(amr)
   endif()
 
   include(cmake/zlib.cmake)
-  extproj(libsc git "${amr_args}" "zlib")
-  extproj(p4est git "${amr_args}" "libsc")
+  extproj(libsc ${libsc_method} "${amr_args}" "zlib")
+  extproj(p4est ${p4est_method} "${amr_args}" "libsc")
   set(fclaw_args ${amr_args} -Dclawpatch:BOOL=true)
-  extproj(forestclaw git "${fclaw_args}" "p4est")
+  extproj(forestclaw ${forestclaw_method} "${fclaw_args}" "p4est")
 endif()
 
 # print summary of configuration
