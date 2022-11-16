@@ -33,11 +33,9 @@ if(package)
     set(manifest_txt ${PROJECT_BINARY_DIR}/package/manifest.txt)
   endif()
   file(WRITE ${manifest_txt}
-  "lapack_src.tar.bz2
-scalapack_src.tar.bz2
+  "scalapack_src.tar.bz2
 mumps_src.tar.gz
 ")
-  fetch_source(lapack_src git)
   fetch_source(scalapack_src git)
   fetch_source(mumps_src archive)
 endif()
@@ -49,7 +47,7 @@ endif()
 
 # determine possible user overrides for each of the libraries we might develop
 # we specifically exclude from this manual override:
-#   MPI, HDF5, ZLIB, lapack_src, scalapack_src, mumps_src
+#   MPI, HDF5, ZLIB, scalapack_src, mumps_src
 # as we're unlikely to modify those libraries
 
 foreach(n ffilesystem iniparser glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw)
@@ -95,7 +93,7 @@ if(LAPACK_FOUND)
   add_custom_target(lapack)
   # dummy target to avoid error if user `cmake --build --target lapack`
 else()
-  extproj(lapack ${lapack_method} "-Darith=${arith};-Dlocal:PATH=${local}" "")
+  extproj(lapack ${lapack_method} "-Dlocal:PATH=${local}" "")
 endif()
 
 # --- Scalapack

@@ -89,11 +89,7 @@
 },
 
 "lapack": {
-  "url": "https://github.com/scivision/lapack.git",
-  "tag": "v3.10.1.5"
-},
-"lapack_src": {
-  "tag": "v3.10.1",
+  "tag": "v3.11.0",
   "url": "https://github.com/Reference-LAPACK/lapack.git"
 }
 

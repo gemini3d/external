@@ -30,7 +30,7 @@ iniparser
 ffilesystem
 h5fortran hdf5 zlib
 glow hwm14 msis
-lapack lapack_src
+lapack
 scalapack scalapack_src
 mumps mumps_src
 )
