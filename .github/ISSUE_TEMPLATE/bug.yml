@@ -20,5 +20,5 @@ body:
     id: logs
     attributes:
       label: Relevant log output
-      description: What text does CMake output when typing "cmake -P scripts/online_install.cmake"? This will be automatically formatted into code, so no need for backticks.
+      description: What text does CMake output when typing "cmake -P build-online.cmake"? This will be automatically formatted into code, so no need for backticks.
       render: shell

@@ -5,7 +5,6 @@ These will install nearly everything needed except the compilers themselves.
 If something doesn't work, please let us know.
 These scripts are intended to work on nearly any modern Linux, MacOS or Windows computer.
 
-
 On computers where admin/root is not available, simply proceed to the external library build below.
 For computers with admin/root access, the prerequisite libraries are revealed by:
 
@@ -22,7 +21,7 @@ The libraries installed by this package are referred to by other CMake project b
 For computers where Internet is available, build Gemini3D and external libraries by:
 
 ```sh
-cmake -P scripts/online_install.cmake
+cmake -P build-online.cmake
 ```
 
 ## Offline: Build Gemini3D and external libraries
@@ -31,10 +30,10 @@ For computers where Internet is not available, one must have a "gemini_package.t
 to the computer that was previously created by the "package.cmake" script in this repo, as discussed at the bottom of this Readme.
 
 ```sh
-cmake -E tar x /path/to/gemini_package.tar offline_install.cmake
-# extracts offline_install.cmake to current directory, which is arbitrary
+cmake -E tar x /path/to/gemini_package.tar build-offline.cmake
+# extracts build-offline.cmake to current directory, which is arbitrary
 
-cmake -Dtarfile=/path/to/gemini_package.tar -P offline_install.cmake
+cmake -Dtarfile=/path/to/gemini_package.tar -P build-offline.cmake
 # build Gemini3D and external libraries without Internet, installing to ~/libgem by default
 ```
 
@@ -91,5 +90,5 @@ In this example below for /path/to/gemini_package.tar the build directory would 
 
 ```sh
 tar
-cmake -Dprefix=$HOME/libgem -Dtarfile=/path/to/gemini_package.tar -P scripts/offline_install.cmake
+cmake -Dprefix=$HOME/libgem -Dtarfile=/path/to/gemini_package.tar -P build-offline.cmake
 ```

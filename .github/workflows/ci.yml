@@ -2,7 +2,6 @@ name: ci
 
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
-  CMAKE_BUILD_PARALLEL_LEVEL: 4
 
 on:
   push:
@@ -13,8 +12,6 @@ on:
     - ".github/workflows/ci.yml"
     - "!scripts/package.cmake"
     - "!scripts/package_no_cpack.cmake"
-    - "!scripts/offline_install.cmake"
-    - "!scripts/online_install.cmake"
     - "!cmake/package/**"
 
 jobs:
@@ -60,11 +57,5 @@ jobs:
         brew install scalapack
         brew reinstall gcc
 
-    - name: Configure
-      run: cmake -Bbuild -Dfind:BOOL=true -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}
-
-    - name: Build
-      run: cmake --build build
-
-    - name: Install
-      run: cmake --install build
+    - name: Configure, build, install
+      run: cmake -Dfind:BOOL=true -P build-online.cmake

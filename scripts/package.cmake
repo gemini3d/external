@@ -114,11 +114,11 @@ set(jsonfile ${pkgdir}/manifest.json)
 system_meta(${jsonfile})
 
 file(APPEND ${manifest_txt}
-"offline_install.cmake
+"build-offline.cmake
 libraries.json
 ")
 file(COPY
-${CMAKE_CURRENT_LIST_DIR}/offline_install.cmake
+${CMAKE_CURRENT_LIST_DIR}/build-offline.cmake
 ${CMAKE_CURRENT_LIST_DIR}/../cmake/libraries.json
 DESTINATION ${pkgdir}/
 )
