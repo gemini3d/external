@@ -4,10 +4,10 @@ if(CMAKE_VERSION VERSION_LESS 3.19)
   include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
   sbeParseJson(meta json_meta)
   set(mpi_url ${meta.openmpi.url})
-  set(mpi_tag ${meta.openpmi.tag})
+  set(mpi_sha256 ${meta.openpmi.sha256})
 else()
   string(JSON mpi_url GET ${json_meta} openmpi url)
-  string(JSON mpi_tag GET ${json_meta} openmpi tag)
+  string(JSON mpi_sha256 GET ${json_meta} openmpi sha256)
   list(APPEND extproj_args
   INACTIVITY_TIMEOUT 60
   CONFIGURE_HANDLED_BY_BUILD ON
@@ -38,10 +38,10 @@ endif()
 # lib_gcc/lib/libz.a(deflate_medium.c.o): relocation R_X86_64_32S against internal symbol `zng_length_code' can not be used when making a shared objec
 # https://github.com/zlib-ng/zlib-ng/wiki/Common-build-problems#relocation-error-in-compress2
 
+# need to use URL to avoid very long autogen.pl bootstrap with Git Tag downloads
 ExternalProject_Add(mpi
-GIT_REPOSITORY ${mpi_url}
-GIT_TAG ${mpi_tag}
-GIT_SHALLOW true
+URL ${mpi_url}
+URL_HASH SHA256=${mpi_sha256}
 CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
