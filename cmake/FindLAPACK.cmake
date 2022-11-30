@@ -23,7 +23,7 @@ infrequently used Lapack libraries and is unreliable for me.
 Tested on Linux, MacOS and Windows with:
 * GCC / Gfortran
 * Clang / Flang
-* Intel (icc, ifort)
+* IntelLLVM
 * Cray
 
 

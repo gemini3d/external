@@ -46,4 +46,5 @@ CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
 TEST_COMMAND ""
+${extproj_args}
 )

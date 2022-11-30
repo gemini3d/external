@@ -87,7 +87,7 @@ if(STATIC IN_LIST SCALAPACK_FIND_COMPONENTS AND
   )
   set(CMAKE_REQUIRED_LIBRARIES $<LINK_GROUP:RESCAN,${CMAKE_REQUIRED_LIBRARIES}>)
 endif()
-# MPI needed for ifort
+# MPI needed for IntelLLVM
 
 check_fortran_source_compiles(
 "program test
