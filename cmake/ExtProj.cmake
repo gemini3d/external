@@ -51,17 +51,6 @@ endif()
 
 # --- cache_args for repos that need list args
 
-if(name STREQUAL "lapack")
-  list(APPEND extproj_args
-  CMAKE_CACHE_ARGS
-  "-DBUILD_SINGLE:BOOL=$<IN_LIST:s,${arith}>"
-  "-DBUILD_DOUBLE:BOOL=$<IN_LIST:d,${arith}>"
-  "-DBUILD_COMPLEX:BOOL=$<IN_LIST:c,${arith}>"
-  "-DBUILD_COMPLEX16:BOOL=$<IN_LIST:z,${arith}>"
-  )
-elseif(name MATCHES "scalapack|mumps")
-  list(APPEND extproj_args CMAKE_CACHE_ARGS -Darith:STRING=${arith})
-endif()
 
 # --- select repo type
 

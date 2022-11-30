@@ -1,5 +1,5 @@
 if(find)
-  find_package(MUMPS COMPONENTS ${arith})
+  find_package(MUMPS COMPONENTS d)
 endif()
 if(MUMPS_FOUND)
   add_custom_target(mumps)
@@ -10,7 +10,10 @@ set(mumps_cmake_args
 -Dscotch:BOOL=${scotch}
 -Dopenmp:BOOL=false
 -Dparallel:BOOL=true
--Darith=${arith}
+-DBUILD_SINGLE:BOOL=false
+-DBUILD_DOUBLE:BOOL=true
+-DBUILD_COMPLEX:BOOL=false
+-DBUILD_COMPLEX16:BOOL=false
 )
 if(build_mpi)
   list(APPEND mumps_cmake_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})

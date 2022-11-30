@@ -93,7 +93,14 @@ if(LAPACK_FOUND)
   add_custom_target(lapack)
   # dummy target to avoid error if user `cmake --build --target lapack`
 else()
-  extproj(lapack ${lapack_method} "-Dlocal:PATH=${local}" "")
+  set(lapack_args
+  -Dlocal:PATH=${local}
+  -DBUILD_SINGLE:BOOL=false
+  -DBUILD_DOUBLE:BOOL=true
+  -DBUILD_COMPLEX:BOOL=false
+  -DBUILD_COMPLEX16:BOOL=false
+  )
+  extproj(lapack ${lapack_method} "${lapack_args}" "")
 endif()
 
 # --- Scalapack

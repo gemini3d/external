@@ -7,7 +7,10 @@ if(SCALAPACK_FOUND)
 endif()
 
 set(scalapack_args
--Darith=${arith}
+-DBUILD_SINGLE:BOOL=false
+-DBUILD_DOUBLE:BOOL=true
+-DBUILD_COMPLEX:BOOL=false
+-DBUILD_COMPLEX16:BOOL=false
 )
 
 if(NOT LAPACK_FOUND)
