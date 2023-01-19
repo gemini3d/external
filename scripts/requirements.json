@@ -22,9 +22,5 @@
   "port": {
     "pkgs": ["gcc11", "openmpi", "hdf5"],
     "cmd": "port install"
-  },
-  "msys2": {
-    "pkgs": ["mingw-w64-x86_64-gcc", "mingw-w64-x86_64-gcc-fortran", "mingw-w64-x86_64-hdf5"],
-    "cmd": "pacman -S --needed"
   }
 }

@@ -45,18 +45,12 @@ endfunction(read_prereqs)
 
 execute_process(COMMAND uname -s OUTPUT_VARIABLE id)
 
-if(id MATCHES "^MINGW64")
-  read_prereqs("msys2")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E echo "${cmd} ${prereqs}")
-  return()
-endif()
-
 if(APPLE)
   set(names brew port)
 elseif(UNIX)
   set(names apt yum pacman zypper)
 elseif(WIN32)
-  message(FATAL_ERROR "Windows: suggest Windows Subsystem for Linux (WSL) https://aka.ms/wsl ")
+  message(FATAL_ERROR "Windows: suggest Windows Subsystem for Linux (WSL) https://aka.ms/wsl")
 endif()
 
 foreach(t IN LISTS names)
