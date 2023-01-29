@@ -66,7 +66,7 @@ foreach(n ffilesystem iniparser glow hwm14 msis lapack scalapack mumps libsc p4e
 endforeach()
 
 # --- Fortran-filesystem
-extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=false;-DBUILD_SHARED_LIBS:BOOL=true" "")
+extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=false" "")
 
 # --- iniparser (for Gemini3D C++ frontend)
 extproj(iniparser ${iniparser_method} "" "")

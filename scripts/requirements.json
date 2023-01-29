@@ -16,7 +16,7 @@
     "cmd": "zypper install"
   },
   "brew": {
-    "pkgs": ["gcc", "open-mpi", "hdf5", "libaec"],
+    "pkgs": ["gcc", "open-mpi", "hdf5"],
     "cmd": "brew install"
   },
   "port": {
