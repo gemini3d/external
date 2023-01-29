@@ -24,7 +24,7 @@ endif()
 # https://github.com/zlib-ng/zlib-ng/wiki/Common-build-problems#relocation-error-in-compress2
 
 # need to use URL to avoid very long autogen.pl bootstrap with Git Tag downloads
-ExternalProject_Add(mpi
+ExternalProject_Add(OpenMPI
 URL ${mpi_url}
 URL_HASH SHA256=${mpi_sha256}
 CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}

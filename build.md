@@ -16,22 +16,6 @@ The prerequisites of the library will also be built.
 If a new enough Python isn't available on your system, you can build Python via project
 [cmake-python-build](https://github.com/gemini3d/cmake-python-build).
 
-### Build OpenMPI
-
-```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem -Dopenmpi=yes
-
-cmake --build build -t mpi
-```
-
-### Build MPICH
-
-```sh
-cmake -B build -DCMAKE_INSTALL_PREFIX=~/libgem -Dmpich=yes
-
-cmake --build build -t mpi
-```
-
 ### Build MUMPS
 
 ```sh

@@ -14,7 +14,7 @@ list(APPEND mpi_flags --with-device=ch3)
 #   )
 # endif()
 
-ExternalProject_Add(mpi
+ExternalProject_Add(MPICH
 GIT_REPOSITORY ${mpi_url}
 GIT_TAG ${mpi_tag}
 GIT_SHALLOW true
