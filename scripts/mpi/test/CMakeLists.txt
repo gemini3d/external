@@ -6,8 +6,11 @@ enable_testing()
 
 include(CheckSourceCompiles)
 
+if(NOT DEFINED MPI_ROOT AND DEFINED ENV{MPI_ROOT})
+  set(MPI_ROOT $ENV{MPI_ROOT})
+endif()
 if(NOT MPI_ROOT)
-  message(WARNING "MPI_ROOT not set, using default")
+  message(STATUS "MPI_ROOT not set, using default MPI search paths")
 endif()
 
 find_package(MPI COMPONENTS Fortran REQUIRED)
