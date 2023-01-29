@@ -1,6 +1,14 @@
-if(WIN32)
-  message(WARNING "Windows users normally use MS-MPI or Intel MPI")
-endif()
+cmake_minimum_required(VERSION 3.19)
+
+project(BuildMPI LANGUAGES C Fortran)
+
+include(ExternalProject)
+
+option(mpich "Build MPICH instead of OpenMPI")
+
+message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 
 find_package(Autotools REQUIRED)
 
@@ -33,9 +41,13 @@ get_filename_component(math_LIBDIR ${math} DIRECTORY)
 
 set(mpi_ldflags "LDFLAGS=${CMAKE_LIBRARY_PATH_FLAG}${math_LIBDIR}")
 
+# --- read JSON with URLs for each library
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/libraries.json json_meta)
 
 if(mpich)
-  include(${CMAKE_CURRENT_LIST_DIR}/mpich.cmake)
+  message(STATUS "Building MPICH")
+  include(mpich.cmake)
 else()
-  include(${CMAKE_CURRENT_LIST_DIR}/openmpi.cmake)
+  message(STATUS "Building OpenMPI")
+  include(openmpi.cmake)
 endif()

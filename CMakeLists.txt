@@ -78,12 +78,7 @@ extproj(glow ${glow_method} "" "")
 extproj(hwm14 ${hwm14_method} "" "")
 
 # --- MPI
-
-if(build_mpi)
-  include(cmake/mpi.cmake)
-else()
-  find_package(MPI COMPONENTS C Fortran REQUIRED)
-endif()
+find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 # --- LAPACK
 if(find OR CRAY OR DEFINED ENV{MKLROOT})
@@ -124,10 +119,6 @@ endif()
 set(h5fortran_deps)
 if(NOT HDF5_FOUND)
   list(APPEND h5fortran_deps "hdf5")
-  if(build_mpi)
-    list(APPEND h5fortran_deps mpi)
-    set(h5fortran_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
-  endif()
 endif()
 
 extproj(h5fortran git "${h5fortran_args}" "${h5fortran_deps}")
@@ -149,9 +140,6 @@ endif()
 # --- p4est, forestclaw
 if(amr)
   set(amr_args -Dmpi:BOOL=true)
-  if(build_mpi)
-    list(APPEND amr_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
-  endif()
 
   include(cmake/zlib.cmake)
   extproj(libsc ${libsc_method} "${amr_args}" "zlib")

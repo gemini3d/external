@@ -14,11 +14,4 @@ set(hdf5_cmake_args
 -DHDF5_ENABLE_PARALLEL:BOOL=$<BOOL:${hdf5_parallel}>
 )
 
-set(hdf5_deps zlib)
-
-if(build_mpi)
-  list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
-  list(APPEND hdf5_deps mpi)
-endif()
-
-extproj(hdf5 git "${hdf5_cmake_args}" "${hdf5_deps}")
+extproj(hdf5 git "${hdf5_cmake_args}" "zlib")

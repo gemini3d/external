@@ -25,11 +25,7 @@ option(amr "build packages used for AMR")
 
 option(scotch "MUMPS scotch + METIS ordering (PORD is default and always used)")
 
-option(build_mpi "build MPI")
-
 option(hdf5_parallel "HDF5 parallel")
-
-option(mpich "build MPICH instead of OpenMPI")
 
 option(EP_UPDATE_DISCONNECTED "false (default): check for updated Git remote. true: check for updates on each CMake configure")
 

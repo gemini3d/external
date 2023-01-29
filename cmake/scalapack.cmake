@@ -13,12 +13,9 @@ set(scalapack_args
 -DBUILD_COMPLEX16:BOOL=false
 )
 
+set(scalapack_deps)
 if(NOT LAPACK_FOUND)
   set(scalapack_deps lapack)
-endif()
-if(build_mpi)
-  list(APPEND scalapack_deps mpi)
-  list(APPEND scalapack_args -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX})
 endif()
 
 if(local)

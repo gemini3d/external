@@ -33,7 +33,7 @@
 },
 "mpich": {
   "url": "https://github.com/pmodels/mpich.git",
-  "tag": "v4.0.3"
+  "tag": "v4.1"
 },
 
 "glow": {

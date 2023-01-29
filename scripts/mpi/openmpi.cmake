@@ -1,22 +1,7 @@
-set(extproj_args)
+string(JSON mpi_url GET ${json_meta} openmpi url)
+string(JSON mpi_sha256 GET ${json_meta} openmpi sha256)
 
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
-  sbeParseJson(meta json_meta)
-  set(mpi_url ${meta.openmpi.url})
-  set(mpi_sha256 ${meta.openpmi.sha256})
-else()
-  string(JSON mpi_url GET ${json_meta} openmpi url)
-  string(JSON mpi_sha256 GET ${json_meta} openmpi sha256)
-  list(APPEND extproj_args
-  INACTIVITY_TIMEOUT 60
-  CONFIGURE_HANDLED_BY_BUILD ON
-  )
-endif()
-
-list(APPEND mpi_flags
---with-hwloc=internal
-)
+list(APPEND mpi_flags --with-hwloc=internal)
 # internal HWLOC avoids error in MPI:
 # ibopen-pal.a(topology-linux.o): multiple definition of `hwloc_linux_component'
 #--with-hwloc-libdir=${CMAKE_INSTALL_PREFIX}/lib
@@ -46,5 +31,6 @@ CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
 TEST_COMMAND ""
-${extproj_args}
+INACTIVITY_TIMEOUT 60
+CONFIGURE_HANDLED_BY_BUILD ON
 )
