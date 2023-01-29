@@ -11,19 +11,32 @@ message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 
+# --- auto-ignore build directory
+if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
+  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
+endif()
+
+# --- check for updated external projects when "false"
+set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
+
+
 find_package(Autotools REQUIRED)
 
+# --- determine number of cores for parallel build
 # MPI builds spawn too many threads with bare "make -j" giving build crashes like
 # libtool: fork: Resource temporarily unavailable
 # clang: error: unable to execute command: posix_spawn failed: Resource temporarily unavailable
-
 cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
 
 set(mpi_flags --prefix=${CMAKE_INSTALL_PREFIX})
 
 # OpenMPI/MPICH have significant problems with hinting and testing compilers, particularly on MacOS
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-  list(APPEND mpi_flags CC=gcc)
+  if(mpich)
+    list(APPEND mpi_flags CC=${CMAKE_C_COMPILER})
+  else()
+    list(APPEND mpi_flags CC=gcc)
+  endif()
 elseif(CMAKE_C_COMPILER_ID MATCHES "Clang$")
   list(APPEND mpi_flags CC=clang)
 elseif(CMAKE_C_COMPILER_ID MATCHES "Intel|IntelLLVM")
@@ -49,11 +62,11 @@ if(mpich)
   check_include_file("ISO_Fortran_binding.h" HAVE_ISO_FORTRAN_BINDING_H)
   if(NOT HAVE_ISO_FORTRAN_BINDING_H)
     message(NOTICE "
-*** ERROR: ISO_Fortran_binding.h not found with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}.")
+*** ERROR: ISO_Fortran_binding.h not found with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}  ${CMAKE_C_COMPILER}")
     if(APPLE)
       message(NOTICE "on macOS, please use GCC compiler. Specify GCC like:
 
-cmake -DCMAKE_C_COMPILER=gcc-12 -DCMAKE_CXX_COMPILER=g++-12 -B build
+cmake -DCMAKE_C_COMPILER=gcc-12 -B build
 
 Note that just setting \"CC=gcc\" on macOS simply defaults to Clang, which will fail.
 ")
@@ -97,4 +110,19 @@ INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
 TEST_COMMAND ""
 INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD ON
+)
+
+
+message(STATUS "MPI: ${mpi_url}
+flags: ${mpi_flags}
+ldflags: ${mpi_ldflags}")
+
+
+# --- check that MPI-3 Fortran is working
+ExternalProject_add(MPItest
+SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test
+CMAKE_ARGS -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DMPI_ROOT:PATH=${CMAKE_INSTALL_PREFIX}
+INSTALL_COMMAND ""
+CONFIGURE_HANDLED_BY_BUILD on
+DEPENDS MPI
 )
