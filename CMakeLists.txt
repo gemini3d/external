@@ -1,6 +1,6 @@
 # builds all Gemini3D external libraries
 
-cmake_minimum_required(VERSION 3.13...3.25)
+cmake_minimum_required(VERSION 3.14...3.25)
 
 if(NOT CMAKE_BUILD_TYPE)
   # ignore ENV{CMAKE_BUILD_TYPE} as we want to directly capture this project's user intent
@@ -78,7 +78,30 @@ extproj(glow ${glow_method} "" "")
 extproj(hwm14 ${hwm14_method} "" "")
 
 # --- MPI
+if(NOT DEFINED MPI_ROOT AND DEFINED ENV{MPI_ROOT})
+  set(MPI_ROOT $ENV{MPI_ROOT})
+endif()
+
 find_package(MPI COMPONENTS C Fortran REQUIRED)
+
+if(NOT MPI_3_Fortran_OK)
+
+message(CHECK_START "Checking for MPI-3 Fortran support")
+
+try_compile(MPI_3_Fortran_OK
+${CMAKE_CURRENT_BINARY_DIR}/mpi3test
+${CMAKE_CURRENT_SOURCE_DIR}/scripts/mpi/test
+MPI3test
+CMAKE_FLAGS -DMPI_ROOT=${MPI_ROOT}
+)
+if(MPI_3_Fortran_OK)
+  message(CHECK_PASS "yes")
+else()
+  message(CHECK_FAIL "no")
+  message(FATAL_ERROR "Gemini3D requires MPI-3 Fortran support")
+endif()
+
+endif()
 
 # --- LAPACK
 if(find OR CRAY OR DEFINED ENV{MKLROOT})
