@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 
-project(MPItest LANGUAGES Fortran)
+project(MPItest LANGUAGES C Fortran)
 
 enable_testing()
 
@@ -13,7 +13,7 @@ if(NOT MPI_ROOT)
   message(STATUS "MPI_ROOT not set, using default MPI search paths")
 endif()
 
-find_package(MPI COMPONENTS Fortran REQUIRED)
+find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 
 find_file(mpi_f08_mod NAMES mpi_f08.mod

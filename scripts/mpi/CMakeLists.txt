@@ -30,13 +30,9 @@ cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
 
 set(mpi_flags --prefix=${CMAKE_INSTALL_PREFIX})
 
-# OpenMPI/MPICH have significant problems with hinting and testing compilers, particularly on MacOS
+# help OpenMPI/MPICH by hinting compilers, particularly on MacOS
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-  if(mpich)
-    list(APPEND mpi_flags CC=${CMAKE_C_COMPILER})
-  else()
-    list(APPEND mpi_flags CC=gcc)
-  endif()
+  list(APPEND mpi_flags CC=${CMAKE_C_COMPILER})
 elseif(CMAKE_C_COMPILER_ID MATCHES "Clang$")
   list(APPEND mpi_flags CC=clang)
 elseif(CMAKE_C_COMPILER_ID MATCHES "Intel|IntelLLVM")
