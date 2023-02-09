@@ -1,5 +1,5 @@
 # USAGE:
-# cmake -Dprefix=~/mpi -P build_mpich.cmake
+# cmake -Dprefix=~/mpi -P build_openmpi.cmake
 cmake_minimum_required(VERSION 3.19)
 
 if(NOT prefix)
@@ -10,7 +10,7 @@ if(APPLE)
   find_program(gcc NAMES gcc-14 gcc-13 gcc-12 gcc-11 gcc-10 REQUIRED)
 endif()
 
-set(args -Dmpich:BOOL=true -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
+set(args -Dmpich:BOOL=false -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 
 if(gcc)
   list(APPEND args -DCMAKE_C_COMPILER:FILEPATH=${gcc})
@@ -18,9 +18,9 @@ endif()
 
 if(NOT bindir)
   if(DEFINED ENV{TMPDIR})
-    set(bindir $ENV{TMPDIR}/mpich_build)
+    set(bindir $ENV{TMPDIR}/openmpi_build)
   else()
-    set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build/mpich_build)
+    set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build/openmpi_build)
   endif()
 endif()
 
