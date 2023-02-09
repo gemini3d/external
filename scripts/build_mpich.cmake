@@ -2,18 +2,18 @@
 # cmake -Dprefix=~/mpich -P build_mpich.cmake
 cmake_minimum_required(VERSION 3.19)
 
+if(NOT prefix)
+  message(FATAL_ERROR "Must specify -Dprefix=<path> to install MPICH.")
+endif()
+
 if(APPLE)
   find_program(gcc NAMES gcc-14 gcc-13 gcc-12 gcc-11 REQUIRED)
 endif()
 
-set(args -Dmpich:BOOL=true)
+set(args -Dmpich:BOOL=true -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 
 if(gcc)
   list(APPEND args -DCMAKE_C_COMPILER:FILEPATH=${gcc})
-endif()
-
-if(prefix)
-  list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 endif()
 
 if(NOT bindir)
