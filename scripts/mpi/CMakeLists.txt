@@ -57,17 +57,12 @@ file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/libraries.json json_meta)
 if(mpich)
   check_include_file("ISO_Fortran_binding.h" HAVE_ISO_FORTRAN_BINDING_H)
   if(NOT HAVE_ISO_FORTRAN_BINDING_H)
-    message(NOTICE "
-*** ERROR: ISO_Fortran_binding.h not found with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}  ${CMAKE_C_COMPILER}")
-    if(APPLE)
-      message(NOTICE "on macOS, please use GCC compiler. Specify GCC like:
+    message(FATAL_ERROR "ISO_Fortran_binding.h not found with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}  ${CMAKE_C_COMPILER}
+we suggest GCC compiler. Specify GCC like:
 
 cmake -DCMAKE_C_COMPILER=gcc-12 -B build
 
-Note that just setting \"CC=gcc\" on macOS simply defaults to Clang, which will fail.
-")
-    endif()
-    message(FATAL_ERROR "MPICH requires ISO_Fortran_binding.h")
+Note that just setting \"CC=gcc\" on macOS simply defaults to Clang, which will fail. MPICH requires ISO_Fortran_binding.h")
   endif()
 
   string(JSON mpi_url GET ${json_meta} mpich url)
