@@ -1,4 +1,4 @@
-# --- HDF5
+include_guard()
 
 set(hdf5_cmake_args
 -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON
@@ -13,5 +13,9 @@ set(hdf5_cmake_args
 -DHDF5_BUILD_TOOLS:BOOL=$<NOT:$<BOOL:${hdf5_parallel}>>
 -DHDF5_ENABLE_PARALLEL:BOOL=$<BOOL:${hdf5_parallel}>
 )
+# https://github.com/HDFGroup/hdf5/issues/818  for broken ph5diff in HDF5_BUILD_TOOLS
+if(MPI_ROOT)
+  list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${MPI_ROOT})
+endif()
 
 extproj(hdf5 git "${hdf5_cmake_args}" "zlib")

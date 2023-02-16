@@ -1,6 +1,6 @@
 # builds all Gemini3D external libraries
 
-cmake_minimum_required(VERSION 3.14...3.25)
+cmake_minimum_required(VERSION 3.14...3.26)
 
 if(NOT CMAKE_BUILD_TYPE)
   # ignore ENV{CMAKE_BUILD_TYPE} as we want to directly capture this project's user intent
@@ -96,6 +96,7 @@ CMAKE_FLAGS -DMPI_ROOT=${MPI_ROOT}
 )
 if(MPI_3_Fortran_OK)
   message(CHECK_PASS "yes")
+  set(MPI_3_Fortran_OK TRUE CACHE BOOL "MPI-3 Fortran support")
 else()
   message(CHECK_FAIL "no")
   message(FATAL_ERROR "Gemini3D requires MPI-3 Fortran support")

@@ -54,7 +54,7 @@ endif()
 
 # --- select repo type
 
-get_url(${name} ${json_meta})
+get_url(${name} "${json_meta}")
 
 if(url_type STREQUAL "source_dir")
   # local development with a specific source directory out of tree
@@ -123,7 +123,7 @@ elseif(url_type STREQUAL "local")
 
 elseif(url_type STREQUAL "git")
 
-  get_tag(${name} ${json_meta})
+  get_tag(${name} "${json_meta}")
 
   ExternalProject_Add(${name}
   GIT_REPOSITORY ${url}
@@ -135,7 +135,7 @@ elseif(url_type STREQUAL "git")
   )
 elseif(url_type STREQUAL "archive")
 
-  get_hash(${name} ${json_meta})
+  get_hash(${name} "${json_meta}")
 
   ExternalProject_Add(${name}
   URL ${url}

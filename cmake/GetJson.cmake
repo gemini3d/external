@@ -7,6 +7,10 @@ endif()
 
 function(get_url name json)
 
+if(NOT json)
+  message(FATAL_ERROR "get_url: ${name}: JSON string is empty")
+endif()
+
 if(CMAKE_VERSION VERSION_LESS 3.19)
   sbeParseJson(meta json)
   set(url ${meta.${name}.url})
