@@ -11,10 +11,7 @@ message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 
-# --- auto-ignore build directory
-if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
-  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
-endif()
+file(GENERATE OUTPUT .gitignore CONTENT "*")
 
 # --- check for updated external projects when "false"
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)

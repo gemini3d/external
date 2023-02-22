@@ -89,10 +89,7 @@ ensure this is the directory you wish to install libraries to.")
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 
-# --- auto-ignore build directory
-if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
-  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
-endif()
+file(GENERATE OUTPUT .gitignore CONTENT "*")
 
 # --- check for updated external projects when "false"
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED ${EP_UPDATE_DISCONNECTED})

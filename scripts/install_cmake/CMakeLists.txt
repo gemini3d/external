@@ -238,10 +238,7 @@ endif()
 
 message(STATUS "Using CMake ${CMAKE_VERSION} to install CMake ${version} to ${CMAKE_INSTALL_PREFIX}")
 
-# --- auto-ignore build directory
-if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/.gitignore)
-  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore "*")
-endif()
+file(GENERATE OUTPUT .gitignore CONTENT "*")
 
 set(CMAKE_FIND_APPBUNDLE LAST)
 
