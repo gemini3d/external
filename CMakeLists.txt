@@ -168,7 +168,7 @@ if(amr)
   include(cmake/zlib.cmake)
   extproj(libsc ${libsc_method} "${amr_args}" "zlib")
   extproj(p4est ${p4est_method} "${amr_args}" "libsc")
-  set(fclaw_args ${amr_args} -Dclawpatch:BOOL=true)
+  set(fclaw_args ${amr_args} -Dclawpatch:BOOL=true -Dclawpack:BOOL=true)
   extproj(forestclaw ${forestclaw_method} "${fclaw_args}" "p4est")
 endif()
 
