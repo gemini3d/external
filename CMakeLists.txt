@@ -99,7 +99,9 @@ if(MPI_3_Fortran_OK)
   set(MPI_3_Fortran_OK TRUE CACHE BOOL "MPI-3 Fortran support")
 else()
   message(CHECK_FAIL "no")
-  message(FATAL_ERROR "Gemini3D requires MPI-3 Fortran support")
+  message(FATAL_ERROR "Gemini3D requires MPI-3 Fortran support. Please build MPI like:
+  cmake -Dprefix=~/openmpi -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_openmpi.cmake
+  and set environment variable MPI_ROOT=~/openmpi so Gemini3D and other progams can find this new OpenMP.")
 endif()
 
 endif()
