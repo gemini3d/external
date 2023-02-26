@@ -16,11 +16,14 @@ if(NOT bindir)
   endif()
 endif()
 
+if(WIN32 AND NOT DEFINED ENV{CMAKE_GENERATOR})
+  list(APPEND args -G "MinGW Makefiles")
+endif()
+
 execute_process(COMMAND ${CMAKE_COMMAND}
   ${args}
   -B${bindir}
   -S${CMAKE_CURRENT_LIST_DIR}/hdf5
-  -G "Unix Makefiles"
 RESULT_VARIABLE ret
 )
 
