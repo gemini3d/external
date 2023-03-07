@@ -4,6 +4,10 @@ include(FetchContent)
 
 set(CMAKE_TLS_VERIFY true)
 
+if(NOT CMAKE_GENERATOR AND DEFINED ENV{CMAKE_GENERATOR})
+  set(CMAKE_GENERATOR $ENV{CMAKE_GENERATOR})
+endif()
+
 function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
@@ -43,38 +47,6 @@ or use Snap:
 endfunction(unknown_archive)
 
 
-function(cmake_archive_name file_json out)
-# CMake >= 3.20 dynamic filename
-
-# system name to OS index
-if(WIN32)
-  set(sname "windows")
-  set(arch $ENV{PROCESSOR_ARCHITECTURE})
-elseif(APPLE)
-  set(sname "macos")
-else()
-  set(sname "linux")
-endif()
-
-if(UNIX)
-  execute_process(COMMAND uname -m OUTPUT_VARIABLE arch OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif()
-
-if(NOT arch)
-  unknown_archive()
-endif()
-
-# system arch to arch index
-string(TOLOWER ${arch} arch)
-if(WIN32)
-  if(arch STREQUAL "x86")
-    set(arch "i386")
-  elseif(arch STREQUAL "amd64")
-    set(arch "x86_64")
-  endif()
-endif()
-
-
 function(iter_json json key pat out)
 
 unset(${out} PARENT_SCOPE)
@@ -95,6 +67,17 @@ endforeach()
 
 endfunction(iter_json)
 
+
+function(cmake_archive_name file_json arch out)
+# CMake >= 3.20 dynamic filename
+
+if(WIN32)
+  set(sname "windows")
+elseif(APPLE)
+  set(sname "macos")
+else()
+  set(sname "linux")
+endif()
 
 file(READ ${file_json} json)
 
@@ -202,7 +185,7 @@ if(arch STREQUAL "ARM64")
   if(version VERSION_GREATER_EQUAL 3.24)
     set(file_arch windows-arm64)
   endif()
-elseif(arch STREQUAL "AMD64")
+elseif(arch STREQUAL "x86_64")
   if(version VERSION_LESS 3.6)
     set(file_arch win32-x86)
   elseif(version VERSION_LESS 3.20)
@@ -235,6 +218,33 @@ set(${out} cmake-${version}-${file_arch}${suffix} PARENT_SCOPE)
 
 endfunction(cmake_legacy_name)
 
+
+function(cpu_arch)
+
+if(WIN32)
+  set(arch $ENV{PROCESSOR_ARCHITECTURE})
+elseif(UNIX)
+  execute_process(COMMAND uname -m OUTPUT_VARIABLE arch OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
+if(NOT arch)
+  unknown_archive()
+endif()
+
+# system arch to arch index
+string(TOLOWER ${arch} arch)
+if(WIN32)
+  if(arch STREQUAL "x86")
+    set(arch "i386")
+  elseif(arch STREQUAL "amd64")
+    set(arch "x86_64")
+  endif()
+endif()
+
+set(arch ${arch} PARENT_SCOPE)
+
+endfunction(cpu_arch)
+
 # --- main program ---
 
 full_version()
@@ -251,10 +261,12 @@ set(CMAKE_FIND_APPBUNDLE LAST)
 
 set(url_stem https://github.com/Kitware/CMake/releases/download/v${version})
 
-message(STATUS "Download CMake ${version}")
+cpu_arch()
+
+message(STATUS "Download CMake ${version}  ${arch}")
 
 if(CMAKE_VERSION VERSION_LESS 3.19 OR version VERSION_LESS 3.20)
-  cmake_legacy_name(${arch} "archive")
+  cmake_legacy_name("${arch}" "archive")
 
   FetchContent_Populate(cmake
   URL ${url_stem}/${archive}
@@ -275,7 +287,7 @@ else()
     message(FATAL_ERROR "CMake metadata download failed: ${stat} ${err} ${log}")
   endif()
 
-  cmake_archive_name(${json_file} "archive")
+  cmake_archive_name(${json_file} "${arch}" "archive")
 
   FetchContent_Populate(cmake
   URL ${url_stem}/${archive}
