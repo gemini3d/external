@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13...3.26)
+cmake_minimum_required(VERSION 3.11...3.26)
 
 include(FetchContent)
 
@@ -11,9 +11,11 @@ endif()
 function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
+  if(NOT version)
   file(STRINGS ${CMAKE_CURRENT_LIST_DIR}/version_cmake_latest.txt version
   REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
   )
+  endif()
 else()
   file(READ ${CMAKE_CURRENT_LIST_DIR}/versions.json _j)
 

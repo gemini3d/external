@@ -1,8 +1,5 @@
 name: cmake_install
 
-env:
-  HOMEBREW_NO_INSTALL_CLEANUP: 1
-
 on:
   push:
     paths:
@@ -11,7 +8,7 @@ on:
 
 jobs:
 
-  core:
+  new:
     timeout-minutes: 5
 
     strategy:
@@ -26,3 +23,18 @@ jobs:
 
     - name: install CMake
       run: cmake -P scripts/install_cmake.cmake
+
+  old:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v1
+      with:
+        cmake-version: '3.13.x'
+
+    - name: install CMake
+      run: cmake -P ${{ github.workspace }}/scripts/install_cmake.cmake

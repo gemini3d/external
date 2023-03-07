@@ -1,8 +1,5 @@
 name: ninja_install
 
-env:
-  HOMEBREW_NO_INSTALL_CLEANUP: 1
-
 on:
   push:
     paths:
