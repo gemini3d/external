@@ -1,4 +1,4 @@
-name: ci
+name: ninja_install
 
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -6,13 +6,13 @@ env:
 on:
   push:
     paths:
-    - ".github/workflows/cmake_install.yml"
+    - ".github/workflows/ninja_install.yml"
     - "scripts/install_ninja.cmake"
 
 jobs:
 
   core:
-    timeout-minutes: 25
+    timeout-minutes: 5
 
     strategy:
       matrix:

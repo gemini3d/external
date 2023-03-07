@@ -1,4 +1,4 @@
-name: ci
+name: cmake_install
 
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -12,7 +12,7 @@ on:
 jobs:
 
   core:
-    timeout-minutes: 25
+    timeout-minutes: 5
 
     strategy:
       matrix:
