@@ -18,23 +18,24 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-
     - uses: actions/checkout@v3
 
     - name: install CMake
       run: cmake -P scripts/install_cmake.cmake
 
-  old:
-    timeout-minutes: 5
 
-    runs-on: ubuntu-latest
+# just says "error processing file". Bug with this Action?
+  # old:
+  #   timeout-minutes: 5
 
-    steps:
+  #   runs-on: ubuntu-latest
 
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v1
-      with:
-        cmake-version: '3.13.x'
+  #   steps:
 
-    - name: install CMake
-      run: cmake -P ${{ github.workspace }}/scripts/install_cmake.cmake
+  #   - name: Setup cmake
+  #     uses: jwlawson/actions-setup-cmake@v1
+  #     with:
+  #       cmake-version: '3.13.x'
+
+  #   - name: install CMake
+  #     run: cmake -P ${{ github.workspace }}/scripts/install_cmake.cmake
