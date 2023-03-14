@@ -23,12 +23,12 @@ A successful MPICH configure step ends like:
 
 ```
 config.status: executing gen_binding_f90 commands
-  [ /Users/micha/code/gemext/scripts/mpi/build/MPI-prefix/src/MPI/maint/gen_binding_f90.py -f-logical-size=4 -ignore-tkr=gcc ]
+  [ /scripts/mpi/build/MPI-prefix/src/MPI/maint/gen_binding_f90.py -f-logical-size=4 -ignore-tkr=gcc ]
   --> [src/binding/fortran/use_mpi/mpi_base.f90]
   --> [src/binding/fortran/use_mpi/mpi_constants.f90]
   --> [src/binding/fortran/use_mpi/mpi_sizeofs.f90]
 config.status: executing gen_binding_f08 commands
-  [ /Users/micha/code/gemext/scripts/mpi/build/MPI-prefix/src/MPI/maint/gen_binding_f08.py -fint-size=4 -aint-size=8 -count-size=8 -cint-size=4 ]
+  [ /scripts/mpi/build/MPI-prefix/src/MPI/maint/gen_binding_f08.py -fint-size=4 -aint-size=8 -count-size=8 -cint-size=4 ]
   --> [src/binding/fortran/use_mpi_f08/wrappers_c/f08_cdesc.c]
   --> [src/binding/fortran/use_mpi_f08/wrappers_c/cdesc_proto.h]
   --> [src/binding/fortran/use_mpi_f08/wrappers_f/f08ts.f90]

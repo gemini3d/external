@@ -2,7 +2,8 @@
 
 Scripts to build/install external libraries used by Gemini3D.
 These will install nearly everything needed except the compilers themselves.
-If the MPI library is not available for your compiler, build MPI first under [scripts/mpi](./scripts/mpi).
+If the MPI library is not available for your compiler, build MPI first using
+[scripts/build_openmpi.cmake](./scripts/build_openmpi.cmake).
 If something doesn't work, please let us know.
 These scripts are intended to work on nearly any modern Linux, MacOS or Windows computer.
 

@@ -3,8 +3,7 @@
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
 
-cmake_minimum_required(VERSION 3.14)
-# Gemini3D currently requires CMake 3.14+
+cmake_minimum_required(VERSION 3.15)
 
 option(find "find bigger libraries like MPI and HDF5 if available")
 
