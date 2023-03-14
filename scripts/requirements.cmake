@@ -43,14 +43,16 @@ endfunction(read_prereqs)
 
 # --- main program
 
+if(WIN32)
+  message(FATAL_ERROR "Windows: suggest Intel oneAPI or Windows Subsystem for Linux (WSL) https://aka.ms/wsl")
+endif()
+
 execute_process(COMMAND uname -s OUTPUT_VARIABLE id)
 
 if(APPLE)
   set(names brew port)
-elseif(UNIX)
+else()
   set(names apt yum pacman zypper)
-elseif(WIN32)
-  message(FATAL_ERROR "Windows: suggest Windows Subsystem for Linux (WSL) https://aka.ms/wsl")
 endif()
 
 foreach(t IN LISTS names)
