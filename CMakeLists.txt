@@ -86,7 +86,7 @@ find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 if(NOT MPI_3_Fortran_OK)
 
-message(CHECK_START "Checking for MPI-3 Fortran support")
+message(CHECK_START "Checking for MPI-3 Fortran support, MPI_ROOT=${MPI_ROOT}")
 
 try_compile(MPI_3_Fortran_OK
 ${CMAKE_CURRENT_BINARY_DIR}/mpi3test

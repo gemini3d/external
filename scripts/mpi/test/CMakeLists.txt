@@ -9,7 +9,9 @@ include(CheckSourceCompiles)
 if(NOT DEFINED MPI_ROOT AND DEFINED ENV{MPI_ROOT})
   set(MPI_ROOT $ENV{MPI_ROOT})
 endif()
-if(NOT MPI_ROOT)
+if(MPI_ROOT)
+  message(STATUS "Using MPI_ROOT=${MPI_ROOT}")
+else()
   message(STATUS "MPI_ROOT not set, using default MPI search paths")
 endif()
 
@@ -17,10 +19,12 @@ find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 
 find_file(mpi_f08_mod NAMES mpi_f08.mod
-REQUIRED
 NO_DEFAULT_PATH
 HINTS ${MPI_Fortran_INCLUDE_DIRS}
 )
+if(NOT mpi_f08_mod)
+  message(FATAL_ERROR "Fortran MPI ${MPI_Fortran_VERSION} doesn't have MPI-3 Fortran mpi_f08.mod, searched using ${MPI_Fortran_INCLUDE_DIRS}")
+endif()
 
 message(STATUS "MPI-3 test:
 MPI libs: ${MPI_Fortran_LIBRARIES}
