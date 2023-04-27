@@ -125,7 +125,9 @@ else()
   -DBUILD_DOUBLE:BOOL=true
   -DBUILD_COMPLEX:BOOL=false
   -DBUILD_COMPLEX16:BOOL=false
+  -DTEST_FORTRAN_COMPILER:BOOL=false
   )
+  # don't run their Fortran tests as they error build on test_zminMax.err
   extproj(lapack ${lapack_method} "${lapack_args}" "")
 endif()
 
