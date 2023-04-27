@@ -82,7 +82,14 @@ if(NOT DEFINED MPI_ROOT AND DEFINED ENV{MPI_ROOT})
   set(MPI_ROOT $ENV{MPI_ROOT})
 endif()
 
-find_package(MPI COMPONENTS C Fortran REQUIRED)
+set(_mpi_help "Gemini3D requires MPI-3 Fortran support. Please build MPI and set environment variable MPI_ROOT=~/openmpi so Gemini3D and other progams can find this new OpenMPI.
+
+cmake -Dprefix=~/openmpi -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_openmpi.cmake")
+
+find_package(MPI COMPONENTS C Fortran)
+if(NOT MPI_FOUND)
+  message(FATAL_ERROR ${_mpi_help})
+endif()
 
 if(NOT MPI_3_Fortran_OK)
 
@@ -99,9 +106,7 @@ if(MPI_3_Fortran_OK)
   set(MPI_3_Fortran_OK TRUE CACHE BOOL "MPI-3 Fortran support")
 else()
   message(CHECK_FAIL "no")
-  message(FATAL_ERROR "Gemini3D requires MPI-3 Fortran support. Please build MPI like:
-  cmake -Dprefix=~/openmpi -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_openmpi.cmake
-  and set environment variable MPI_ROOT=~/openmpi so Gemini3D and other progams can find this new OpenMP.")
+  message(FATAL_ERROR ${_mpi_help})
 endif()
 
 endif()
