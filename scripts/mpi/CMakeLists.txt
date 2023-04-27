@@ -23,7 +23,9 @@ find_package(Autotools REQUIRED)
 # MPI builds spawn too many threads with bare "make -j" giving build crashes like
 # libtool: fork: Resource temporarily unavailable
 # clang: error: unable to execute command: posix_spawn failed: Resource temporarily unavailable
-cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
+if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
+  cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
+endif()
 
 set(mpi_flags --prefix=${CMAKE_INSTALL_PREFIX})
 

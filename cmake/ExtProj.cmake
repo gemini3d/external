@@ -30,6 +30,13 @@ ${name}-${CMAKE_SYSTEM_NAME}.tar.bz2
 ")
 endif()
 
+# builds each project in parallel, without needing to build all projects simultaneously in parallel.
+# this greatly aids debugging while maintaining speed of build overall.
+if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
+  cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
+endif()
+set(build_parallel ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel ${Ncpu})
+
 set(extproj_args
 CMAKE_ARGS ${cmake_args}
 TLS_VERIFY true
@@ -65,6 +72,7 @@ if(url_type STREQUAL "source_dir")
   ExternalProject_Add(${name}
   SOURCE_DIR ${${name}_source}
   BUILD_ALWAYS false
+  BUILD_COMMAND ${build_parallel}
   ${extproj_args}
   )
   # NOTE: "BUILD_ALWAYS true" is suggested by ExternalProject_Add()
@@ -106,6 +114,7 @@ elseif(url_type STREQUAL "local")
 
     ExternalProject_Add(${name}
     SOURCE_DIR ${_ext_src}
+    BUILD_COMMAND ${build_parallel}
     TEST_COMMAND ""
     ${extproj_args}
     )
@@ -116,6 +125,7 @@ elseif(url_type STREQUAL "local")
 
     ExternalProject_Add(${name}
     URL ${${name}_archive}
+    BUILD_COMMAND ${build_parallel}
     TEST_COMMAND ""
     ${extproj_args}
     )
@@ -130,6 +140,7 @@ elseif(url_type STREQUAL "git")
   GIT_TAG ${tag}
   GIT_SHALLOW true
   GIT_PROGRESS true
+  BUILD_COMMAND ${build_parallel}
   TEST_COMMAND ""
   ${extproj_args}
   )
@@ -140,6 +151,7 @@ elseif(url_type STREQUAL "archive")
   ExternalProject_Add(${name}
   URL ${url}
   URL_HASH SHA256=${sha256}
+  BUILD_COMMAND ${build_parallel}
   TEST_COMMAND ""
   ${extproj_args}
   )

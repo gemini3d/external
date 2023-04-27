@@ -12,11 +12,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
-# parallel build
-if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
-  cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
-endif()
-
 get_filename_component(build_dir ${CMAKE_CURRENT_LIST_DIR}/../build ABSOLUTE)
 set(pkgdir ${build_dir}/package)
 
@@ -61,7 +56,7 @@ endif()
 # --- build and CPack (via ExternalProject)
 
 execute_process(
-COMMAND ${CMAKE_COMMAND} --build ${build_dir} --parallel ${Ncpu}
+COMMAND ${CMAKE_COMMAND} --build ${build_dir}
 RESULT_VARIABLE ret
 )
 
