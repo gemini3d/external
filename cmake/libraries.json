@@ -11,20 +11,15 @@
 
 "libsc": {
   "url": "https://github.com/cburstedde/libsc.git",
-  "tag": "prev3-develop"
+  "tag": "master"
 },
 "p4est": {
   "url": "https://github.com/cburstedde/p4est.git",
-  "tag": "prev3-develop"
+  "tag": "master"
 },
 "forestclaw": {
   "url": "https://github.com/forestclaw/forestclaw.git",
   "tag": "develop"
-},
-
-"iniparser": {
-  "url": "https://github.com/gemini3d/iniparser.git",
-  "tag": "v4.1.0.4"
 },
 
 "openmpi": {
@@ -32,8 +27,8 @@
   "sha256": "a640986bc257389dd379886fdae6264c8cfa56bc98b71ce3ae3dfbd8ce61dbe3"
 },
 "mpich": {
-  "url": "https://www.mpich.org/static/downloads/4.1.1/mpich-4.1.1.tar.gz",
-  "sha256": "ee30471b35ef87f4c88f871a5e2ad3811cd9c4df32fd4f138443072ff4284ca2"
+  "url": "https://www.mpich.org/static/downloads/4.1.2/mpich-4.1.2.tar.gz",
+  "sha256": "3492e98adab62b597ef0d292fb2459b6123bc80070a8aa0a30be6962075a12f0"
 },
 
 "glow": {
@@ -43,7 +38,7 @@
 
 "ffilesystem": {
   "url": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v4.3.0"
+  "tag": "v5.0.0"
 },
 
 "h5fortran": {
@@ -52,13 +47,13 @@
 },
 
 "zlib": {
-  "url" : "https://github.com/scivision/zlib-ng.git",
-  "tag": "2.0.6-cpack"
+  "url" : "https://github.com/zlib-ng/zlib-ng.git",
+  "tag": "2.1.3"
 },
 "hdf5": {
   "url": "https://github.com/HDFGroup/hdf5.git",
-  "tag": "hdf5-1_10_9",
-  "version": "1.10.9"
+  "tag": "hdf5-1_10_10",
+  "version": "1.10.10"
 },
 
 "hwm14": {
@@ -72,11 +67,11 @@
 
 "mumps": {
   "url": "https://github.com/scivision/mumps.git",
-  "tag": "v5.5.1.11"
+  "tag": "v5.6.1.0"
 },
 "mumps_src": {
-  "sha256": "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15",
-  "url": "https://graal.ens-lyon.fr/MUMPS/MUMPS_5.5.1.tar.gz"
+  "sha256": "1920426d543e34d377604070fde93b8d102aa38ebdf53300cbce9e15f92e2896",
+  "url": "https://mumps-solver.org/MUMPS_5.6.1.tar.gz"
 },
 
 "scalapack": {

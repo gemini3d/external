@@ -50,7 +50,7 @@ endif()
 #   MPI, HDF5, ZLIB, scalapack_src, mumps_src
 # as we're unlikely to modify those libraries
 
-foreach(n ffilesystem iniparser glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw)
+foreach(n ffilesystem glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw)
   set(${n}_method "git")
 
   if(local)
@@ -67,9 +67,6 @@ endforeach()
 
 # --- Fortran-filesystem
 extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=false" "")
-
-# --- iniparser (for Gemini3D C++ frontend)
-extproj(iniparser ${iniparser_method} "" "")
 
 # --- GLOW
 extproj(glow ${glow_method} "" "")
@@ -167,7 +164,7 @@ extproj(msis git "-Dmsis2:BOOL=true" "h5fortran")
 
 # --- Gemini3d project
 if(package)
-  extproj(gemini3d git "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem;iniparser")
+  extproj(gemini3d git "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem")
 endif()
 
 # --- p4est, forestclaw
