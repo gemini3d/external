@@ -181,10 +181,11 @@ endif()
 # print summary of configuration
 include(FeatureSummary)
 
-add_feature_info(Find ${find} "")
-add_feature_info(HDF5-MPI ${hdf5_parallel} "HDF5-MPI layer (otherwise, serial HDF5)")
-add_feature_info(shared ${BUILD_SHARED_LIBS} "build shared libs (otherwise, build static libs)")
-add_feature_info(remote_disconnected ${EP_UPDATE_DISCONNECTED} "don't update remote repositories after first download/confiugre")
-add_feature_info(packaging ${package} "preparing new data upoad (for development team)")
+add_feature_info(AMR amr "adaptive mesh refinement")
+add_feature_info(Find find "find installed libraries")
+add_feature_info(HDF5-MPI hdf5_parallel "HDF5-MPI layer (otherwise, serial HDF5)")
+add_feature_info(shared BUILD_SHARED_LIBS "build shared libs (otherwise, build static libs)")
+add_feature_info(remote_disconnected EP_UPDATE_DISCONNECTED "don't update remote repositories after first download/confiugre")
+add_feature_info(packaging package "preparing new data upoad (for development team)")
 
 feature_summary(WHAT ALL)
