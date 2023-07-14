@@ -41,6 +41,8 @@ cmake -Dtarfile=/path/to/gemini_package.tar -P build-offline.cmake
 
 ## Development: local source directory(ies)
 
+The options for this project are typically contained in [options.cmake](./options.cmake).
+
 For development, one can specify a local source directory(ies) to build from like:
 
 ```sh

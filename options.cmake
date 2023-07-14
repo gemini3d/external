@@ -35,7 +35,7 @@ set(CMAKE_TLS_VERIFY true)
 
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
   message(FATAL_ERROR "Visual Studio doesn't work with many libraries here. Please first install Ninja:
-  cmake -S ${CMAKE_CURRENT_SOURCE_DIR}/scripts/install_ninja
+  cmake -S ${PROJECT_SOURCE_DIR}/scripts/install_ninja
   ")
 endif()
 
@@ -64,7 +64,7 @@ if(DEFINED ENV{CONDA_PREFIX})
 endif()
 
 # --- CMake Module search path (for Find*.cmake)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # --- look in CMAKE_PREFIX_PATH for Find*.cmake as well
 if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})
@@ -95,4 +95,4 @@ file(GENERATE OUTPUT .gitignore CONTENT "*")
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED ${EP_UPDATE_DISCONNECTED})
 
 # --- read JSON with URLs for each library
-file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json_meta)
+file(READ ${PROJECT_SOURCE_DIR}/cmake/libraries.json json_meta)

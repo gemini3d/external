@@ -14,7 +14,7 @@ LANGUAGES C CXX Fortran
 VERSION 1.1.1
 )
 
-include(cmake/options.cmake)
+include(options.cmake)
 include(cmake/compilers.cmake)
 include(cmake/package/cpacker.cmake)
 
