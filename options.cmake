@@ -20,12 +20,11 @@ endif()
 
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
-option(amr "build packages used for AMR")
-# p4est is still moving target, leave off by default
+option(amr "build packages used for AMR" on)
 
-option(scotch "MUMPS scotch + METIS ordering (PORD is default and always used)")
+option(scotch "MUMPS Scotch + METIS ordering (PORD is default and always used)")
 
-option(hdf5_parallel "HDF5 parallel")
+option(hdf5_parallel "HDF5 parallel I/O using MPI")
 
 option(EP_UPDATE_DISCONNECTED "false (default): check for updated Git remote. true: check for updates on each CMake configure")
 
