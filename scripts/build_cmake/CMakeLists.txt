@@ -24,12 +24,12 @@ else()
   if(version VERSION_LESS 3.5)
     string(JSON version GET ${_j} cmake latest)
   endif()
+endif()
 
-  # only major.minor specified -- default to latest release known.
-  string(LENGTH ${version} L)
-  if (L LESS 5)  # 3.x or 3.xx
-    string(JSON version GET ${_j} cmake ${version})
-  endif()
+# only major.minor specified -- default to latest release known.
+string(LENGTH ${version} L)
+if (L LESS 5)  # 3.x or 3.xx
+  string(JSON version GET ${_j} cmake ${version})
 endif()
 
 set(version ${version} PARENT_SCOPE)
