@@ -52,8 +52,8 @@
 },
 "hdf5": {
   "url": "https://github.com/HDFGroup/hdf5.git",
-  "tag": "hdf5-1_10_10",
-  "version": "1.10.10"
+  "tag": "hdf5-1_10_9",
+  "version": "1.10.9"
 },
 
 "hwm14": {
