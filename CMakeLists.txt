@@ -66,7 +66,7 @@ foreach(n ffilesystem glow hwm14 msis lapack scalapack mumps libsc p4est forestc
 endforeach()
 
 # --- Fortran-filesystem
-extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=false" "")
+extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=true" "")
 
 # --- GLOW
 extproj(glow ${glow_method} "" "")
