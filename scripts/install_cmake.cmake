@@ -11,10 +11,8 @@ endif()
 function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  if(NOT version)
-  file(STRINGS ${CMAKE_CURRENT_LIST_DIR}/version_cmake_latest.txt version
-  REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
-  )
+  if(version VERSION_LESS 3.5)
+    message(FATAL_ERROR "please specify -Dversion=\"3.x.y\" option for desired CMake version")
   endif()
 else()
   file(READ ${CMAKE_CURRENT_LIST_DIR}/versions.json _j)

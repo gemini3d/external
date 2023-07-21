@@ -4,7 +4,7 @@
 #
 # NOTE: CMake 3.24 needs CMake >= 3.13 to build CMake itself.
 
-cmake_minimum_required(VERSION 3.13...3.25)
+cmake_minimum_required(VERSION 3.13...3.27)
 
 project(cmake LANGUAGES C CXX)
 
@@ -15,9 +15,9 @@ set(CMAKE_TLS_VERIFY true)
 function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
-  file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/../cmake_latest_version.txt version
-    REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 12 LENGTH_MAXIMUM 12 LIMIT_COUNT 1
-    )
+  if(version VERSION_LESS 3.5)
+    message(FATAL_ERROR "please specify -Dversion=\"3.x.y\" option for desired CMake version")
+  endif()
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
 
