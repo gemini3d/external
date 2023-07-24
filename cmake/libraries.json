@@ -67,7 +67,7 @@
 
 "mumps": {
   "url": "https://github.com/scivision/mumps.git",
-  "tag": "v5.6.1.0"
+  "tag": "v5.6.1.1"
 },
 "mumps_src": {
   "sha256": "1920426d543e34d377604070fde93b8d102aa38ebdf53300cbce9e15f92e2896",
@@ -76,7 +76,7 @@
 
 "scalapack": {
   "url": "https://github.com/scivision/scalapack.git",
-  "tag": "v2.2.1.4"
+  "tag": "v2.2.1.5"
 },
 "scalapack_src": {
   "tag": "v2.2.1",
