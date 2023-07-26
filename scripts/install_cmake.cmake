@@ -4,10 +4,6 @@ include(FetchContent)
 
 set(CMAKE_TLS_VERIFY true)
 
-if(NOT CMAKE_GENERATOR AND DEFINED ENV{CMAKE_GENERATOR})
-  set(CMAKE_GENERATOR $ENV{CMAKE_GENERATOR})
-endif()
-
 function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
