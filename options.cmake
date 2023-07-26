@@ -28,6 +28,7 @@ option(hdf5_parallel "HDF5 parallel I/O using MPI")
 
 option(EP_UPDATE_DISCONNECTED "false (default): check for updated Git remote. true: check for updates on each CMake configure")
 
+set(CMAKE_EP_GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
 set(CMAKE_TLS_VERIFY true)
 
 # --- config checks

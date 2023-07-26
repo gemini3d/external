@@ -45,9 +45,6 @@ DEPENDS ${depends}
 if(package)
   list(APPEND extproj_args INSTALL_COMMAND "")
 endif()
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
-  list(APPEND extproj_args GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
-endif()
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
   list(APPEND extproj_args
