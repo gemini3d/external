@@ -6,15 +6,10 @@ if(NOT prefix)
   message(FATAL_ERROR "Must specify -Dprefix=<path> to install MPI.")
 endif()
 
-if(APPLE)
-  find_program(gcc NAMES gcc-14 gcc-13 gcc-12 gcc-11 gcc-10 REQUIRED)
-endif()
-
-set(args -Dmpich:BOOL=false -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
-
-if(gcc)
-  list(APPEND args -DCMAKE_C_COMPILER:FILEPATH=${gcc})
-endif()
+set(args
+-Dmpich:BOOL=false
+-DCMAKE_INSTALL_PREFIX:PATH=${prefix}
+)
 
 if(NOT bindir)
   if(DEFINED ENV{TMPDIR})
