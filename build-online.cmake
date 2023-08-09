@@ -13,9 +13,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_id.cmake)
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
 # controlled parallel build (avoid too many HDF5 build threads with Make)
-if(DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
-  set(Ncpu $ENV{CMAKE_BUILD_PARALLEL_LEVEL})
-else()
+if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
   cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
 endif()
 
