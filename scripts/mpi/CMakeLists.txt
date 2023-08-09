@@ -42,18 +42,14 @@ Set envioronment variables CC and CXX to the same compiler by prepending the com
 endiF()
 
 # help OpenMPI/MPICH by hinting compilers, particularly on MacOS
+# assume whatever the C compiler is, the C++ and Fortran compilers are the same vendor
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-  list(APPEND mpi_flags CC=${CMAKE_C_COMPILER})
+  list(APPEND mpi_flags CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER})
 elseif(CMAKE_C_COMPILER_ID MATCHES "Clang$")
-  list(APPEND mpi_flags CC=clang)
+  # until Flang is ready, use Gfortran
+  list(APPEND mpi_flags CC=clang CXX=clang++ FC=gfortran)
 elseif(CMAKE_C_COMPILER_ID MATCHES "Intel|IntelLLVM")
-  list(APPEND mpi_flags CC=icx)
-endif()
-
-if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
-  list(APPEND mpi_flags FC=gfortran)
-elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel|IntelLLVM")
-  list(APPEND mpi_flags FC=ifx)
+  list(APPEND mpi_flags CC=icx CXX=icpx FC=ifx)
 endif()
 
 # OpenMPI/MPICH have trouble finding -lm on MacOS especially
