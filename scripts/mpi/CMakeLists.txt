@@ -1,6 +1,11 @@
-cmake_minimum_required(VERSION 3.19...3.26)
+cmake_minimum_required(VERSION 3.19...3.27)
 
-project(BuildMPI LANGUAGES C Fortran)
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(FATAL_ERROR "Use out of source build like
+  cmake -Bbuild")
+endif()
+
+project(BuildMPI LANGUAGES C CXX Fortran)
 
 include(CheckIncludeFile)
 include(ExternalProject)
@@ -28,6 +33,13 @@ if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_
 endif()
 
 set(mpi_flags --prefix=${CMAKE_INSTALL_PREFIX})
+
+# to avoid ABI problems and confusing build or runtime errors, mandate that C and C++ are same compiler vendor
+if(NOT CMAKE_C_COMPILER_ID STREQUAL CMAKE_CXX_COMPILER_ID)
+  message(FATAL_ERROR "C compiler ${CMAKE_C_COMPILER_ID} and C++ compiler ${CMAKE_CXX_COMPILER_ID} must be the same to avoid ABI build/runtime errors.
+Set envioronment variables CC and CXX to the same compiler by prepending the command line:
+  CC=gcc-13 CXX=g++-13")
+endiF()
 
 # help OpenMPI/MPICH by hinting compilers, particularly on MacOS
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -57,11 +69,8 @@ if(mpich)
   check_include_file("ISO_Fortran_binding.h" HAVE_ISO_FORTRAN_BINDING_H)
   if(NOT HAVE_ISO_FORTRAN_BINDING_H)
     message(FATAL_ERROR "ISO_Fortran_binding.h not found with ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}  ${CMAKE_C_COMPILER}
-we suggest GCC compiler. Specify GCC like:
-
-cmake -DCMAKE_C_COMPILER=gcc-12 -B build
-
-Note that just setting \"CC=gcc\" on macOS simply defaults to Clang, which will fail. MPICH requires ISO_Fortran_binding.h")
+We suggest GCC compiler. Specify GCC by prepending \"CC=gcc-13\" or similar to your command.
+Setting \"CC=gcc\" on macOS defaults to Clang, which will fail. MPICH requires ISO_Fortran_binding.h")
   endif()
 
   string(JSON mpi_url GET ${json_meta} mpich url)
