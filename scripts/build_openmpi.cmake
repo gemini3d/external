@@ -23,7 +23,6 @@ execute_process(COMMAND ${CMAKE_COMMAND}
   ${args}
   -B${bindir}
   -S${CMAKE_CURRENT_LIST_DIR}/mpi
-  -G "Unix Makefiles"
 RESULT_VARIABLE ret
 )
 
