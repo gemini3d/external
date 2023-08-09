@@ -1,7 +1,5 @@
 include(ExternalProject)
 
-include(${CMAKE_CURRENT_LIST_DIR}/GetJson.cmake)
-
 
 function(fetch_source name url_type)
 
@@ -9,20 +7,15 @@ set(extproj_args
 CMAKE_ARGS ${cmake_args}
 TLS_VERIFY true
 UPDATE_DISCONNECTED true
+INACTIVITY_TIMEOUT 60
+CONFIGURE_HANDLED_BY_BUILD true
 )
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.19)
-  list(APPEND extproj_args
-  INACTIVITY_TIMEOUT 60
-  CONFIGURE_HANDLED_BY_BUILD true
-  )
-endif()
-
-get_url(${name} ${json_meta})
+string(JSON url GET ${json_meta} ${name} url)
 
 if(url_type STREQUAL "git")
 
-get_tag(${name} ${json_meta})
+string(JSON tag GET ${json_meta} ${name} tag)
 
 ExternalProject_Add(${name}
 GIT_REPOSITORY ${url}
@@ -38,7 +31,7 @@ INSTALL_COMMAND ""
 
 elseif(url_type STREQUAL "archive")
 
-get_hash(${name} ${json_meta})
+string(JSON tag GET ${json_meta} ${name} sha256)
 
 if(url MATCHES ".tar.gz$")
   set(download_name ${name}.tar.gz)

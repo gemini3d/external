@@ -1,7 +1,5 @@
 include(ExternalProject)
 
-include(${CMAKE_CURRENT_LIST_DIR}/GetJson.cmake)
-
 
 function(extproj name url_type cmake_args depends)
 
@@ -39,26 +37,20 @@ set(build_parallel ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel ${Ncpu})
 
 set(extproj_args
 CMAKE_ARGS ${cmake_args}
-TLS_VERIFY true
 DEPENDS ${depends}
+TLS_VERIFY true
+INACTIVITY_TIMEOUT 60
+CONFIGURE_HANDLED_BY_BUILD true
 )
 if(package)
   list(APPEND extproj_args INSTALL_COMMAND "")
-endif()
-
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
-  list(APPEND extproj_args
-  INACTIVITY_TIMEOUT 60
-  CONFIGURE_HANDLED_BY_BUILD true
-  )
 endif()
 
 # --- cache_args for repos that need list args
 
 
 # --- select repo type
-
-get_url(${name} "${json_meta}")
+string(JSON url GET ${json_meta} ${name} url)
 
 if(url_type STREQUAL "source_dir")
   # local development with a specific source directory out of tree
@@ -130,7 +122,7 @@ elseif(url_type STREQUAL "local")
 
 elseif(url_type STREQUAL "git")
 
-  get_tag(${name} "${json_meta}")
+  string(JSON tag GET ${json_meta} ${name} tag)
 
   ExternalProject_Add(${name}
   GIT_REPOSITORY ${url}
@@ -143,7 +135,7 @@ elseif(url_type STREQUAL "git")
   )
 elseif(url_type STREQUAL "archive")
 
-  get_hash(${name} "${json_meta}")
+  string(JSON tag GET ${json_meta} ${name} sha256)
 
   ExternalProject_Add(${name}
   URL ${url}

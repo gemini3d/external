@@ -16,7 +16,7 @@ function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
   if(version VERSION_LESS 3.5)
-    message(FATAL_ERROR "please specify -Dversion=\"3.x.y\" option for desired CMake version")
+    set(version 3.26.5)
   endif()
 else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)

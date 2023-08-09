@@ -1,11 +1,7 @@
 # prints Gemini3D prereqs on stdout
 #  cmake -P scripts/requirements.cmake
 
-cmake_minimum_required(VERSION 3.11...3.25)
-
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  include(${CMAKE_CURRENT_LIST_DIR}/../cmake/Modules/JsonParse.cmake)
-endif()
+cmake_minimum_required(VERSION 3.19...3.27)
 
 set(prereq_file ${CMAKE_CURRENT_LIST_DIR}/requirements.json)
 
@@ -17,23 +13,14 @@ function(read_prereqs sys_id)
 
   set(prereqs)
 
-  if(CMAKE_VERSION VERSION_LESS 3.19)
-    sbeParseJson(meta json)
-    foreach(i IN LISTS meta.${sys_id}.pkgs)
-      list(APPEND prereqs ${meta.${sys_id}.pkgs_${i}})
-    endforeach()
+  string(JSON N LENGTH ${json} ${sys_id} pkgs)
+  math(EXPR N "${N}-1")
+  foreach(i RANGE ${N})
+    string(JSON _u GET ${json} ${sys_id} pkgs ${i})
+    list(APPEND prereqs ${_u})
+  endforeach()
 
-    set(cmd ${meta.${sys_id}.cmd})
-  else()
-    string(JSON N LENGTH ${json} ${sys_id} pkgs)
-    math(EXPR N "${N}-1")
-    foreach(i RANGE ${N})
-      string(JSON _u GET ${json} ${sys_id} pkgs ${i})
-      list(APPEND prereqs ${_u})
-    endforeach()
-
-    string(JSON cmd GET ${json} ${sys_id} cmd)
-  endif()
+  string(JSON cmd GET ${json} ${sys_id} cmd)
 
   string(REPLACE ";" " " prereqs "${prereqs}")
   set(prereqs ${prereqs} PARENT_SCOPE)

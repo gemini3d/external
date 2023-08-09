@@ -55,11 +55,6 @@ REQUIRED_VARS GPG_EXECUTABLE GPG_HAVE_KEYS
 
 function(gpg_sign target)
 
-if(CMAKE_VERSION VERSION_LESS 3.17)
-  set(rm "remove")
-else()
-  set(rm "rm")
-endif()
 
 if(TARGET ${target})
   set(target_file $<TARGET_FILE:${target}>)
@@ -73,7 +68,7 @@ set(target_sig ${target_file}.asc)
 
 if(TARGET ${target})
   add_custom_command(TARGET ${target} POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E ${rm} -f ${target_sig}
+  COMMAND ${CMAKE_COMMAND} -E rm -f ${target_sig}
   COMMAND ${GPG_EXECUTABLE} --detach-sign --armor ${target_file}
   VERBATIM
   )

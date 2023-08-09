@@ -3,13 +3,9 @@
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.19...3.27)
 
 option(find "find bigger libraries like MPI and HDF5 if available")
-
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  include(${CMAKE_CURRENT_LIST_DIR}/cmake/Modules/JsonParse.cmake)
-endif()
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/git.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_id.cmake)
@@ -83,14 +79,8 @@ message(STATUS "Building Gemini3D in ${gemini3d_src} with options:
 ${args}")
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/cmake/libraries.json json_meta)
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  sbeParseJson(meta json_meta)
-  set(url ${meta.gemini3d.url})
-  set(tag ${meta.gemini3d.tag})
-else()
-  string(JSON url GET ${json_meta} "gemini3d" "url")
-  string(JSON tag GET ${json_meta} "gemini3d" "tag")
-endif()
+string(JSON url GET ${json_meta} "gemini3d" "url")
+string(JSON tag GET ${json_meta} "gemini3d" "tag")
 
 git_clone("gemini3d" ${url} ${tag} ${gemini3d_src})
 
