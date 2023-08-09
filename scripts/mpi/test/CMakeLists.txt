@@ -29,7 +29,9 @@ endif()
 message(STATUS "MPI-3 test:
 MPI libs: ${MPI_Fortran_LIBRARIES}
 MPI include: ${MPI_Fortran_INCLUDE_DIRS}
-MPI_f08 module: ${mpi_f08_mod}"
+MPI_f08 module: ${mpi_f08_mod}
+MPI compile flags: ${MPI_Fortran_COMPILER_FLAGS}
+MPI link flags: ${MPI_Fortran_LINK_FLAGS}"
 )
 
 check_source_compiles(Fortran
