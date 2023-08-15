@@ -19,7 +19,7 @@
 },
 "forestclaw": {
   "url": "https://github.com/forestclaw/forestclaw.git",
-  "tag": "master"
+  "tag": "develop"
 },
 
 "openmpi": {
