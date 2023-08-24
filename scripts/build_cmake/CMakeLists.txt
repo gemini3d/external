@@ -14,16 +14,13 @@ set(CMAKE_TLS_VERIFY true)
 
 function(full_version)
 
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  if(version VERSION_LESS 3.5)
-    set(version 3.27.3)
+if(version VERSION_LESS 3.5)
+  if(CMAKE_VERSION VERSION_LESS 3.19)
+    message(FATAL_ERROR "please specify CMake version to build like
+    cmake -Dversion=\"3.27.4\" ")
   endif()
-else()
   file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
-
-  if(version VERSION_LESS 3.5)
-    string(JSON version GET ${_j} cmake latest)
-  endif()
+  string(JSON version GET ${_j} cmake latest)
 endif()
 
 # only major.minor specified -- default to latest release known.

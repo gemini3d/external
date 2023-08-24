@@ -8,7 +8,7 @@ function(full_version)
 
 if(CMAKE_VERSION VERSION_LESS 3.19)
   if(version VERSION_LESS 3.5)
-    set(version 3.27.3)
+    set(version 3.27.4)
   endif()
 else()
   file(READ ${CMAKE_CURRENT_LIST_DIR}/versions.json _j)
