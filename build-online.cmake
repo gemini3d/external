@@ -13,11 +13,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_id.cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
-# controlled parallel build (avoid too many HDF5 build threads with Make)
-if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
-  cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
-endif()
-
 # heuristic to determine compiler family.
 if(NOT bindir)
   compiler_id(bin_name)
@@ -61,8 +56,11 @@ if(NOT ret EQUAL 0)
   message(FATAL_ERROR "Gemini3D external libraries failed to configure: ${ret}")
 endif()
 
+# don't specify cmake --build --parallel to avoid confusion when build errors happen in one library
+# each library itself is built in parallel,
+# so adding --parallel here doesn't really help build speed.
 execute_process(
-COMMAND ${CMAKE_COMMAND} --build ${bindir} --parallel ${Ncpu}
+COMMAND ${CMAKE_COMMAND} --build ${bindir}
 RESULT_VARIABLE ret
 )
 
@@ -97,8 +95,9 @@ if(NOT ret EQUAL 0)
   message(FATAL_ERROR "Gemini3D failed to configure: ${ret}")
 endif()
 
+# this --parallel is fine because it's just the Gemini3D project itself
 execute_process(
-COMMAND ${CMAKE_COMMAND} --build ${gemini3d_bin} --parallel ${Ncpu}
+COMMAND ${CMAKE_COMMAND} --build ${gemini3d_bin} --parallel
 RESULT_VARIABLE ret
 )
 if(ret EQUAL 0)

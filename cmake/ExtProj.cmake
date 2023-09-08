@@ -30,10 +30,7 @@ endif()
 
 # builds each project in parallel, without needing to build all projects simultaneously in parallel.
 # this greatly aids debugging while maintaining speed of build overall.
-if(CMAKE_GENERATOR MATCHES "Makefiles" AND NOT DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
-  cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
-endif()
-set(build_parallel ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel ${Ncpu})
+set(build_parallel ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel)
 
 set(extproj_args
 CMAKE_ARGS ${cmake_args}
