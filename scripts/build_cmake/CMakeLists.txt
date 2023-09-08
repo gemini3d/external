@@ -16,11 +16,11 @@ function(full_version)
 
 if(version VERSION_LESS 3.5)
   if(CMAKE_VERSION VERSION_LESS 3.19)
-    message(FATAL_ERROR "please specify CMake version to build like
-    cmake -Dversion=\"3.27.4\" ")
+    set(version 3.26.5)
+  else()
+    file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
+    string(JSON version GET ${_j} cmake latest)
   endif()
-  file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
-  string(JSON version GET ${_j} cmake latest)
 endif()
 
 # only major.minor specified -- default to latest release known.
