@@ -32,13 +32,6 @@ set(CMAKE_EP_GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
 set(CMAKE_TLS_VERIFY true)
 
 # --- config checks
-
-if(CMAKE_GENERATOR MATCHES "Visual Studio")
-  message(FATAL_ERROR "Visual Studio doesn't work with many libraries here. Please first install Ninja:
-  cmake -S ${PROJECT_SOURCE_DIR}/scripts/install_ninja
-  ")
-endif()
-
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(is_multi_config)
   if(CMAKE_GENERATOR MATCHES "Ninja")
