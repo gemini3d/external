@@ -51,7 +51,7 @@ endif()
 #   MPI, HDF5, ZLIB, scalapack_src, mumps_src
 # as we're unlikely to modify those libraries
 
-foreach(n ffilesystem glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw)
+foreach(n IN ITEMS ffilesystem glow hwm14 msis lapack scalapack mumps forestclaw)
   set(${n}_method "git")
 
   if(local)
@@ -170,13 +170,9 @@ endif()
 
 # --- p4est, forestclaw
 if(amr)
-  set(amr_args -Dmpi:BOOL=true)
-
   include(cmake/zlib.cmake)
-  extproj(libsc ${libsc_method} "${amr_args}" "zlib")
-  extproj(p4est ${p4est_method} "${amr_args}" "libsc")
-  set(fclaw_args ${amr_args} -Dclawpatch:BOOL=true -Dclawpack:BOOL=true)
-  extproj(forestclaw ${forestclaw_method} "${fclaw_args}" "p4est")
+  set(fclaw_args -Dmpi:BOOL=true -Dclawpatch:BOOL=true -Dclawpack:BOOL=true -Dapplication:BOOL=false)
+  extproj(forestclaw ${forestclaw_method} "${fclaw_args}" "zlib")
 endif()
 
 # print summary of configuration
