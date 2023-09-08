@@ -48,13 +48,11 @@ endif()
 
 # --- exclude Conda from search
 if(DEFINED ENV{CONDA_PREFIX})
-  set(ignore_path
-    $ENV{CONDA_PREFIX} $ENV{CONDA_PREFIX}/Library $ENV{CONDA_PREFIX}/Scripts $ENV{CONDA_PREFIX}/condabin
-    $ENV{CONDA_PREFIX}/bin $ENV{CONDA_PREFIX}/lib $ENV{CONDA_PREFIX}/include
-    $ENV{CONDA_PREFIX}/Library/bin $ENV{CONDA_PREFIX}/Library/lib $ENV{CONDA_PREFIX}/Library/include
-  )
-  list(APPEND CMAKE_IGNORE_PATH ${ignore_path})
+  list(APPEND CMAKE_IGNORE_PREFIX_PATH $ENV{CONDA_PREFIX})
 endif()
+
+# --- avoid stray compiler wrappers
+set(CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH false)
 
 # --- CMake Module search path (for Find*.cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
