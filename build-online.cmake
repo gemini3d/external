@@ -5,6 +5,7 @@
 
 cmake_minimum_required(VERSION 3.19...3.27)
 
+option(amr "build AMR libraries (ForestClaw, p4est)")
 option(find "find bigger libraries like MPI and HDF5 if available")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/git.cmake)
@@ -42,6 +43,9 @@ set(args
 -DCMAKE_PREFIX_PATH:PATH=${prefix}
 -Dfind:BOOL=${find}
 )
+if(DEFINED amr)
+  list(APPEND args -Damr:BOOL=${amr})
+endif()
 
 message(STATUS "Building Gemini3D external libraries in ${bindir} with options:
 ${args}")
