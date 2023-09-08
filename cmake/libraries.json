@@ -11,15 +11,15 @@
 
 "libsc": {
   "url": "https://github.com/cburstedde/libsc.git",
-  "tag": "master"
+  "tag": "12b2f991d3b12cdfe22e1d3eb9913eb034ab62e2"
 },
 "p4est": {
   "url": "https://github.com/cburstedde/p4est.git",
-  "tag": "master"
+  "tag": "b5cdd27988aca288b7c00eba9a499b49e1920a4a"
 },
 "forestclaw": {
   "url": "https://github.com/forestclaw/forestclaw.git",
-  "tag": "develop"
+  "tag": "9b70bd41f774d497f63f3bd80c9b00f20b2ac65a"
 },
 
 "openmpi": {
