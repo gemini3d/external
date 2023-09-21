@@ -3,7 +3,12 @@
 
 set -e
 
-[[ $# -lt 1 ]] && prefix=$HOME || prefix=$1
+if [[ $# -lt 1 ]]; then
+[[ "$OSTYPE" -eq "msys" ]] && prefix="/c/Users/$USERNAME" || prefix="$HOME"
+else
+prefix=$1
+fi
+
 [[ $# -lt 2 ]] && version="3.27.6" || version=$2
 
 # determine OS and arch
