@@ -1,31 +1,30 @@
 #!/usr/bin/env bash
+# Download / extract CMake binary archive for CMake >= 3.20
 
 set -e
 
 [[ $# -lt 1 ]] && prefix=$HOME || prefix=$1
-
-version=3.27.6
+[[ $# -lt 2 ]] && version="3.27.6" || version=$2
 
 # determine OS and arch
+stub=""
+ext=".tar.gz"
+
 case "$OSTYPE" in
 linux*)
 os="linux"
 arch=$(uname -m)
-stub=""
-ext=".tar.gz"
 [[ "$arch" == "arm64" ]] && arch="aarch64";;
 darwin*)
 os="macos"
 arch="universal"
-stub="CMake.app/Contents/"
-ext=".tar.gz";;
+stub="CMake.app/Contents/";;
 msys*)
 os="windows"
 arch=$(uname -m)
-stub=""
 ext=".zip";;
 *)
-echo "$OSTYPE not supported"
+echo "$OSTYPE not supported" >&2
 exit 1;;
 esac
 
