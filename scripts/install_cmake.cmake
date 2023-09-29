@@ -126,7 +126,7 @@ foreach(i RANGE ${L})
 endforeach()
 
 set(hash_url ${url_stem}/${hash_name})
-set(hash_file ${CMAKE_CURRENT_BINARY_DIR}/${hash_name})
+set(hash_file ${prefix}/${hash_name})
 message(STATUS "CMake ${version} hash: ${hash_url} => ${hash_file}")
 
 file(DOWNLOAD ${hash_url} ${hash_file} INACTIVITY_TIMEOUT 60 STATUS ret LOG log)
@@ -249,8 +249,6 @@ endif()
 
 message(STATUS "Using CMake ${CMAKE_VERSION} to install CMake ${version} to ${prefix}")
 
-file(GENERATE OUTPUT .gitignore CONTENT "*")
-
 set(CMAKE_FIND_APPBUNDLE LAST)
 
 set(url_stem https://github.com/Kitware/CMake/releases/download/v${version})
@@ -261,16 +259,9 @@ message(STATUS "Download CMake ${version}  ${arch}")
 
 if(CMAKE_VERSION VERSION_LESS 3.19 OR version VERSION_LESS 3.20)
   cmake_legacy_name("${arch}" "archive")
-
-  FetchContent_Populate(cmake
-  URL ${url_stem}/${archive}
-  TLS_VERIFY ${CMAKE_TLS_VERIFY}
-  UPDATE_DISCONNECTED true
-  INACTIVITY_TIMEOUT 60
-  )
 else()
   set(json_name cmake-${version}-files-v1.json)
-  set(json_file ${CMAKE_CURRENT_BINARY_DIR}/${json_name})
+  set(json_file ${prefix}/${json_name})
   set(json_url ${url_stem}/cmake-${version}-files-v1.json)
 
   message(STATUS "CMake ${version} metadata: ${json_url} => ${json_file}")
@@ -283,20 +274,17 @@ else()
 
   cmake_archive_name(${json_file} "${arch}" "archive")
 
-  FetchContent_Populate(cmake
-  URL ${url_stem}/${archive}
-  URL_HASH SHA256=${sha256}
-  TLS_VERIFY ${CMAKE_TLS_VERIFY}
-  UPDATE_DISCONNECTED true
-  INACTIVITY_TIMEOUT 60
-  )
+  set(_hash URL_HASH SHA256=${sha256})
 endif()
 
-message(STATUS "Installing CMake ${version} => ${prefix} (takes about a minute or so)")
-
-file(MAKE_DIRECTORY ${prefix})
-file(COPY ${cmake_SOURCE_DIR}/ DESTINATION ${prefix})
-# must have trailing slash on source dir
+FetchContent_Populate(cmake
+URL ${url_stem}/${archive}
+${_hash}
+TLS_VERIFY ${CMAKE_TLS_VERIFY}
+UPDATE_DISCONNECTED true
+INACTIVITY_TIMEOUT 60
+SOURCE_DIR ${prefix}
+)
 
 # --- verify
 find_program(cmake_exe
