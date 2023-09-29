@@ -29,7 +29,7 @@ else()
   message(FATAL_ERROR "failed to configure.")
 endif()
 
-execute_process(COMMAND ${CMAKE_COMMAND} --build ${bindir}
+execute_process(COMMAND ${CMAKE_COMMAND} --build ${bindir} --parallel
 RESULT_VARIABLE ret
 )
 
