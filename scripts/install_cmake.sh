@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Download / extract CMake binary archive for CMake >= 3.20
 
-set -e
+set -o errexit
 
 if [[ $# -lt 1 ]]; then
-[[ "$OSTYPE" -eq "msys" ]] && prefix="$USERPROFILE" || prefix="$HOME"
+[[ "$OSTYPE" == "msys" ]] && prefix=$USERPROFILE || prefix=$HOME
 else
 prefix=$1
 fi
@@ -60,7 +60,6 @@ exit 1;;
 esac
 
 # prompt user to default shell to this new CMake
-export PATH=${prefix}/$name/bin:$PATH
 
 case "$SHELL" in
 */zsh)
@@ -68,7 +67,7 @@ shell="zsh";;
 */bash)
 shell="bash";;
 *)
-echo "please add to environment variable PATH: ${prefix}/$name/${stub}bin"
+echo "please add to environment variable PATH: ${prefix}/${name}/${stub}bin"
 exit;;
 esac
 
