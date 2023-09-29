@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.27)
+cmake_minimum_required(VERSION 3.19...3.28)
 
 include(FetchContent)
 
@@ -7,6 +7,10 @@ set(host https://github.com/ninja-build/ninja/releases/download/)
 if(NOT version)
   file(READ ${CMAKE_CURRENT_LIST_DIR}/versions.json _j)
   string(JSON version GET ${_j} ninja)
+endif()
+
+if(NOT prefix)
+  get_filename_component(prefix ~/ninja-${version} ABSOLUTE)
 endif()
 
 string(APPEND host "v${version}/")
@@ -39,6 +43,7 @@ URL ${url}
 TLS_VERIFY true
 UPDATE_DISCONNECTED true
 INACTIVITY_TIMEOUT 60
+SOURCE_DIR ${prefix}
 )
 
 find_program(exe
@@ -52,12 +57,6 @@ endif()
 
 get_filename_component(ninja_filename ${exe} NAME)
 
-if(NOT prefix)
-  get_filename_component(prefix ~/ninja-${version} ABSOLUTE)
-endif()
-
-file(MAKE_DIRECTORY ${prefix})
-file(COPY ${exe} DESTINATION ${prefix}/)
 
 message(STATUS "installed Ninja ${version} to ${prefix}")
 
