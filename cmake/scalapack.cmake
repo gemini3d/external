@@ -13,6 +13,10 @@ set(scalapack_args
 -DBUILD_COMPLEX16:BOOL=false
 )
 
+if(MPI_ROOT)
+  list(APPEND scalapack_args -DMPI_ROOT:PATH=${MPI_ROOT})
+endif()
+
 set(scalapack_deps)
 if(NOT LAPACK_FOUND)
   set(scalapack_deps lapack)

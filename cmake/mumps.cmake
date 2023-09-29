@@ -16,6 +16,10 @@ set(mumps_cmake_args
 -DBUILD_COMPLEX16:BOOL=false
 )
 
+if(MPI_ROOT)
+  list(APPEND mumps_cmake_args -DMPI_ROOT:PATH=${MPI_ROOT})
+endif()
+
 if(MSVC AND BUILD_SHARED_LIBS)
   # long-standing bug in MUMPS that can't handle shared libraries with MSVC (Windows Intel oneAPI)
   list(APPEND mumps_cmake_args -DBUILD_SHARED_LIBS:BOOL=false)
