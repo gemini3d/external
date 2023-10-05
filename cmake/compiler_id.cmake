@@ -1,6 +1,16 @@
 function(compiler_id outvar)
 
-set(wd ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/../build)
+get_property(cmake_role GLOBAL PROPERTY CMAKE_ROLE)
+if(cmake_role STREQUAL "SCRIPT")
+  execute_process(COMMAND mktemp -d OUTPUT_VARIABLE wd OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
+  if(NOT ret EQUAL 0)
+    set(wd /tmp)
+  endif()
+else()
+  set(wd ${CMAKE_CURRENT_BINARY_DIR}/compiler_id)
+endif()
+
+
 get_filename_component(wd ${wd} ABSOLUTE)
 file(MAKE_DIRECTORY ${wd})
 
@@ -9,7 +19,7 @@ set(${outvar} generic PARENT_SCOPE)
 if(DEFINED ENV{CC})
   set(cc_name $ENV{CC})
 elseif(DEFINED ENV{MKLROOT})
-  set(cc_name icx icc icl cc)
+  set(cc_name icx cc)
 else()
   set(cc_name cc)
 endif()
