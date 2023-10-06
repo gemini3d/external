@@ -4,14 +4,12 @@ get_property(cmake_role GLOBAL PROPERTY CMAKE_ROLE)
 if(cmake_role STREQUAL "SCRIPT")
   execute_process(COMMAND mktemp -d OUTPUT_VARIABLE wd OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
   if(NOT ret EQUAL 0)
-    set(wd /tmp)
+    set(wd /tmp/compiler_id)
   endif()
 else()
   set(wd ${CMAKE_CURRENT_BINARY_DIR}/compiler_id)
 endif()
 
-
-get_filename_component(wd ${wd} ABSOLUTE)
 file(MAKE_DIRECTORY ${wd})
 
 set(${outvar} generic PARENT_SCOPE)
