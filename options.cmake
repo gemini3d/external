@@ -20,7 +20,7 @@ endif()
 
 option(find "Attempt to find numeric libraries--saves CI build time, but may slow runtime performance.")
 
-option(amr "build packages used for AMR" on)
+option(amr "build packages used for AMR")
 
 option(scotch "MUMPS Scotch + METIS ordering (PORD is default and always used)")
 
