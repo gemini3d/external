@@ -16,7 +16,7 @@ function(full_version)
 
 if(version VERSION_LESS 3.5)
   if(CMAKE_VERSION VERSION_LESS 3.19)
-    set(version 3.27.6)
+    set(version 3.27.7)
   else()
     file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../versions.json _j)
     string(JSON version GET ${_j} cmake latest)

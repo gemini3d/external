@@ -10,7 +10,7 @@ prefix=$1
 fi
 [[ -z "${prefix+x}" ]] && { echo "Usage: $0 install_prefix_path" >&2; exit 1; }
 
-[[ $# -lt 2 ]] && version="3.27.6" || version=$2
+[[ $# -lt 2 ]] && version="3.27.7" || version=$2
 
 # determine OS and arch
 stub=""
