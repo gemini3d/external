@@ -19,7 +19,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: install Ninja
       run: cmake -P scripts/install_ninja.cmake
