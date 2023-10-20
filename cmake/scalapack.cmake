@@ -1,5 +1,10 @@
-if(find OR CRAY OR DEFINED ENV{MKLROOT})
-  find_package(SCALAPACK)
+if(CRAY)
+  add_custom_target(scalapack)
+  return()
+endif()
+
+if(find OR DEFINED ENV{MKLROOT})
+  find_package(SCALAPACK CONFIG)
 endif()
 if(SCALAPACK_FOUND)
   add_custom_target(scalapack)
