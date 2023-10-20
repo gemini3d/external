@@ -1,5 +1,5 @@
 if(find)
-  find_package(MUMPS COMPONENTS d)
+  find_package(MUMPS CONFIG)
 endif()
 if(MUMPS_FOUND)
   add_custom_target(mumps)
