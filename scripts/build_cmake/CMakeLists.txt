@@ -12,7 +12,7 @@ include(ExternalProject)
 
 option(gui "build cmake-gui")
 
-set(CMAKE_TLS_VERIFY true)
+option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
 
 function(full_version)
 

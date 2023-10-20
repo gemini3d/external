@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11...3.28)
 
 include(FetchContent)
 
-set(CMAKE_TLS_VERIFY true)
+option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
 
 function(full_version)
 

@@ -5,7 +5,6 @@ function(fetch_source name url_type)
 
 set(extproj_args
 CMAKE_ARGS ${cmake_args}
-TLS_VERIFY true
 UPDATE_DISCONNECTED true
 INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD true

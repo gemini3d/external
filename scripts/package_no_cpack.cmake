@@ -36,7 +36,7 @@ mumps mumps_src
 
 endif()
 
-set(CMAKE_TLS_VERIFY true)
+option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
 
 # --- functions
 

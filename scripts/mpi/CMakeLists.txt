@@ -12,6 +12,8 @@ include(ExternalProject)
 
 option(mpich "Build MPICH instead of OpenMPI")
 
+option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
+
 message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
@@ -104,7 +106,6 @@ CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
 TEST_COMMAND ""
-TLS_VERIFY true
 USES_TERMINAL_DOWNLOAD true
 USES_TERMINAL_UPDATE true
 USES_TERMINAL_BUILD true

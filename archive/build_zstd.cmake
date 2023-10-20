@@ -5,7 +5,7 @@ string(JSON zstd_version GET ${_j} zstd)
 
 cmake_path(SET prefix "~/zstd-${zstd_version}")
 
-set(CMAKE_TLS_VERIFY true)
+option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
 
 if(DEFINED ENV{TMPDIR})
   cmake_path(SET tmpdir $ENV{TMPDIR})

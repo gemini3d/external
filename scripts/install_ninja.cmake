@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.19...3.28)
 
 include(FetchContent)
 
+option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
+
 set(host https://github.com/ninja-build/ninja/releases/download/)
 
 if(NOT version)
@@ -40,7 +42,7 @@ set(url ${host}${stem}.zip)
 
 FetchContent_Populate(ninja
 URL ${url}
-TLS_VERIFY true
+TLS_VERIFY ${CMAKE_TLS_VERIFY}
 UPDATE_DISCONNECTED true
 INACTIVITY_TIMEOUT 60
 SOURCE_DIR ${prefix}
