@@ -22,7 +22,6 @@ jobs:
     strategy:
       matrix:
         hwm14: [false]
-        # TODO: temp workaround for fclaw_prep3
         os: [ubuntu-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
@@ -36,14 +35,12 @@ jobs:
       timeout-minutes: 10
       run: |
         sudo apt update
-        sudo $(cmake -P scripts/requirements.cmake) liblapack-dev libscalapack-mpi-dev
+        sudo $(cmake -P scripts/requirements.cmake)
 
     - name: Install packages (MacOS)
       if: runner.os == 'macOS'
       timeout-minutes: 10
-      run: |
-        $(cmake -P scripts/requirements.cmake)
-        brew install scalapack
+      run: $(cmake -P scripts/requirements.cmake)
 
     - name: Configure, build, install
       run: cmake -Dfind:BOOL=true -P build-online.cmake
