@@ -4,7 +4,7 @@ include(ExternalProject)
 function(extproj name url_type cmake_args depends)
 
 # PREPEND so that user arguments can override these defaults
-list(INSERT cmake_args 0
+list(PREPEND cmake_args
 -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
 -DCMAKE_PREFIX_PATH:PATH=${CMAKE_INSTALL_PREFIX}
 -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
@@ -13,6 +13,7 @@ list(INSERT cmake_args 0
 -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
 -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 -DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
+-DCMAKE_TLS_VERIFY:BOOL=${CMAKE_TLS_VERIFY}
 )
 if(CMAKE_TOOLCHAIN_FILE)
   list(APPEND cmake_args -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE})
