@@ -28,6 +28,11 @@ include(cmake/package/cpacker.cmake)
 include(cmake/ExtProj.cmake)
 include(cmake/FetchSource.cmake)
 
+# --- avoid Anaconda libraries
+if(DEFINED ENV{CONDA_PREFIX})
+  list(APPEND CMAKE_IGNORE_PREFIX_PATH $ENV{CONDA_PREFIX})
+endif()
+
 if(package)
   file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
   if(NOT DEFINED manifest_txt)

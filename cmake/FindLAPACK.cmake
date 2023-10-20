@@ -233,6 +233,7 @@ if(NOT LAPACK_LIBRARY)
 endif()
 
 set(BLAS_LIBRARY ${LAPACK_LIBRARY} CACHE FILEPATH "OpenBLAS library")
+
 set(LAPACK_OpenBLAS_FOUND true PARENT_SCOPE)
 
 list(APPEND LAPACK_LIBRARY ${CMAKE_THREAD_LIBS_INIT})
@@ -240,6 +241,8 @@ list(APPEND LAPACK_LIBRARY ${CMAKE_THREAD_LIBS_INIT})
 set(LAPACK_LIBRARY ${LAPACK_LIBRARY} PARENT_SCOPE)
 
 endfunction(openblas_libs)
+
+
 function(aocl_libs)
 
 set(_names flame)
@@ -376,10 +379,8 @@ if(STATIC IN_LIST LAPACK_FIND_COMPONENTS)
   set(CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_STATIC_LIBRARY_SUFFIX})
 endif()
 
-
 if(MKL IN_LIST LAPACK_FIND_COMPONENTS OR MKL64 IN_LIST LAPACK_FIND_COMPONENTS)
   find_mkl_libs()
-
 elseif(Atlas IN_LIST LAPACK_FIND_COMPONENTS)
   atlas_libs()
 elseif(Netlib IN_LIST LAPACK_FIND_COMPONENTS)
@@ -443,7 +444,6 @@ endif()
 endfunction(lapack_check)
 
 # --- Check library links
-
 if(lapack_cray OR LAPACK_LIBRARY)
   lapack_check()
 endif()
