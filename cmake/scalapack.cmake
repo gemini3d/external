@@ -1,15 +1,16 @@
-if(CRAY)
+if(CRAY OR DEFINED ENV{MKLROOT})
   add_custom_target(scalapack)
   return()
 endif()
 
-if(find OR DEFINED ENV{MKLROOT})
+if(find)
   find_package(SCALAPACK CONFIG)
+  if(SCALAPACK_FOUND)
+    add_custom_target(scalapack)
+    return()
+  endif()
 endif()
-if(SCALAPACK_FOUND)
-  add_custom_target(scalapack)
-  return()
-endif()
+
 
 set(scalapack_args
 -DBUILD_SINGLE:BOOL=false

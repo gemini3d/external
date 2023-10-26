@@ -1,15 +1,15 @@
-if(CRAY)
+if(CRAY OR DEFINED ENV{MKLROOT})
   add_custom_target(lapack)
   return()
 endif()
 
-if(find OR DEFINED ENV{MKLROOT})
+if(find)
   find_package(LAPACK)
-endif()
-if(LAPACK_FOUND)
-  add_custom_target(lapack)
-  return()
-  # dummy target to avoid error if user `cmake --build --target lapack`
+  if(LAPACK_FOUND)
+    add_custom_target(lapack)
+    return()
+    # dummy target to avoid error if user `cmake --build --target lapack`
+  endif()
 endif()
 
 set(lapack_args
