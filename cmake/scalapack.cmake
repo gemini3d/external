@@ -3,15 +3,6 @@ if(CRAY OR DEFINED ENV{MKLROOT})
   return()
 endif()
 
-if(find)
-  find_package(SCALAPACK CONFIG)
-  if(SCALAPACK_FOUND)
-    add_custom_target(scalapack)
-    return()
-  endif()
-endif()
-
-
 set(scalapack_args
 -DBUILD_SINGLE:BOOL=false
 -DBUILD_DOUBLE:BOOL=true
