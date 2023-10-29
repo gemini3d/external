@@ -22,9 +22,6 @@ find_file(mpi_f08_mod NAMES mpi_f08.mod
 NO_DEFAULT_PATH
 HINTS ${MPI_Fortran_INCLUDE_DIRS}
 )
-if(NOT mpi_f08_mod)
-  message(FATAL_ERROR "Fortran MPI ${MPI_Fortran_VERSION} doesn't have MPI-3 Fortran mpi_f08.mod, searched using ${MPI_Fortran_INCLUDE_DIRS}")
-endif()
 
 message(STATUS "MPI-3 test:
 MPI libs: ${MPI_Fortran_LIBRARIES}
@@ -33,6 +30,10 @@ MPI_f08 module: ${mpi_f08_mod}
 MPI compile flags: ${MPI_Fortran_COMPILER_FLAGS}
 MPI link flags: ${MPI_Fortran_LINK_FLAGS}"
 )
+
+if(NOT mpi_f08_mod)
+  message(FATAL_ERROR "Fortran MPI ${MPI_Fortran_VERSION} doesn't have MPI-3 Fortran mpi_f08.mod, searched using ${MPI_Fortran_INCLUDE_DIRS}")
+endif()
 
 check_source_compiles(Fortran
 [=[
