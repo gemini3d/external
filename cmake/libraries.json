@@ -29,18 +29,18 @@
 },
 
 "ffilesystem": {
-  "url": "https://github.com/scivision/fortran-filesystem.git",
-  "tag": "v5.0.3"
+  "url": "https://github.com/ECLAIRWaveS/fortran-filesystem.git",
+  "tag": "61c23e82bf37ddcc8f9c79706a40359522e67297"
 },
 
 "h5fortran": {
-  "url": "https://github.com/geospace-code/h5fortran.git",
-  "tag": "v4.10.4"
+  "url": "https://github.com/ECLAIRWaveS/h5fortran.git",
+  "tag": "b07c51dc1930305b694290958e99e7b261e9356e"
 },
 
 "zlib": {
-  "url" : "https://github.com/zlib-ng/zlib-ng.git",
-  "tag": "2.1.4"
+  "url" : "https://github.com/ECLAIRWaveS/zlib-ng.git",
+  "tag": "9fb955b8ba734b6519fe1a35704a4bc0ef01a22d"
 },
 "hdf5": {
   "url": "https://github.com/HDFGroup/hdf5.git",
