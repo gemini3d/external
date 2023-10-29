@@ -129,7 +129,6 @@ elseif(url_type STREQUAL "git")
   ExternalProject_Add(${name}
   GIT_REPOSITORY ${url}
   GIT_TAG ${tag}
-  GIT_SHALLOW true
   GIT_PROGRESS true
   BUILD_COMMAND ${build_parallel}
   TEST_COMMAND ""

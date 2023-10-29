@@ -19,7 +19,6 @@ string(JSON tag GET ${json_meta} ${name} tag)
 ExternalProject_Add(${name}
 GIT_REPOSITORY ${url}
 GIT_TAG ${tag}
-GIT_SHALLOW true
 GIT_PROGRESS true
 ${extproj_args}
 CONFIGURE_COMMAND ""
