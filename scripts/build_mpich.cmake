@@ -15,11 +15,10 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
 endiF()
 
 if(NOT bindir)
-  if(DEFINED ENV{TMPDIR})
-    set(bindir $ENV{TMPDIR}/mpich_build)
-  else()
-    set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build/mpich_build)
-  endif()
+execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
+if(NOT ret EQUAL 0)
+  set(bindir /tmp/build_mpich)
+endif()
 endif()
 
 execute_process(COMMAND ${CMAKE_COMMAND}
