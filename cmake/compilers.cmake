@@ -1,12 +1,21 @@
 # check C and Fortran compiler ABI compatibility
 
-if(NOT abi_ok)
+function(abi_check)
+if(NOT abi_compile)
   message(CHECK_START "checking that C, C++, and Fortran compilers can link")
-  try_compile(abi_ok
+  try_compile(abi_compile
   ${CMAKE_CURRENT_BINARY_DIR}/abi_check ${CMAKE_CURRENT_LIST_DIR}/abi_check
   abi_check
+  OUTPUT_VARIABLE abi_output
   )
-  if(abi_ok)
+  if(abi_output MATCHES "ld: warning: could not create compact unwind for")
+    message(WARNING "C++ exception handling will not work reliably due to incompatible compilers:
+    C++ compiler ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}
+    Fortran compiler ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION}"
+    )
+  endif()
+
+  if(abi_compile)
     message(CHECK_PASS "OK")
   else()
     message(FATAL_ERROR "ABI-incompatible compilers:
@@ -16,3 +25,5 @@ if(NOT abi_ok)
     )
   endif()
 endif()
+endfunction(abi_check)
+abi_check()
