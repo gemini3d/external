@@ -1,7 +1,14 @@
 include(ExternalProject)
 
 
-function(extproj name url_type cmake_args depends)
+function(extproj name cmake_args depends)
+
+if(IS_DIRECTORY ${name})
+  set(src_path ${name})
+  cmake_path(GET src_path STEM name)
+else()
+  set(src_path)
+endif()
 
 # PREPEND so that user arguments can override these defaults
 list(PREPEND cmake_args
@@ -52,35 +59,20 @@ endif()
 
 
 # --- select repo type
-string(JSON url GET ${json_meta} ${name} url)
 
-if(url_type STREQUAL "source_dir")
-  # local development with a specific source directory out of tree
+if(IS_DIRECTORY "${src_path}")
 
-  get_filename_component(${name}_source ${${name}_source} ABSOLUTE)
+  message(STATUS "${name}: ${src_path}")
 
-  message(STATUS "${name}: local source development directory: ${${name}_source}")
   ExternalProject_Add(${name}
-  SOURCE_DIR ${${name}_source}
-  BUILD_ALWAYS false
+  SOURCE_DIR ${src_path}
   BUILD_COMMAND ${build_parallel}
+  TEST_COMMAND ""
   ${extproj_args}
   )
-  # NOTE: "BUILD_ALWAYS true" is suggested by ExternalProject_Add()
-  # docs when SOURCE_DIR is used w/o Download step, if source_dir changes aren't being detected.
 
-elseif(url_type STREQUAL "local")
+elseif(EXISTS "${src_path}")
   # archive file on this computer or network drive
-
-  find_file(${name}_archive
-  NAMES ${name}.tar.bz2 ${name}.tar.gz ${name}.tar ${name}.zip ${name}.zstd ${name}.tar.xz
-  HINTS ${local}
-  NO_DEFAULT_PATH
-  )
-
-  if(NOT ${name}_archive)
-    message(FATAL_ERROR "${name}: Archive file does not exist under ${local}")
-  endif()
 
   if(name STREQUAL "hdf5")
     # special handling due to custom HDF5 archive layout
@@ -90,15 +82,15 @@ elseif(url_type STREQUAL "local")
       message(FATAL_ERROR "Could not find tar program")
     endif()
 
-    set(_ext_src ${PROJECT_BINARY_DIR}/${name}_archive)
+    set(_ext_src ${PROJECT_BINARY_DIR}/${name})
     file(MAKE_DIRECTORY ${_ext_src})
 
     execute_process(
-    COMMAND ${tar} --extract --strip-components=4 --directory ${_ext_src} --file ${${name}_archive}
+    COMMAND ${tar} --extract --strip-components=4 --directory ${_ext_src} --file ${src_path}
     RESULT_VARIABLE ret
     )
     if(NOT ret EQUAL "0")
-      message(FATAL_ERROR "${name}: could not extract source archive ${${name}_archive}")
+      message(FATAL_ERROR "${name}: could not extract source archive ${src_path}")
     endif()
 
     message(STATUS "${name}: using extracted source ${_ext_src}")
@@ -112,41 +104,40 @@ elseif(url_type STREQUAL "local")
 
   else()
     # default archive without extra custom top-level directories
-    message(STATUS "${name}: using source archive ${${name}_archive}")
+    message(STATUS "${name}: using source archive ${src_path}")
 
     ExternalProject_Add(${name}
-    URL ${${name}_archive}
+    URL ${src_path}
     BUILD_COMMAND ${build_parallel}
     TEST_COMMAND ""
     ${extproj_args}
     )
   endif()
 
-elseif(url_type STREQUAL "git")
-
-  string(JSON tag GET ${json_meta} ${name} tag)
-
-  ExternalProject_Add(${name}
-  GIT_REPOSITORY ${url}
-  GIT_TAG ${tag}
-  GIT_PROGRESS true
-  BUILD_COMMAND ${build_parallel}
-  TEST_COMMAND ""
-  ${extproj_args}
-  )
-elseif(url_type STREQUAL "archive")
-
-  string(JSON tag GET ${json_meta} ${name} sha256)
-
-  ExternalProject_Add(${name}
-  URL ${url}
-  URL_HASH SHA256=${sha256}
-  BUILD_COMMAND ${build_parallel}
-  TEST_COMMAND ""
-  ${extproj_args}
-  )
 else()
-  message(FATAL_ERROR "${name}: unsure how to use resource of type ${url_type}")
+
+  string(JSON url GET ${json_meta} "${name}" "url")
+
+  if("${url}" MATCHES ".git$")
+    string(JSON tag GET ${json_meta} ${name} tag)
+    set(download_args
+    GIT_REPOSITORY ${url}
+    GIT_TAG ${tag}
+    GIT_PROGRESS true
+    GIT_SHALLOW true
+    )
+  else()
+    set(download_args
+    URL ${url}
+    )
+  endif()
+
+  ExternalProject_Add(${name}
+  ${download_args}
+  BUILD_COMMAND ${build_parallel}
+  TEST_COMMAND ""
+  ${extproj_args}
+  )
 endif()
 
 

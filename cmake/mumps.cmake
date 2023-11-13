@@ -34,4 +34,4 @@ if(NOT LAPACK_FOUND)
   list(APPEND mumps_deps lapack)
 endif()
 
-extproj(mumps ${mumps_method} "${mumps_cmake_args}" "${mumps_deps}")
+extproj(mumps "${mumps_cmake_args}" "${mumps_deps}")

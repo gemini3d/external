@@ -1,6 +1,6 @@
 # builds all Gemini3D external libraries
 
-cmake_minimum_required(VERSION 3.19...3.27)
+cmake_minimum_required(VERSION 3.20...3.28)
 # Cmake 3.19 enables JSON
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -18,6 +18,8 @@ VERSION 1.1.1
 include(options.cmake)
 include(cmake/compilers.cmake)
 include(cmake/package/cpacker.cmake)
+
+include(cmake/GitSubmodule.cmake)
 
 # --- main program
 
@@ -51,34 +53,14 @@ if(CRAY)
   file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cray.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake/)
 endif()
 
-# determine possible user overrides for each of the libraries we might develop
-# we specifically exclude from this manual override:
-#   MPI, HDF5, ZLIB, scalapack_src, mumps_src
-# as we're unlikely to modify those libraries
-
-foreach(n IN ITEMS ffilesystem glow hwm14 msis lapack scalapack mumps forestclaw)
-  set(${n}_method "git")
-
-  if(local)
-    set(${n}_method "local")
-  endif()
-
-  if(${n}_source)
-    # user command line point to source directory out of tree
-    set(${n}_method "source_dir")
-  endif()
-
-  message(DEBUG "${n} method: ${${n}_method}")
-endforeach()
-
 # --- Fortran-filesystem
-extproj(ffilesystem ${ffilesystem_method} "-Dcpp:BOOL=true" "")
+extproj(ffilesystem "-Dcpp:BOOL=true" "")
 
 # --- GLOW
-extproj(glow ${glow_method} "" "")
+extproj(glow "" "")
 
 # --- HWM14
-extproj(hwm14 ${hwm14_method} "" "")
+extproj(hwm14 "" "")
 
 # --- MPI
 if(NOT DEFINED MPI_ROOT AND DEFINED ENV{MPI_ROOT})
@@ -137,10 +119,10 @@ if(NOT HDF5_FOUND)
   list(APPEND h5fortran_deps "hdf5")
 endif()
 
-extproj(h5fortran git "${h5fortran_args}" "${h5fortran_deps}")
+extproj(h5fortran "${h5fortran_args}" "${h5fortran_deps}")
 
 # --- MSIS
-extproj(msis git "-Dmsis2:BOOL=true" "h5fortran")
+extproj(msis "-Dmsis2:BOOL=true" "h5fortran")
 # MSIS 2.x is built by default -- to use MSIS 2.x in a simulation run
 # requires the simulation config.nml to have a field like:
 #
@@ -150,14 +132,14 @@ extproj(msis git "-Dmsis2:BOOL=true" "h5fortran")
 
 # --- Gemini3d project
 if(package)
-  extproj(gemini3d git "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem")
+  extproj(gemini3d "" "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem")
 endif()
 
 # --- p4est, forestclaw
 if(amr)
   include(cmake/zlib.cmake)
   set(fclaw_args -Dmpi:BOOL=true -Dclawpatch:BOOL=true -Dclawpack:BOOL=true -Dapplication:BOOL=false)
-  extproj(forestclaw ${forestclaw_method} "${fclaw_args}" "zlib")
+  extproj(forestclaw "${fclaw_args}" "zlib")
 endif()
 
 # print summary of configuration

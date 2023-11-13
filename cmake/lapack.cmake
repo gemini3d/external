@@ -21,4 +21,4 @@ set(lapack_args
 -DTEST_FORTRAN_COMPILER:BOOL=false
 )
 # don't run their Fortran tests as they error build on test_zminMax.err
-extproj(lapack ${lapack_method} "${lapack_args}" "")
+extproj(lapack "${lapack_args}" "")

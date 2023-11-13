@@ -8,4 +8,5 @@ set(zlib_cmake_args
 )
 # CMAKE_POSITION_INDEPENDENT_CODE=on is needed for Zlib even when using static libs.
 
-extproj(zlib git "${zlib_cmake_args}" "")
+git_submodule(${PROJECT_SOURCE_DIR}/zlib)
+extproj(${PROJECT_SOURCE_DIR}/zlib "${zlib_cmake_args}" "")

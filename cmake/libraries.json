@@ -38,13 +38,8 @@
   "tag": "b07c51dc1930305b694290958e99e7b261e9356e"
 },
 
-"zlib": {
-  "url" : "https://github.com/ECLAIRWaveS/zlib-ng.git",
-  "tag": "9fb955b8ba734b6519fe1a35704a4bc0ef01a22d"
-},
 "hdf5": {
-  "url": "https://github.com/HDFGroup/hdf5.git",
-  "tag": "hdf5-1_10_9",
+  "url": "https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_10_9.tar.gz",
   "version": "1.10.9"
 },
 

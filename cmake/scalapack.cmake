@@ -23,4 +23,4 @@ if(local)
   list(APPEND scalapack_args -Dlocal:PATH=${local})
 endif()
 
-extproj(scalapack ${scalapack_method} "${scalapack_args}" "${scalapack_deps}")
+extproj(scalapack "${scalapack_args}" "${scalapack_deps}")

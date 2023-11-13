@@ -18,4 +18,4 @@ if(MPI_ROOT)
   list(APPEND hdf5_cmake_args -DMPI_ROOT:PATH=${MPI_ROOT})
 endif()
 
-extproj(hdf5 git "${hdf5_cmake_args}" "zlib")
+extproj(hdf5 "${hdf5_cmake_args}" "zlib")
