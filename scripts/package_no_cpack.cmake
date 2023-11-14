@@ -25,7 +25,6 @@ if(NOT DEFINED packages)
 
 set(packages
 gemini3d external
-libsc p4est forestclaw
 ffilesystem
 h5fortran hdf5 zlib
 glow hwm14 msis

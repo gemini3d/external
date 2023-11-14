@@ -49,7 +49,7 @@ Git/downloading is not used for that library.
 The libraries this work for include:
 
 ```
-ffilesystem glow hwm14 msis lapack scalapack mumps libsc p4est forestclaw
+ffilesystem glow hwm14 msis lapack scalapack mumps
 ```
 
 In general to speed build time, optionally build just that library (and its prereqs) like:

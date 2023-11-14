@@ -135,17 +135,9 @@ if(package)
   extproj(gemini3d "" "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem")
 endif()
 
-# --- p4est, forestclaw
-if(amr)
-  include(cmake/zlib.cmake)
-  set(fclaw_args -Dmpi:BOOL=true -Dclawpatch:BOOL=true -Dclawpack:BOOL=true -Dapplication:BOOL=false)
-  extproj(forestclaw "${fclaw_args}" "zlib")
-endif()
-
 # print summary of configuration
 include(FeatureSummary)
 
-add_feature_info(AMR amr "adaptive mesh refinement")
 add_feature_info(Find find "find installed libraries")
 add_feature_info(HDF5-MPI hdf5_parallel "HDF5-MPI layer (otherwise, serial HDF5)")
 add_feature_info(shared BUILD_SHARED_LIBS "build shared libs (otherwise, build static libs)")
