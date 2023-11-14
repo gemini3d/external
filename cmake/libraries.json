@@ -71,8 +71,7 @@
 },
 
 "lapack": {
-  "tag": "v3.11.0",
-  "url": "https://github.com/Reference-LAPACK/lapack.git"
+  "url": "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.11.0.tar.gz"
 }
 
 }
