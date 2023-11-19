@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Download / extract CMake binary archive for CMake >= 3.20
+# On Windows, this works from Git Bash or MSYS2 for native Windows.
 
 set -o errexit
 
@@ -10,7 +11,7 @@ prefix=$1
 fi
 [[ -z "${prefix+x}" ]] && { echo "Usage: $0 install_prefix_path" >&2; exit 1; }
 
-[[ $# -lt 2 ]] && version="3.27.7" || version=$2
+[[ $# -lt 2 ]] && version="3.27.8" || version=$2
 
 # determine OS and arch
 stub=""
