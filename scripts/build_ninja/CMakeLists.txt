@@ -1,6 +1,6 @@
 # build and install a recent Ninja version
 
-cmake_minimum_required(VERSION 3.19...3.27)
+cmake_minimum_required(VERSION 3.19...3.28)
 
 project(ninja LANGUAGES C CXX)
 

@@ -1,7 +1,7 @@
 # prints Gemini3D prereqs on stdout
 #  cmake -P scripts/requirements.cmake
 
-cmake_minimum_required(VERSION 3.19...3.27)
+cmake_minimum_required(VERSION 3.19...3.28)
 
 set(prereq_file ${CMAKE_CURRENT_LIST_DIR}/requirements.json)
 

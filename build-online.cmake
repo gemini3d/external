@@ -3,7 +3,7 @@
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
 
-cmake_minimum_required(VERSION 3.19...3.27)
+cmake_minimum_required(VERSION 3.19...3.28)
 
 option(find "find bigger libraries like MPI and HDF5 if available")
 
