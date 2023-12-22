@@ -12,12 +12,12 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_id.cmake)
 
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
-# heuristic to determine compiler family.
-if(NOT bindir)
-  compiler_id(bin_name)
-  set(bindir ${CMAKE_CURRENT_LIST_DIR}/build_${bin_name})
+# random build dir to avoid confusion with reused build dir
+
+execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
+if(NOT ret EQUAL 0)
+  set(bindir /tmp/build)
 endif()
-get_filename_component(bindir ${bindir} ABSOLUTE)
 
 if(NOT prefix)
   if(NOT bin_name)
