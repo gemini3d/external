@@ -59,7 +59,11 @@ set(args
 )
 
 set(srcdir ${arcdir}/external)
-set(bindir ${srcdir}/build)
+execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
+if(NOT ret EQUAL 0)
+  string(RANDOM LENGTH 6 r)
+  set(bindir /tmp/build_${r})
+endif()
 
 message(STATUS "offline: build Gemini3D external libraries in ${bindir} with options:
 ${args}")

@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
 
-set(bindir ${CMAKE_CURRENT_LIST_DIR}/../build/cmake_build)
+execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
+if(NOT ret EQUAL 0)
+  string(RANDOM LENGTH 6 r)
+  set(bindir /tmp/build_${r})
+endif()
 
 set(args)
 if(version)

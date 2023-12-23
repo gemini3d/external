@@ -13,10 +13,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_id.cmake)
 set(CMAKE_EXECUTE_PROCESS_COMMAND_ECHO STDOUT)
 
 # random build dir to avoid confusion with reused build dir
-
 execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
 if(NOT ret EQUAL 0)
-  set(bindir /tmp/build)
+  string(RANDOM LENGTH 6 r)
+  set(bindir /tmp/build_${r})
 endif()
 
 if(NOT prefix)
