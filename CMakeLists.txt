@@ -129,11 +129,6 @@ extproj(msis "-Dmsis2:BOOL=true" "h5fortran")
 # msis_version = 21  ! MSIS version multiplied by 10 e.g. 21 is MSIS 2.1
 # /
 
-# --- Gemini3d project
-if(package)
-  extproj(gemini3d "" "" "h5fortran;mumps;msis;hwm14;glow;ffilesystem")
-endif()
-
 # print summary of configuration
 include(FeatureSummary)
 
