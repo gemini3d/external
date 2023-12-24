@@ -16,7 +16,6 @@ VERSION 1.1.1
 )
 
 include(options.cmake)
-include(cmake/compilers.cmake)
 include(cmake/package/cpacker.cmake)
 
 include(cmake/GitSubmodule.cmake)
