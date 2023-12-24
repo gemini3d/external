@@ -69,9 +69,15 @@ extproj(glow "" "")
 extproj(hwm14 "" "")
 
 # --- MPI
-if(NOT DEFINED MPI_ROOT AND DEFINED ENV{MPI_ROOT})
-  set(MPI_ROOT $ENV{MPI_ROOT})
+if(NOT DEFINED MPI_ROOT)
+  if(DEFINED ENV{MPI_ROOT})
+    set(MPI_ROOT $ENV{MPI_ROOT})
+  elseif(DEFINED ENV{I_MPI_ROOT})
+    set(MPI_ROOT $ENV{I_MPI_ROOT})
+  endif()
 endif()
+
+message(STATUS "MPI_ROOT=${MPI_ROOT}")
 
 find_package(MPI COMPONENTS C Fortran)
 if(NOT MPI_FOUND)
@@ -82,7 +88,7 @@ endif()
 
 if(NOT MPI_3_Fortran_OK)
 
-message(CHECK_START "Checking for MPI-3 Fortran support, MPI_ROOT=${MPI_ROOT}")
+message(CHECK_START "Checking for MPI-3 Fortran support")
 
 try_compile(MPI_3_Fortran_OK
 ${CMAKE_CURRENT_BINARY_DIR}/mpi3test
