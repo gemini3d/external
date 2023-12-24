@@ -19,26 +19,11 @@ if(NOT ret EQUAL 0)
   set(bindir /tmp/build_${r})
 endif()
 
-if(NOT prefix)
-  if(NOT bin_name)
-    compiler_id(bin_name)
-  endif()
-  set(prefix ~/libgem_${bin_name})
-endif()
-get_filename_component(prefix ${prefix} ABSOLUTE)
-file(MAKE_DIRECTORY ${prefix}/bin)
-
-if(compiler_id_exe)
-  file(COPY ${compiler_id_exe} DESTINATION ${prefix}/bin/)
-endif()
-
 set(args
--DCMAKE_INSTALL_PREFIX:PATH=${prefix}
--DCMAKE_PREFIX_PATH:PATH=${prefix}
 -Dfind:BOOL=${find}
 )
-if(DEFINED amr)
-  list(APPEND args -Damr:BOOL=${amr})
+if(prefix)
+  list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 endif()
 
 message(STATUS "Building Gemini3D external libraries in ${bindir} with options:

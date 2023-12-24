@@ -1,7 +1,8 @@
 # builds all Gemini3D external libraries
 
 cmake_minimum_required(VERSION 3.20...3.28)
-# Cmake 3.19 enables JSON
+# Cmake 3.19 string(JSON)
+# Cmake 3.20 cmake_path()
 
 if(NOT CMAKE_BUILD_TYPE)
   # ignore ENV{CMAKE_BUILD_TYPE} as we want to directly capture this project's user intent
@@ -14,6 +15,12 @@ project(GeminiExternalLibs
 LANGUAGES C CXX Fortran
 VERSION 1.1.1
 )
+
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  get_filename_component(home "~" ABSOLUTE)
+  string(TOLOWER ${CMAKE_Fortran_COMPILER_ID} ln)
+  set(CMAKE_INSTALL_PREFIX ${home}/libgem_${ln} CACHE PATH "default install prefix" FORCE)
+endif()
 
 include(options.cmake)
 include(cmake/package/cpacker.cmake)
