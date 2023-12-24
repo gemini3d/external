@@ -150,4 +150,4 @@ add_feature_info(shared BUILD_SHARED_LIBS "build shared libs (otherwise, build s
 add_feature_info(remote_disconnected EP_UPDATE_DISCONNECTED "don't update remote repositories after first download/confiugre")
 add_feature_info(packaging package "preparing new data upoad (for development team)")
 
-feature_summary(WHAT ALL)
+feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES)
