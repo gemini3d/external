@@ -58,28 +58,16 @@ set(CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH false)
 # --- CMake Module search path (for Find*.cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-# --- look in CMAKE_PREFIX_PATH for Find*.cmake as well
-if(NOT DEFINED CMAKE_PREFIX_PATH AND DEFINED ENV{CMAKE_MODULE_PATH})
-  set(CMAKE_PREFIX_PATH $ENV{CMAKE_MODULE_PATH})
-endif()
-if(CMAKE_PREFIX_PATH)
-  get_filename_component(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ABSOLUTE)
-  list(APPEND CMAKE_MODULE_PATH ${CMAKE_PREFIX_PATH}/cmake)
-endif()
-
 get_filename_component(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} ABSOLUTE)
 # file(MAKE_DIRECTORY) doesn't halt execution. We do this to make a useful error message.
-execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/cmake
-RESULT_VARIABLE ret)
-if(NOT ret EQUAL "0")
+file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/cmake)
+if(NOT IS_DIRECTORY ${CMAKE_INSTALL_PREFIX}/cmake)
   message(FATAL_ERROR "Failed to create ${CMAKE_INSTALL_PREFIX}/cmake
   Please set CMAKE_INSTALL_PREFIX to a writable location")
 endif()
 
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}
 ensure this is the directory you wish to install libraries to.")
-
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 
 file(GENERATE OUTPUT .gitignore CONTENT "*")
 
