@@ -98,10 +98,9 @@ CMAKE_FLAGS -DMPI_ROOT=${MPI_ROOT}
 )
 if(MPI_3_Fortran_OK)
   message(CHECK_PASS "yes")
-  set(MPI_3_Fortran_OK TRUE CACHE BOOL "MPI-3 Fortran support")
 else()
   message(CHECK_FAIL "no")
-  message(FATAL_ERROR "Gemini3D requires MPI-3 Fortran support.
+  message(WARNING "Gemini3D requires MPI-3 Fortran support.
 Either specify the path to a newer/different MPI library via environment variable MPI_ROOT
 or build OpenMPI from source with Fortran MPI-3 support:
 cmake -Dprefix=~/openmpi -P ${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_openmpi.cmake")
