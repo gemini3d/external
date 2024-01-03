@@ -41,7 +41,7 @@ set(mpi_flags --prefix=${CMAKE_INSTALL_PREFIX})
 # to avoid ABI problems and confusing build or runtime errors, mandate that C and C++ are same compiler vendor
 if(NOT CMAKE_C_COMPILER_ID STREQUAL CMAKE_CXX_COMPILER_ID)
   message(FATAL_ERROR "C compiler ${CMAKE_C_COMPILER_ID} and C++ compiler ${CMAKE_CXX_COMPILER_ID} must be the same to avoid ABI build/runtime errors.
-Set envioronment variables CC and CXX to the same compiler by prepending the command line:
+Set environment variables CC and CXX to the same compiler by prepending the command line:
   CC=gcc-13 CXX=g++-13")
 endiF()
 
@@ -85,16 +85,13 @@ else()
   # ibopen-pal.a(topology-linux.o): multiple definition of `hwloc_linux_component'
   #--with-hwloc-libdir=${CMAKE_INSTALL_PREFIX}/lib
 
+  list(APPEND mpi_flags --disable-sphinx)
+  # avoids errors with docs build that aren't used anyway
+
   find_package(ZLIB)
   if(ZLIB_FOUND)
     get_filename_component(ZLIB_LIBDIR ${ZLIB_LIBRARIES} DIRECTORY)
-    string(APPEND mpi_ldflags " ${CMAKE_LIBRARY_PATH_FLAG}${ZLIB_LIBDIR}")
-  endif()
-
-  if(BUILD_SHARED_LIBS)
-    list(APPEND mpi_flags --enable-shared --disable-static)
-  else()
-    list(APPEND mpi_flags --disable-shared --enable-static)
+    list(APPEND mpi_flags --with-zlib-libdir=${ZLIB_LIBDIR})
   endif()
 endif()
 
