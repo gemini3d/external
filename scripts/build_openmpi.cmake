@@ -1,22 +1,17 @@
 # USAGE:
 # cmake -Dprefix=~/mpi -P build_openmpi.cmake
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.20)
 
-if(NOT prefix)
-  message(FATAL_ERROR "Must specify -Dprefix=<path> to install MPI.")
+if(prefix)
+  list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 endif()
-
-set(args
--Dmpich:BOOL=false
--DCMAKE_INSTALL_PREFIX:PATH=${prefix}
-)
 
 if(NOT bindir)
-execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
-if(NOT ret EQUAL 0)
-  string(RANDOM LENGTH 6 r)
-  set(bindir /tmp/build_${r})
-endif()
+  execute_process(COMMAND mktemp -d OUTPUT_VARIABLE bindir OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE ret)
+  if(NOT ret EQUAL 0)
+    string(RANDOM LENGTH 6 r)
+    set(bindir /tmp/build_${r})
+  endif()
 endif()
 
 execute_process(COMMAND ${CMAKE_COMMAND}

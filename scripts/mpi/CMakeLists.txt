@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.28)
+cmake_minimum_required(VERSION 3.20...3.28)
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
   message(FATAL_ERROR "Use out of source build like
@@ -13,8 +13,6 @@ include(ExternalProject)
 option(mpich "Build MPICH instead of OpenMPI")
 
 option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
-
-message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 
@@ -95,6 +93,13 @@ else()
   endif()
 endif()
 
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  get_filename_component(home "~" ABSOLUTE)
+  cmake_path(GET mpi_url STEM n)
+  set(CMAKE_INSTALL_PREFIX ${home}/${n} CACHE PATH "Install path" FORCE)
+endif()
+
+
 # Downloading URL instead of Git avoids very long "autogen" step
 ExternalProject_Add(MPI
 URL ${mpi_url}
@@ -114,9 +119,13 @@ CONFIGURE_HANDLED_BY_BUILD ON
 )
 
 
-message(STATUS "MPI: ${mpi_url}
-flags: ${mpi_flags}
-ldflags: ${mpi_ldflags}")
+if(mpich)
+  message(STATUS "MPICH: ${mpi_url} => ${CMAKE_INSTALL_PREFIX}")
+else()
+  message(STATUS "OpenMPI: ${mpi_url} => ${CMAKE_INSTALL_PREFIX}")
+endif()
+message(STATUS "MPI flags: ${mpi_flags}")
+message(STATUS "MPI LDFLAGS: ${mpi_ldflags}")
 
 
 # --- check that MPI-3 Fortran is working
