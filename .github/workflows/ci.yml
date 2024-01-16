@@ -17,7 +17,7 @@ on:
 jobs:
 
   core:
-    timeout-minutes: 25
+    timeout-minutes: 40
 
     strategy:
       matrix:
