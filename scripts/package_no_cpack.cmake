@@ -43,7 +43,6 @@ function(download_archive pkg url archive sha256)
 
 # assume archive directly
 file(DOWNLOAD ${url} ${archive}
-INACTIVITY_TIMEOUT 60
 EXPECTED_HASH SHA256=${sha256}
 SHOW_PROGRESS
 STATUS ret

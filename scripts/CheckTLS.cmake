@@ -13,7 +13,7 @@ if(EXISTS ${tls_check_file})
 endif()
 
 message(STATUS "CheckTLS: ${url} => ${tls_check_file}")
-file(DOWNLOAD ${url} ${tls_check_file} INACTIVITY_TIMEOUT 10)
+file(DOWNLOAD ${url} ${tls_check_file})
 
 file(READ ${tls_check_file} json)
 

@@ -43,7 +43,6 @@ set(build_parallel ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel)
 set(extproj_args
 CMAKE_ARGS ${cmake_args}
 DEPENDS ${depends}
-INACTIVITY_TIMEOUT 60
 CONFIGURE_HANDLED_BY_BUILD true
 USES_TERMINAL_DOWNLOAD true
 USES_TERMINAL_UPDATE true
