@@ -21,7 +21,7 @@
 
 "ffilesystem": {
   "url": "https://github.com/ECLAIRWaveS/fortran-filesystem.git",
-  "tag": "61c23e82bf37ddcc8f9c79706a40359522e67297"
+  "tag": "21eefb124b44d740b22a89708dd41107424e3371"
 },
 
 "h5fortran": {
