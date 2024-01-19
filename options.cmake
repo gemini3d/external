@@ -47,11 +47,6 @@ if(is_multi_config)
   ")
 endif()
 
-# --- exclude Conda from search
-if(DEFINED ENV{CONDA_PREFIX})
-  list(APPEND CMAKE_IGNORE_PREFIX_PATH $ENV{CONDA_PREFIX})
-endif()
-
 # --- avoid stray compiler wrappers
 set(CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH false)
 
