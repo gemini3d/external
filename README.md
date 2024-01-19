@@ -8,7 +8,22 @@ Try to build this repo:
 
 ```sh
 git clone https://github.com/gemini3d/external
+```
+
+A one-step convenience script:
+
+```sh
 cmake -P build-online.cmake
+```
+
+or, to use CMake traditionally:
+
+```sh
+cmake -B build
+
+cmake --build build
+
+cmake --install build
 ```
 
 ## MPI-3

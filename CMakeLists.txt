@@ -23,7 +23,6 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 include(options.cmake)
-include(cmake/package/cpacker.cmake)
 
 include(cmake/GitSubmodule.cmake)
 
@@ -65,15 +64,15 @@ endif()
 
 # --- Fortran-filesystem
 git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/ffilesystem)
-extproj(${CMAKE_CURRENT_SOURCE_DIR}/ffilesystem "" "")
+add_subdirectory(ffilesystem)
 
 # --- GLOW
 git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/glow)
-extproj(${CMAKE_CURRENT_SOURCE_DIR}/glow "" "")
+add_subdirectory(glow)
 
 # --- HWM14
 git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/hwm14)
-extproj(${CMAKE_CURRENT_SOURCE_DIR}/hwm14 "" "")
+add_subdirectory(hwm14)
 
 # --- MPI
 if(NOT DEFINED MPI_ROOT)
@@ -122,16 +121,11 @@ include(cmake/mumps.cmake)
 
 # --- HDF5
 git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/h5fortran)
-extproj(${CMAKE_CURRENT_SOURCE_DIR}/h5fortran "" "")
+add_subdirectory(h5fortran)
 
 # --- MSIS
-extproj(msis "-Dmsis2:BOOL=true" "h5fortran")
-# MSIS 2.x is built by default -- to use MSIS 2.x in a simulation run
-# requires the simulation config.nml to have a field like:
-#
-# &neutral_BG
-# msis_version = 21  ! MSIS version multiplied by 10 e.g. 21 is MSIS 2.1
-# /
+git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/msis)
+add_subdirectory(msis)
 
 # print summary of configuration
 include(FeatureSummary)
@@ -143,3 +137,5 @@ add_feature_info(remote_disconnected EP_UPDATE_DISCONNECTED "don't update remote
 add_feature_info(packaging package "preparing new data upoad (for development team)")
 
 feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES)
+
+include(cmake/package/cpacker.cmake)

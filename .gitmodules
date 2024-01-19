@@ -10,3 +10,6 @@
 [submodule "hwm14"]
 	path = hwm14
 	url = https://github.com/gemini3d/hwm14.git
+[submodule "msis"]
+	path = msis
+	url = https://github.com/gemini3d/msis

@@ -3,7 +3,7 @@
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
 
-cmake_minimum_required(VERSION 3.19...3.28)
+cmake_minimum_required(VERSION 3.20)
 
 option(find "find bigger libraries like MPI and HDF5 if available")
 
@@ -19,9 +19,8 @@ if(NOT ret EQUAL 0)
   set(bindir /tmp/build_${r})
 endif()
 
-set(args
--Dfind:BOOL=${find}
-)
+set(args -Dfind:BOOL=${find})
+
 if(prefix)
   list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 endif()
@@ -31,25 +30,20 @@ ${args}")
 
 execute_process(
 COMMAND ${CMAKE_COMMAND} ${args}
--B${bindir}
--S${CMAKE_CURRENT_LIST_DIR}
-RESULT_VARIABLE ret
+-B${bindir} -S${CMAKE_CURRENT_LIST_DIR}
+COMMAND_ERROR_IS_FATAL ANY
 )
-
-if(NOT ret EQUAL 0)
-  message(FATAL_ERROR "Gemini3D external libraries failed to configure: ${ret}")
-endif()
 
 # don't specify cmake --build --parallel to avoid confusion when build errors happen in one library
 # each library itself is built in parallel,
 # so adding --parallel here doesn't really help build speed.
 execute_process(
 COMMAND ${CMAKE_COMMAND} --build ${bindir}
-RESULT_VARIABLE ret
+COMMAND_ERROR_IS_FATAL ANY
 )
 
-if(ret EQUAL 0)
-  message(STATUS "Gemini3D external libraries install complete.")
-else()
-  message(FATAL_ERROR "Gemini3D external libraries failed to build/install: ${ret}")
-endif()
+# the add_subdirectory() libraries need to be installed
+execute_process(
+COMMAND ${CMAKE_COMMAND} --install ${bindir}
+COMMAND_ERROR_IS_FATAL ANY
+)
