@@ -72,7 +72,8 @@ git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/glow)
 extproj(${CMAKE_CURRENT_SOURCE_DIR}/glow "" "")
 
 # --- HWM14
-extproj(hwm14 "" "")
+git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/hwm14)
+extproj(${CMAKE_CURRENT_SOURCE_DIR}/hwm14 "" "")
 
 # --- MPI
 if(NOT DEFINED MPI_ROOT)
