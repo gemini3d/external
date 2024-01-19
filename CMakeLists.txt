@@ -60,7 +60,8 @@ if(CRAY)
 endif()
 
 # --- Fortran-filesystem
-extproj(ffilesystem "-Dcpp:BOOL=true" "")
+git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/ffilesystem)
+extproj(${CMAKE_CURRENT_SOURCE_DIR}/ffilesystem "" "")
 
 # --- GLOW
 extproj(glow "" "")
@@ -114,23 +115,8 @@ include(cmake/scalapack.cmake)
 include(cmake/mumps.cmake)
 
 # --- HDF5
-if(find OR CRAY)
-  find_package(HDF5 COMPONENTS C Fortran HL)
-endif()
-if(HDF5_FOUND)
-  add_custom_target(hdf5)
-else()
-  include(cmake/zlib.cmake)
-  include(cmake/hdf5.cmake)
-endif()
-
-# --- h5fortran
-set(h5fortran_deps)
-if(NOT HDF5_FOUND)
-  list(APPEND h5fortran_deps "hdf5")
-endif()
-
-extproj(h5fortran "${h5fortran_args}" "${h5fortran_deps}")
+git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/h5fortran)
+extproj(${CMAKE_CURRENT_SOURCE_DIR}/h5fortran "" "")
 
 # --- MSIS
 extproj(msis "-Dmsis2:BOOL=true" "h5fortran")

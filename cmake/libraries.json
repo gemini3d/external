@@ -19,21 +19,6 @@
   "tag": "v0.981.0.16"
 },
 
-"ffilesystem": {
-  "url": "https://github.com/ECLAIRWaveS/fortran-filesystem.git",
-  "tag": "21eefb124b44d740b22a89708dd41107424e3371"
-},
-
-"h5fortran": {
-  "url": "https://github.com/ECLAIRWaveS/h5fortran.git",
-  "tag": "b07c51dc1930305b694290958e99e7b261e9356e"
-},
-
-"hdf5": {
-  "url": "https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_10_9.tar.gz",
-  "version": "1.10.9"
-},
-
 "hwm14": {
   "url": "https://github.com/gemini3d/hwm14.git",
   "tag": "v1.2.4"
