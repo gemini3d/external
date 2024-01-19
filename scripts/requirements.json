@@ -1,26 +1,26 @@
 {
   "apt": {
-    "pkgs": ["g++", "gfortran", "libopenmpi-dev", "openmpi-bin", "libhdf5-dev"],
+    "pkgs": ["libopenmpi-dev", "openmpi-bin", "libhdf5-dev"],
     "cmd": "apt install --no-install-recommends"
   },
   "yum": {
-    "pkgs": ["epel-release", "gcc-c++", "gcc-gfortran", "openmpi-devel", "hdf5-devel"],
+    "pkgs": ["epel-release", "openmpi-devel", "hdf5-devel"],
     "cmd": "yum install"
   },
   "pacman": {
-    "pkgs": ["gcc", "gcc-fortran", "openmpi", "hdf5"],
+    "pkgs": ["openmpi", "hdf5"],
     "cmd": "pacman -S --needed"
   },
   "zypper": {
-    "pkgs": ["gcc-c++", "gcc-fortran", "hdf5-devel"],
+    "pkgs": ["hdf5-devel"],
     "cmd": "zypper install"
   },
   "brew": {
-    "pkgs": ["gcc", "open-mpi", "hdf5"],
+    "pkgs": ["open-mpi", "hdf5"],
     "cmd": "brew install"
   },
   "port": {
-    "pkgs": ["gcc11", "openmpi", "hdf5"],
+    "pkgs": ["openmpi", "hdf5"],
     "cmd": "port install"
   }
 }
