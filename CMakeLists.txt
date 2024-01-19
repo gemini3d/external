@@ -68,7 +68,8 @@ git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/ffilesystem)
 extproj(${CMAKE_CURRENT_SOURCE_DIR}/ffilesystem "" "")
 
 # --- GLOW
-extproj(glow "" "")
+git_submodule(${CMAKE_CURRENT_SOURCE_DIR}/glow)
+extproj(${CMAKE_CURRENT_SOURCE_DIR}/glow "" "")
 
 # --- HWM14
 extproj(hwm14 "" "")
