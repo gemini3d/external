@@ -1,7 +1,7 @@
 # prints Gemini3D prereqs on stdout
 #  cmake -P scripts/requirements.cmake
 
-cmake_minimum_required(VERSION 3.19...3.28)
+cmake_minimum_required(VERSION 3.19)
 
 set(prereq_file ${CMAKE_CURRENT_LIST_DIR}/requirements.json)
 
@@ -30,15 +30,9 @@ endfunction(read_prereqs)
 
 # --- main program
 
-if(WIN32)
-  message(FATAL_ERROR "Windows: suggest Intel oneAPI or Windows Subsystem for Linux (WSL) https://aka.ms/wsl")
-endif()
-
-execute_process(COMMAND uname -s OUTPUT_VARIABLE id)
-
 if(APPLE)
   set(names brew port)
-else()
+elseif(UNIX)
   set(names apt yum pacman zypper)
 endif()
 
