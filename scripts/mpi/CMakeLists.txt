@@ -76,7 +76,8 @@ Setting \"CC=gcc\" on macOS defaults to Clang, which will fail. MPICH requires I
 else()
   string(JSON mpi_url GET ${json_meta} openmpi url)
 
-  list(APPEND mpi_flags --with-hwloc=internal)
+  # this --with-hwloc breaks OpenMPI 4.1 and 5.0 at least
+  # list(APPEND mpi_flags --with-hwloc=internal)
   # internal HWLOC avoids error in MPI:
   # ibopen-pal.a(topology-linux.o): multiple definition of `hwloc_linux_component'
   #--with-hwloc-libdir=${CMAKE_INSTALL_PREFIX}/lib
@@ -103,7 +104,7 @@ ExternalProject_Add(MPI
 URL ${mpi_url}
 CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
-INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
+INSTALL_COMMAND ${MAKE_EXECUTABLE} install
 TEST_COMMAND ""
 USES_TERMINAL_DOWNLOAD true
 USES_TERMINAL_UPDATE true
