@@ -71,12 +71,10 @@ Setting \"CC=gcc\" on macOS defaults to Clang, which will fail. MPICH requires I
   endif()
 
   string(JSON mpi_url GET ${json_meta} mpich url)
-  string(JSON mpi_sha256 GET ${json_meta} mpich sha256)
 
   list(APPEND mpi_flags --with-device=ch3)
 else()
   string(JSON mpi_url GET ${json_meta} openmpi url)
-  string(JSON mpi_sha256 GET ${json_meta} openmpi sha256)
 
   list(APPEND mpi_flags --with-hwloc=internal)
   # internal HWLOC avoids error in MPI:
@@ -103,7 +101,6 @@ endif()
 # Downloading URL instead of Git avoids very long "autogen" step
 ExternalProject_Add(MPI
 URL ${mpi_url}
-URL_HASH SHA256=${mpi_sha256}
 CONFIGURE_COMMAND <SOURCE_DIR>/configure ${mpi_flags} ${mpi_ldflags}
 BUILD_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu}
 INSTALL_COMMAND ${MAKE_EXECUTABLE} -j${Ncpu} install
