@@ -30,6 +30,7 @@ option(EP_UPDATE_DISCONNECTED "false (default): check for updated Git remote. tr
 
 set(CMAKE_EP_GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT")
 
+option(mumps_only "only build MUMPS stack, not other libs")
 option(CMAKE_TLS_VERIFY "Verify TLS certs" on)
 
 # --- config checks

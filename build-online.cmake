@@ -2,10 +2,12 @@
 # options:
 #
 # -Dprefix: where to install libraries under (default ~/libgem_<compiler_id>)
+# -Dtarget: which target9s) to build (default all)
 
 cmake_minimum_required(VERSION 3.20)
 
-option(find "find bigger libraries like MPI and HDF5 if available")
+option(find "find bigger libraries like HDF5" on)
+option(mumps_only "only build MUMPS")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/git.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_id.cmake)
@@ -21,7 +23,7 @@ if(NOT ret EQUAL 0)
 endif()
 endif()
 
-set(args -Dfind:BOOL=${find})
+set(args -Dfind:BOOL=${find} -Dmumps_only:BOOL=${mumps_only})
 
 if(prefix)
   list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
