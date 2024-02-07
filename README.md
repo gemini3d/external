@@ -26,14 +26,9 @@ cmake --build build
 cmake --install build
 ```
 
-## MPI-3
+## MPI
 
-MPI-3 is a required feature of Gemini3D.
-MPI-3 specification was released in 2012, so virtually all current MPI libraries implement MPI-3.
-However, some HPC have ABI conflicts between MPI-3 and the compilers, so we check that MPI-3 is working
-as part of the CMake build process.
-
-If you are having trouble, you can run just the MPI-3 test script by itself and then open a GitHub issue or
+If you are having trouble, run the MPI-3 test script by itself and then open a GitHub issue or
 contact the Gemini3D development team.
 
 ```sh

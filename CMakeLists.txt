@@ -44,9 +44,6 @@ if(DEFINED ENV{CONDA_PREFIX})
   # despite CMAKE_IGNORE_PREFIX_PATH
 endif()
 
-include(cmake/CheckMPI.cmake)
-check_mpi()
-
 if(package)
   file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/package)
   if(NOT DEFINED manifest_txt)
