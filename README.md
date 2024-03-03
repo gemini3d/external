@@ -13,7 +13,7 @@ git clone https://github.com/gemini3d/external
 A one-step convenience script:
 
 ```sh
-cmake -P build-online.cmake
+cmake -P build.cmake
 ```
 
 or, to use CMake traditionally:
