@@ -26,6 +26,18 @@ cmake --build build
 cmake --install build
 ```
 
+## HDF5
+
+By default, HDF5 and Zlib are built by this project if needed.
+
+If you want to build and install Zlib and HDF5 separately (with or without HDF5-MPI layer), we have a script for that:
+
+```sh
+cmake -Dhdf5_parallel=on -P scripts/build_hdf5.cmake
+```
+
+Omitting the "hdf5_parallel" option builds HDF5 without MPI support.
+
 ## MPI
 
 If you are having trouble, run the MPI-3 test script by itself and then open a GitHub issue or
