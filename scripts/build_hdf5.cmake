@@ -4,11 +4,9 @@ cmake_minimum_required(VERSION 3.20)
 
 option(hdf5_parallel "Build parallel hdf5")
 
-if(NOT prefix)
-  message(FATAL_ERROR "Must specify -Dprefix=<path> to install library.")
+if(prefix)
+  list(APPEND args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 endif()
-
-set(args -DCMAKE_INSTALL_PREFIX:PATH=${prefix})
 
 if(DEFINED hdf5_parallel)
   list(APPEND args -Dhdf5_parallel:BOOL=${hdf5_parallel})
