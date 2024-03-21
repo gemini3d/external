@@ -1,6 +1,6 @@
 # build and install a recent Ninja version
 
-cmake_minimum_required(VERSION 3.19...3.28)
+cmake_minimum_required(VERSION 3.19)
 
 project(ninja LANGUAGES C CXX)
 
@@ -37,4 +37,10 @@ CMAKE_ARGS ${cmake_args}
 TEST_COMMAND ""
 UPDATE_DISCONNECTED true
 CONFIGURE_HANDLED_BY_BUILD ON
+USES_TERMINAL_DOWNLOAD true
+USES_TERMINAL_UPDATE true
+USES_TERMINAL_CONFIGURE true
+USES_TERMINAL_BUILD true
+USES_TERMINAL_INSTALL true
+USES_TERMINAL_TEST true
 )
